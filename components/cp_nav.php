@@ -18,19 +18,19 @@ session_start();
     <div class="collapse navbar-collapse d-md-flex justify-content-md-center" id="navbarSupportedContent">
         <ul class="navbar-nav text-right">
             <li class="nav-item">
-                <a class="nav-link corazul" href="home.html">Home</a>
+                <a class="nav-link corazul" href="home.php">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="perfil.html">Perfil</a>
+                <a class="nav-link" href="perfil.php">Perfil</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="cadeiras.html">Cadeiras</a>
+                <a class="nav-link" href="cadeiras.php">Cadeiras</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tickets.html">Ticket</a>
+                <a class="nav-link" href="tickets.php">Ticket</a>
             </li>
             <li class="nav-item d-md-none pt-2">
-                <a href="index.html"><i class="fas fa-sign-out-alt fa-2x roxinho"></i></a>
+                <a href="index.php"><i class="fas fa-sign-out-alt fa-2x roxinho"></i></a>
             </li>
         </ul>
     </div>
