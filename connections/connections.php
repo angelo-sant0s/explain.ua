@@ -5,15 +5,15 @@ error_reporting(E_ALL);
 function new_db_connection()
 {
     // Define working environment
-    //$env = "labmm";
-    $env = "localhost";
+    $env = "labmm";
+    //$env = "localhost";
 
     // Variables for the database connection
     if ($env == "labmm") {
         $hostname = 'labmm.clients.ua.pt';
-        $username = "deca_20L4_25_dbo";
-        $password = "91XkdRy0";
-        $dbname = "deca_20L4_25";
+        $username = "deca_20L4_30_dbo";
+        $password = "J0Hytkgp";
+        $dbname = "deca_20L4_30";
     }
     if ($env == "localhost") {
         $hostname = 'localhost';
