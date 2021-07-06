@@ -26,7 +26,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                     $_SESSION["role"] = $perfil;
 
                     // Feedback de sucesso
-                    header("Location: ../index.php");
+                    header("Location: ../home.php");
                 } else {
                     // Password está errada
                     echo "Incorrect credentials!";

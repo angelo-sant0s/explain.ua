@@ -45,8 +45,7 @@
     </div>
 </header>
 
-
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<form class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" action="/scripts/sc_register.php" method="post">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content text-center">
             <div class="modal-header text-center">
@@ -68,15 +67,14 @@
                 </div>
             </div>
             <div class="modal-footer pt-4 justify-content-center">
-                <button class="btn btn_sign_in rounded-pill shadow mx-1 my-1 px-5" onclick="location.href = 'home.html';">Sign In</button>
+                <input type="submit" class="btn btn_sign_in rounded-pill shadow mx-1 my-1 px-5" value="Sign In">
             </div>
         </div>
     </div>
-</div>
+</form>
 
 
-<form id="loginmodal" action="/scripts/sc_login.php" method="post">
-    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<form id="loginmodal" action="/scripts/sc_login.php" method="post" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content text-center">
                 <div class="modal-header text-center">
@@ -100,7 +98,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </form>
 
 
