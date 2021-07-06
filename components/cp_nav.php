@@ -20,9 +20,17 @@ session_start();
             <li class="nav-item">
                 <a class="nav-link corazul" href="home.php">Home</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="perfil.php">Perfil</a>
-            </li>
+            <?php
+            if(isset($_SESSION["username"])){ ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"><?=$_SESSION['username']?> <span class="caret"></span></a>
+                       <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                           <li><a class="dropdown-item drop_click" href="perfil.php?user=<?=$_SESSION['username']?>">Profile</a></li>
+                           <li><a class="dropdown-item" href="scripts/sc_logout.php">Logout</a></li>
+                       </ul>
+               </li>
+            <?php }
+            ?>
             <li class="nav-item">
                 <a class="nav-link" href="cadeiras.php">Cadeiras</a>
             </li>
