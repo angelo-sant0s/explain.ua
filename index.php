@@ -75,31 +75,33 @@
 </div>
 
 
-<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content text-center">
-            <div class="modal-header text-center">
-                <img src="imgs/logo.svg" alt="logo" height="100px" width="100px">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="modal-body">
-                <div class="modalinputs">
-                    <i class="fas fa-user"></i>
-                    <input type="text" placeholder="username" >
+<form id="loginmodal" action="/scripts/sc_login.php" method="post">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content text-center">
+                <div class="modal-header text-center">
+                    <img src="imgs/logo.svg" alt="logo" height="100px" width="100px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
                 </div>
-                <div class="modalinputs">
-                    <i class="fas fa-key"></i>
-                    <input type="text" placeholder="password">
+                <div class="modal-body">
+                    <div class="modalinputs">
+                        <i class="fas fa-user"></i>
+                        <input type="text" placeholder="username" >
+                    </div>
+                    <div class="modalinputs">
+                        <i class="fas fa-key"></i>
+                        <input type="text" placeholder="password">
+                    </div>
+                    <input type="checkbox" id="savepassword" name="savepassword" value="xd" class="mt-2">
+                    <label for="savepassword" class="text-black-50 titulo">guardar password</label><br>
                 </div>
-                <input type="checkbox" id="savepassword" name="savepassword" value="xd" class="mt-2">
-                <label for="savepassword" class="text-black-50 titulo">guardar password</label><br>
-            </div>
-            <div class="modal-footer pt-4 justify-content-center">
-                <button class="btn btn_login rounded-pill shadow mx-1 my-1 px-5" onclick="location.href = 'home.html';">Login</button>
+                <div class="modal-footer pt-4 justify-content-center">
+                    <input type="submit" class="btn btn_login rounded-pill shadow mx-1 my-1 px-5" value="Login">
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 
 
 <div class="index_div1 text-center text-lg-left mt-2" id="index_div1">
