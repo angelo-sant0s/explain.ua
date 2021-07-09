@@ -18,7 +18,7 @@ $local_link = new_db_connection();
 
 $stmt = mysqli_stmt_init($local_link);
 
-$query = "SELECT * FROM users";
+$query = "SELECT * FROM topico ORDER BY data_submissao DESC LIMIT 5";
 
 ?>
 
@@ -42,16 +42,15 @@ $query = "SELECT * FROM users";
             <button class="btn rounded-pill shadow bgClaro roxinho mr-3" onclick="clica('top')"><i class="fas fa-arrow-up fa-2x px-1"></i><span class="pb-2">Top</span></button>
             <script>
                 function clica(option){
-                    escolha = option;
                     switch (option){
                         case "recente":
-                            <?php $query = "SELECT * FROM users"; ?>
+                            <?php $query = "SELECT * FROM topico ORDER BY data_submissao DESC LIMIT 5"; ?>
                         break;
                         case "popular":
-                            <?php $query = "SELECT * FROM users"; ?>
+                            <?php $query = "SELECT * FROM topico INNER JOIN topico ORDER BY COUNT(resposta) DESC LIMIT 5"; ?>
                             break;
                         case "top":
-                             <?php $query = "SELECT * FROM users"; ?>
+                             <?php $query = "SELECT * FROM topico INNER JOIN topico ORDER BY COUNT(resposta) DESC LIMIT 5"; ?>
                             break;
                     }
                 }
