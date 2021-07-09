@@ -210,7 +210,7 @@
                     <textarea class="form-control borderElement font-italic p-3" id="FormControlTextarea1" rows="2" placeholder="Escreve um comentário..."></textarea>
 
                     <div class="d-flex justify-content-between small mt-3">
-                        <a href="pedido_tickets.html"><button class="btn borderElement textoClaro comentAnexo titulo ml-1 azul1">Anexar ticket</button></a>
+                        <a href="pedido_tickets.php"><button class="btn borderElement textoClaro comentAnexo titulo ml-1 azul1">Anexar ticket</button></a>
                         <span><button class="btn rosinhab comentCirculo ml-1" id="enviarTicket"><i class="fas fa-chevron-right fa-lg textoClaro"></i></button></span>
                     </div>
                 </div>
