@@ -1,31 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <!-- java -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-
-    <!-- meta tags -->
-    <meta charset="UTF-8">
-    <meta content="Angelo Santos, André Domingues, Juliana Assis, Luis Simoes" name="author">
-    <meta content="Explain, Universidade de Aveiro, UA, Explicações" name="keywords">
-    <meta content="Website dedicado à entreajuda de estudantes do curso de NTC da Universidade de Aveiro"
-          name="description">
-
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-
-    <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="fontawesome-free/css/all.css">
-
-    <!-- estilos próprios -->
-    <link href="css/os_meus_estilos.css" rel="stylesheet">
-
-    <!--Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+    <?php
+    include_once "helpers/meta_helper.php";
+    include_once "helpers/css_helper.php";
+    ?>
 
     <title>Cadeiras por semestre</title>
 </head>

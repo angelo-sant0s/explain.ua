@@ -5,12 +5,12 @@ session_start();
 ?>
 
 <nav class="navbar sticky-top d-flex navbar-expand-md bgClaro">
-    <a class="navbar-brand" href="home.html">
+    <a class="navbar-brand" href="home.php">
         <img src="imgs/logo.svg" alt="logo" class="img-fluid px-2" width="90px">
     </a>
     <div class="justify-content-center d-flex d-md-none justify-content-md-right">
         <button type="button" class="btn"><i class="fas fa-bell fa-2x roxinho mx-2"></i></button>
-        <button type="button" class="btn"><a href="chat.html"><i class="fas fa-comment fa-2x roxinho mx-2"></i></a></button>
+        <button type="button" class="btn"><a href="chat.php"><i class="fas fa-comment fa-2x roxinho mx-2"></i></a></button>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-bars fa-2x roxinho"></i>

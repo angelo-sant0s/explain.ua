@@ -1,30 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <!-- java -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-
-    <!-- meta tags -->
-    <meta charset="UTF-8">
-    <meta content="Angelo Santos, André Domingues, Juliana Assis, Luis Simoes" name="author">
-    <meta content="Explain, Universidade de Aveiro, UA, Explicações" name="keywords">
-    <meta content="Website dedicado à entreajuda de estudantes do curso de NTC da Universidade de Aveiro" name="description">
-
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-
-    <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="fontawesome-free/css/all.css">
-
-    <!-- estilos próprios -->
-    <link href="css/os_meus_estilos.css" rel="stylesheet">
-
-    <!--Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+    <?php
+    include_once "helpers/meta_helper.php";
+    include_once "helpers/css_helper.php";
+    ?>
 
     <title>Perfil</title>
 </head>
@@ -200,44 +180,11 @@
     </section>
 
 </main>
-<footer class="container-fluid bgEscuro p-3">
-    <section class="row justify-content-md-between">
-        <article class="col-md-2 pt-4 pl-2 pl-md-5 text-white text-center text-md-left">
-            <h5 class="footer-brand pl-2 pb-3 "><img src="imgs/logobranco.svg" width="80px" alt="img2">
-            </h5>
-        </article>
-        <article class="col-md-7 pt-0 pt-md-4 pl-2 pl-md-0 text-white text-center text-md-left">
-            <a href="#"><i class="fab fa-facebook-f p-3"></i></a>
-            <a href="#"><i class="fab fa-twitter p-3"></i></a>
-            <a href="#"><i class="fab fa-instagram p-3"></i></a>
-        </article>
-        <article class="col-md-3 text-white">
-            <section class="row">
-                <article class="col-12 col-md-6 p-1 font-weight-normal text-center pt-5">
-                    <a href="#" class="tamanho">
-                        <h4>Sobre</h4>
-                    </a>
-                </article>
-                <article class="col-12 col-md-6 p-1 font-weight-normal text-center py-5">
-                    <a href="#" class="tamanho">
-                        <h4>Contactos</h4>
-                    </a>
-                </article>
-            </section>
-        </article>
-    </section>
-    <section class="row">
-        <article class="col-12 text-white">
-            <p class="text-right h4 font-weight-normal pt-4 tamanho ">&commat; 2021 explain.ua, All Rights Reserved</p>
-        </article>
-    </section>
-</footer>
+<?php include_once "components/cp_footer.php"?>
 
 
 <!-- jQuery first, then Popper.js,then Bootstrap JS -->
-<script src="js/jquery-3.4.1.slim.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<?php include_once "helpers/js_helper.php"; ?>
 
 
 </body>
