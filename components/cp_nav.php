@@ -4,7 +4,7 @@ session_start();
 
 ?>
 
-<nav class="navbar sticky-top d-flex navbar-expand-md bgClaro">
+<nav class="navbar sticky-top d-flex navbar-expand-md bgClaro" id="navchat">
     <a class="navbar-brand" href="home.php">
         <img src="imgs/logo.svg" alt="logo" class="img-fluid px-2" width="90px">
     </a>
