@@ -1,4 +1,4 @@
-<footer class="container-fluid bgEscuro p-3">
+<footer class="container-fluid bgEscuro p-3" id="footer">
     <section class="row justify-content-md-between">
         <article class="col-md-2 pt-4 pl-2 pl-md-5 text-white text-center text-md-left">
             <h5 class="footer-brand pl-2 pb-3 "><img src="imgs/logobranco.svg" width="80px" alt="img2">
