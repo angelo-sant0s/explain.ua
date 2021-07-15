@@ -25,7 +25,7 @@
     </div>
 </header>
 
-<form class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" action="/scripts/sc_register.php" method="post">
+<form class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" action="./scripts/sc_register.php" method="post">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content text-center">
             <div class="modal-header text-center">
@@ -54,7 +54,7 @@
 </form>
 
 
-<form id="loginmodal" action="/scripts/sc_login.php" method="post" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<form id="loginmodal" action="./scripts/sc_login.php" method="post" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content text-center">
                 <div class="modal-header text-center">
