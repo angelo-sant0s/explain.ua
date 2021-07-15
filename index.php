@@ -35,15 +35,15 @@
             <div class="modal-body p-2 justify-content-center">
                 <div class="modalinputs">
                     <i class="fas fa-envelope-open"></i>
-                    <input type="text" placeholder="e-mail" >
+                    <input type="text" placeholder="e-mail" name="email">
                 </div>
                 <div class="modalinputs">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="username" >
+                    <input type="text" placeholder="username" name="username">
                 </div>
                 <div class="modalinputs">
                     <i class="fas fa-key"></i>
-                    <input type="text" placeholder="password">
+                    <input type="text" placeholder="password" name="password">
                 </div>
             </div>
             <div class="modal-footer pt-4 justify-content-center">
@@ -64,11 +64,11 @@
                 <div class="modal-body">
                     <div class="modalinputs">
                         <i class="fas fa-user"></i>
-                        <input type="text" placeholder="username" >
+                        <input type="text" placeholder="username" name="username" >
                     </div>
                     <div class="modalinputs">
                         <i class="fas fa-key"></i>
-                        <input type="text" placeholder="password">
+                        <input type="text" placeholder="password" name="password">
                     </div>
                     <input type="checkbox" id="savepassword" name="savepassword" value="xd" class="mt-2">
                     <label for="savepassword" class="text-black-50 titulo">guardar password</label><br>
