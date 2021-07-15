@@ -11,7 +11,7 @@ if (isset($_POST["username"]) && isset($_POST["email"]) && isset($_POST["passwor
 
     $stmt = mysqli_stmt_init($link);
 
-    $query = "INSERT INTO users (username, email, password_hash) VALUES (?,?,?)";
+    $query = "INSERT INTO utilizador (username, email, password_hash) VALUES (?,?,?)";
 
     if (mysqli_stmt_prepare($stmt, $query)) {
         mysqli_stmt_bind_param($stmt, 'sss', $username, $email, $password_hash);

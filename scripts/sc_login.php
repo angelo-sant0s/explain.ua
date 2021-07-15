@@ -9,7 +9,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 
     $stmt = mysqli_stmt_init($link);
 
-    $query = "SELECT password_hash, ref_id_roles FROM users WHERE username LIKE ?";
+    $query = "SELECT password_hash, ref_id_roles FROM utilizador WHERE username LIKE ?";
 
     if (mysqli_stmt_prepare($stmt, $query)) {
         mysqli_stmt_bind_param($stmt, 's', $username);
