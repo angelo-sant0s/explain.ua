@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -10,176 +11,240 @@
 </head>
 <body class="cinzaClaroBg">
 
+
 <?php include_once "components/cp_nav.php"; ?>
 
-<main class="container-fluid container-lg texto bg-light">
-    <section class="row justify-content-center">
-        <article class="col-12 vh-80">
+<?php
 
-        </article>
+if (!isset($_SESSION["username"]) || (($_GET["id"] != $_SESSION["user_id"]) && $_SESSION["role"] == 2)) {
+    header("Location: ../blockedAccess.php");
+}
+else if ($_SESSION["role"] == 1 ) {
 
-        <article id="profileJoin" class="col-12 vh-55 position-absolute bg-profile">
-            <article class="col-12 text-center  profilePic">
-                <img src="imgs/face1.jpg" class="borderElement img-fluid profilePicSize">
-            </article>
+}
 
-            <article id="profileName" class="pt-4 col-12 text-centerfont-weight-bold rem2">
-                <div class="text-center">Ricardo Manuel</div>
-            </article>
-        </article>
+$userid = $_GET["id"];
+
+// We need the function!
+require_once("connections/connections.php");
 
 
+// Create a new DB connection
+$link = new_db_connection();
 
+/* create a prepared statement */
+$stmt = mysqli_stmt_init($link);
 
-    </section>
+$query = "SELECT nome FROM utilizador WHERE utilizador.id_utilizador = ?";
 
-    <section class="row mt-5 mb-4 mx-2 shadow borderElement bitgreyer">
-        <article class="col-6 col-sm-6 col-md-8">
-            <section class="row py-2">
+if (mysqli_stmt_prepare($stmt, $query)) {
 
-                <article class="col-12 col-sm-12 col-md-6 text-center position-relative ">
-                    <div class=" ">
-                        <div class="mb-1 font-weight-bold rem1-3">Género</div>
-                        <div>Masculino</div>
-                    </div>
-                </article>
+    mysqli_stmt_bind_param($stmt, 'i', $userid);
 
-                <article class="col-12 col-sm-12 col-md-6 text-center d-none d-sm-none d-md-block">
-                    <div class="font-weight-bold rem1-3">Membro desde:</div>
-                    <div class="position-relative mt-1">
-                        <i class="fas fa-calendar rem4"><span class="position-absolute rem2 data-profile">31</span></i>
-                    </div>
-                    <div class="mt-1">abril 2020</div>
-                </article>
+    /* execute the prepared statement */
+    mysqli_stmt_execute($stmt);
 
-            </section>
-        </article>
+    /* bind result variables */
+    mysqli_stmt_bind_result($stmt,$nome);
 
-        <article class="col-6 col-sm-6 col-md-4 text-center position-relative">
-            <div class=" py-2">
-                <div class="mb-1 font-weight-bold rem1-3">Idade</div>
-                <div>21 anos</div>
-            </div>
-        </article>
+}
 
-        <article class="col-12 text-center d-block d-sm-block d-md-none position-relative mt-custom1">
-            <div class=" py-2">
-                <div class="font-weight-bold rem1-3">Membro desde:</div>
-                <div class="position-relative mt-1">
-                    <i class="fas fa-calendar rem4"><span class="position-absolute rem2 data-profile">31</span></i>
-                </div>
-                <div class="mt-1">Abril 2020</div>
-            </div>
-        </article>
-    </section>
+    $contador=0;
 
-    <section class="row mt-5">
-        <!--First section -->
-        <article class="col-12 col-sm-12 col-md-4 mb-4 py-3">
-            <div class="mx-2 borderSections p-2 bitgreyer shadow">
-                <section class="row">
-                    <article class="col-12 mb-3 font-weight-bold rem1-3 text-left text-md-center">
-                        Area
+    while (mysqli_stmt_fetch($stmt)) {
+
+            ?>
+
+            <main class="container-fluid container-lg texto bg-light">
+                <section class="row justify-content-center">
+                    <article class="col-12 vh-80">
+
                     </article>
 
-                    <article class="col-12">
-                        <section class="row mx-2 py-2">
-                            <article class="col-2 p-0 text-right d-flex align-items-center justify-content-end ">
-                                <div>
-                                    <img src="imgs/ntc.png" class="img-fluid textIcon2">
+                    <article id="profileJoin" class="col-12 vh-55 position-absolute bg-profile">
+                        <article class="col-12 text-center  profilePic">
+                            <img src="imgs/face1.jpg" class="borderElement img-fluid profilePicSize">
+                        </article>
+
+                        <article id="profileName" class="pt-4 col-12 text-centerfont-weight-bold rem2">
+                            <div class="text-center"><?= $nome ?></div>
+                        </article>
+                    </article>
+
+
+
+
+                </section>
+
+                <section class="row mt-5 mb-4 mx-2 shadow borderElement bitgreyer">
+                    <article class="col-6 col-sm-6 col-md-8">
+                        <section class="row py-2">
+
+                            <article class="col-12 col-sm-12 col-md-6 text-center position-relative ">
+                                <div class=" ">
+                                    <div class="mb-1 font-weight-bold rem1-3">Estatuto</div>
+                                    <div><?php ?></div>
                                 </div>
                             </article>
 
-                            <article class="col-10">
-                                <section class="row">
-                                    <article class="col-12 font-weight-bold">
-                                        Licenciatura NTC
-                                    </article>
-
-                                    <article class="col-12">
-                                        2º ano
-                                    </article>
-                                </section>
-                            </article>
-                        </section>
-                    </article>
-                </section>
-            </div>
-        </article>
-
-        <!--Second section -->
-        <article class="col-12 col-sm-12 col-md-4 mb-4 py-3">
-            <div class="mx-2 borderSections p-2 bitgreyer shadow">
-                <section class="row">
-                    <article class="col-12 mb-3 font-weight-bold rem1-3 text-left text-md-center">
-                        Cadeiras Frequentadas
-                    </article>
-
-                    <article class="col-4 col-sm-4 col-md-12 col-xl-4">
-                        <section class="row  mx-2 py-2">
-                            <article class="col-12 col-sm-12 col-md-6 col-xl-12 text-center text-md-right text-xl-center">
-                                <img src="imgs/lab4.png" class="img-fluid faceIcon">
-                            </article>
-                            <article class="col-12 col-sm-12 col-md-6 col-xl-12 d-flex align-items-center justify-content-center justify-content-md-start justify-content-xl-center font-weight-bold">
-                                <div>LAB 4</div>
-                            </article>
-                        </section>
-                    </article>
-
-                    <article class="col-4 col-sm-4 col-md-12 col-xl-4">
-                        <section class="row  mx-2 py-2">
-                            <article class="col-12 col-sm-12 col-md-6 col-xl-12 text-center text-md-right text-xl-center">
-                                <img src="imgs/idf.png" class="img-fluid faceIcon">
-                            </article>
-                            <article class="col-12 col-sm-12 col-md-6 col-xl-12 d-flex align-items-center justify-content-center justify-content-md-start justify-content-xl-center font-weight-bold">
-                                <div>IDF</div>
-                            </article>
-                        </section>
-                    </article>
-
-                    <article class="col-4 col-sm-4 col-md-12 col-xl-4">
-                        <section class="row  mx-2 py-2">
-                            <article class="col-12 col-sm-12 col-md-6 col-xl-12 text-center text-md-right text-xl-center">
-                                <img src="imgs/sistemas.png" class="img-fluid faceIcon">
-                            </article>
-                            <article class="col-12 col-sm-12 col-md-6 col-xl-12 d-flex align-items-center justify-content-center justify-content-md-start justify-content-xl-center font-weight-bold">
-                                <div>SCM 2</div>
-                            </article>
-                        </section>
-                    </article>
-
-                </section>
-            </div>
-        </article>
-
-        <!--Third section -->
-        <article class="col-12 col-sm-12 col-md-4 mb-4 py-3 ">
-            <div class="mx-2 borderSections p-2 bitgreyer shadow">
-                <section class="row">
-                    <article class="col-12 mb-3 font-weight-bold rem1-3 text-left text-md-center">
-                        Favoritos
-                    </article>
-
-                    <article class="col-12">
-                        <section class="row mx-2 py-2 ">
-                            <article class="col-2 col-sm-2 col-md-3 col-lg-4 col-xl-2 p-0 d-flex align-items-center justify-content-end">
-                                <div>
-                                    <img src="imgs/lab4.png" class="img-fluid textIcon">
+                            <article class="col-12 col-sm-12 col-md-6 text-center d-none d-sm-none d-md-block">
+                                <div class="font-weight-bold rem1-3">Membro desde:</div>
+                                <div class="position-relative mt-1">
+                                    <i class="fas fa-calendar rem4"><span class="position-absolute rem2 data-profile">31</span></i>
                                 </div>
+                                <div class="mt-1">abril 2020</div>
                             </article>
 
-                            <article class="col-10 col-sm-10 col-md-9 col-lg-8 col-xl-10 d-flex align-items-center  ">
-                                <div>Funções próprias em JavaScript</div>
-                            </article>
                         </section>
-                        <!-- <div class="borderSectionsElement m-auto"></div> -->
+                    </article>
+
+                    <article class="col-6 col-sm-6 col-md-4 text-center position-relative">
+                        <div class=" py-2">
+                            <div class="mb-1 font-weight-bold rem1-3">Idade</div>
+                            <div>21 anos</div>
+                        </div>
+                    </article>
+
+                    <article class="col-12 text-center d-block d-sm-block d-md-none position-relative mt-custom1">
+                        <div class=" py-2">
+                            <div class="font-weight-bold rem1-3">Membro desde:</div>
+                            <div class="position-relative mt-1">
+                                <i class="fas fa-calendar rem4"><span class="position-absolute rem2 data-profile">31</span></i>
+                            </div>
+                            <div class="mt-1">Abril 2020</div>
+                        </div>
                     </article>
                 </section>
-            </div>
-        </article>
-    </section>
 
-</main>
+                <section class="row mt-5">
+                    <!--First section -->
+                    <article class="col-12 col-sm-12 col-md-4 mb-4 py-3">
+                        <div class="mx-2 borderSections p-2 bitgreyer shadow">
+                            <section class="row">
+                                <article class="col-12 mb-3 font-weight-bold rem1-3 text-left text-md-center">
+                                    Area
+                                </article>
+
+                                <article class="col-12">
+                                    <section class="row mx-2 py-2">
+                                        <article class="col-2 p-0 text-right d-flex align-items-center justify-content-end ">
+                                            <div>
+                                                <img src="imgs/ntc.png" class="img-fluid textIcon2">
+                                            </div>
+                                        </article>
+
+                                        <article class="col-10">
+                                            <section class="row">
+                                                <article class="col-12 font-weight-bold">
+                                                    Licenciatura NTC
+                                                </article>
+
+                                                <article class="col-12">
+                                                    2º ano
+                                                </article>
+                                            </section>
+                                        </article>
+                                    </section>
+                                </article>
+                            </section>
+                        </div>
+                    </article>
+
+                    <!--Second section -->
+                    <article class="col-12 col-sm-12 col-md-4 mb-4 py-3">
+                        <div class="mx-2 borderSections p-2 bitgreyer shadow">
+                            <section class="row">
+                                <article class="col-12 mb-3 font-weight-bold rem1-3 text-left text-md-center">
+                                    Cadeiras Frequentadas
+                                </article>
+
+                                <article class="col-4 col-sm-4 col-md-12 col-xl-4">
+                                    <section class="row  mx-2 py-2">
+                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 text-center text-md-right text-xl-center">
+                                            <img src="imgs/lab4.png" class="img-fluid faceIcon">
+                                        </article>
+                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 d-flex align-items-center justify-content-center justify-content-md-start justify-content-xl-center font-weight-bold">
+                                            <div>LAB 4</div>
+                                        </article>
+                                    </section>
+                                </article>
+
+                                <article class="col-4 col-sm-4 col-md-12 col-xl-4">
+                                    <section class="row  mx-2 py-2">
+                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 text-center text-md-right text-xl-center">
+                                            <img src="imgs/idf.png" class="img-fluid faceIcon">
+                                        </article>
+                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 d-flex align-items-center justify-content-center justify-content-md-start justify-content-xl-center font-weight-bold">
+                                            <div>IDF</div>
+                                        </article>
+                                    </section>
+                                </article>
+
+                                <article class="col-4 col-sm-4 col-md-12 col-xl-4">
+                                    <section class="row  mx-2 py-2">
+                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 text-center text-md-right text-xl-center">
+                                            <img src="imgs/sistemas.png" class="img-fluid faceIcon">
+                                        </article>
+                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 d-flex align-items-center justify-content-center justify-content-md-start justify-content-xl-center font-weight-bold">
+                                            <div>SCM 2</div>
+                                        </article>
+                                    </section>
+                                </article>
+
+                            </section>
+                        </div>
+                    </article>
+
+                    <!--Third section -->
+                    <article class="col-12 col-sm-12 col-md-4 mb-4 py-3 ">
+                        <div class="mx-2 borderSections p-2 bitgreyer shadow">
+                            <section class="row">
+                                <article class="col-12 mb-3 font-weight-bold rem1-3 text-left text-md-center">
+                                    Favoritos
+                                </article>
+
+                                <article class="col-12">
+                                    <section class="row mx-2 py-2 ">
+                                        <article class="col-2 col-sm-2 col-md-3 col-lg-4 col-xl-2 p-0 d-flex align-items-center justify-content-end">
+                                            <div>
+                                                <img src="imgs/lab4.png" class="img-fluid textIcon">
+                                            </div>
+                                        </article>
+
+                                        <article class="col-10 col-sm-10 col-md-9 col-lg-8 col-xl-10 d-flex align-items-center  ">
+                                            <div>Funções próprias em JavaScript</div>
+                                        </article>
+                                    </section>
+                                    <!-- <div class="borderSectionsElement m-auto"></div> -->
+                                </article>
+                            </section>
+                        </div>
+                    </article>
+                </section>
+            </main>
+
+            <?php
+
+        $contador++;
+    }
+
+    if ($contador==0) {
+        ?>
+        <!-- html aqui para pagina de utilizador nao existente -->
+        <h1>Utilizador não existente</h1>
+        <h1>Por aqui o html - não esquecer</h1>
+        <?php
+    }
+
+
+    mysqli_stmt_close($stmt);
+
+?>
+
+
+
+
+
 <?php include_once "components/cp_footer.php"?>
 
 
