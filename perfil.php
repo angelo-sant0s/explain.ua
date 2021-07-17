@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -10,7 +11,44 @@
 </head>
 <body class="cinzaClaroBg">
 
+
 <?php include_once "components/cp_nav.php"; ?>
+
+<?php
+
+if (!isset($_SESSION["username"]) || (($_GET["id"] != $_SESSION["user_id"]) && $_SESSION["role"] == 2)) {
+    header("Location: ../blockedAccess.php");
+}
+
+$userid = $_GET["id"];
+
+// We need the function!
+require_once("connections/connections.php");
+
+
+// Create a new DB connection
+$link = new_db_connection();
+
+/* create a prepared statement */
+$stmt = mysqli_stmt_init($link);
+
+$query = "SELECT nome FROM utilizador WHERE utilizador.id_utilizador = ?";
+
+if (mysqli_stmt_prepare($stmt, $query)) {
+
+    mysqli_stmt_bind_param($stmt, 'i', $userid);
+
+    /* execute the prepared statement */
+    mysqli_stmt_execute($stmt);
+
+    /* bind result variables */
+    mysqli_stmt_bind_result($stmt,$nome);
+
+}
+
+    while (mysqli_stmt_fetch($stmt)) {
+
+    ?>
 
 <main class="container-fluid container-lg texto bg-light">
     <section class="row justify-content-center">
@@ -24,7 +62,7 @@
             </article>
 
             <article id="profileName" class="pt-4 col-12 text-centerfont-weight-bold rem2">
-                <div class="text-center">Ricardo Manuel</div>
+                <div class="text-center">1<?= $nome ?></div>
             </article>
         </article>
 
@@ -178,8 +216,19 @@
             </div>
         </article>
     </section>
-
 </main>
+
+    <?php
+
+}
+mysqli_stmt_close($stmt);
+
+?>
+
+
+
+
+
 <?php include_once "components/cp_footer.php"?>
 
 
