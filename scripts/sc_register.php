@@ -6,15 +6,17 @@ if (isset($_POST["username"]) && isset($_POST["email"]) && isset($_POST["passwor
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $data_nascimento =$_POST['date'];
+    $nmec = $_POST['nmec'];
 
     $link = new_db_connection();
 
     $stmt = mysqli_stmt_init($link);
 
-    $query = "INSERT INTO utilizador (username, email, password_hash, perfil_idperfil, foto_perfil, data_registo ) VALUES (?,?,?,2,'default.png', NOW() )";
+    $query = "INSERT INTO utilizador (username, email, password_hash, data_nascimento, numero_mecanografico, perfil_idperfil, foto_perfil, data_registo ) VALUES (?,?,?,?,?,2,'default.png', NOW() )";
 
     if (mysqli_stmt_prepare($stmt, $query)) {
-        mysqli_stmt_bind_param($stmt, 'sss', $username, $email, $password_hash);
+        mysqli_stmt_bind_param($stmt, 'ssssi', $username, $email, $password_hash, $data_nascimento, $nmec);
 
         // Devemos validar também o resultado do execute!
         if (mysqli_stmt_execute($stmt)) {

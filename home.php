@@ -68,10 +68,11 @@ $query = "SELECT * FROM topico ORDER BY data_submissao DESC LIMIT 5";
     <?php
     if (mysqli_stmt_prepare($stmt,$query)){
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $titulo, $texto);
+        mysqli_stmt_bind_result($stmt, $titulo, $texto, $id);
     }
     while (mysqli_stmt_fetch($stmt)){
         ?>
+            <a href="topico.php?id=<?= $id ?>">
     <div class="pl-3 py-4">
         <img class="iconzito float-left pr-4" src="imgs/iconn.png">
         <div class="row">
@@ -96,6 +97,7 @@ $query = "SELECT * FROM topico ORDER BY data_submissao DESC LIMIT 5";
             <div class="float-right pr-4">Postado há 2 horas</div>
         </div>
     </div>
+            </a>
         <?php
     }
     ?>

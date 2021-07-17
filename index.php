@@ -38,13 +38,21 @@
                     <i class="fas fa-envelope-open"></i>
                     <input type="text" placeholder="e-mail" name="email">
                 </div>
+                <div class="modalinputs" id="padding">
+                    <i class="fas fa-calendar-week"></i>
+                    <input id="date" type="date" name="date">
+                </div>
                 <div class="modalinputs">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="username" name="username">
+                    <input type="text" placeholder="username" name="username" class="pr-2">
                 </div>
                 <div class="modalinputs">
                     <i class="fas fa-key"></i>
                     <input type="text" placeholder="password" name="password">
+                </div>
+                <div class="modalinputs">
+                    <i class="fas fa-calendar-week"></i>
+                    <input type="text" placeholder="numero_mecanografico" name="nmec">
                 </div>
             </div>
             <div class="modal-footer pt-4 justify-content-center">
