@@ -13,7 +13,7 @@ function new_db_connection()
         $hostname = 'labmm.clients.ua.pt';
         $username = "deca_20L4_30_dbo";
         $password = "J0Hytkgp";
-        $dbname = "deca_20L4_30";
+        $dbname = "c";
     }
     if ($env == "localhost") {
         $hostname = 'localhost';
