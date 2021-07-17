@@ -51,7 +51,7 @@
                     <input type="text" placeholder="password" name="password">
                 </div>
                 <div class="modalinputs">
-                    <i class="fas fa-calendar-week"></i>
+                    <i class="fas fa-graduation-cap"></i>
                     <input type="text" placeholder="numero_mecanografico" name="nmec">
                 </div>
             </div>
