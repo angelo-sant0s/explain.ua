@@ -225,17 +225,19 @@ if (mysqli_stmt_prepare($stmt, $query)) {
                                     /* create a prepared statement */
                                     $stmt3 = mysqli_stmt_init($link);
 
+                                    $true = 1;
+
 
                                     // SET lc_time_names = 'pt_PT'; arranjar maneira de por isto antes para ficar em pt
                                     $query3 = "SELECT utilizador_has_topico.topico_id_topico, ticket.titulo, cadeira.imagem FROM utilizador_has_topico
                                             INNER JOIN topico ON topico.id_topico = utilizador_has_topico.topico_id_topico
                                             INNER JOIN ticket ON topico.id_topico = ticket.topico_id_topico
                                             INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
-                                            WHERE utilizador_has_topico.utilizador_id_utilizador = ?";
+                                            WHERE utilizador_has_topico.utilizador_id_utilizador = ? AND utilizador_has_topico.favorito = ?";
 
                                     if (mysqli_stmt_prepare($stmt3, $query3)) {
 
-                                        mysqli_stmt_bind_param($stmt3, 'i', $userid);
+                                        mysqli_stmt_bind_param($stmt3, 'ii', $userid, $true);
 
                                         /* execute the prepared statement */
                                         mysqli_stmt_execute($stmt3);
