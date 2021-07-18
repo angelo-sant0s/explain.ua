@@ -18,7 +18,40 @@ $local_link = new_db_connection();
 
 $stmt = mysqli_stmt_init($local_link);
 
-$query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username FROM ticket INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador ORDER BY data_submissao DESC";
+$stmt2 = mysqli_stmt_init($local_link);
+
+if(isset($_GET['order'])){
+    switch ($_GET['order']){
+        case "recente":
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username
+FROM ticket 
+INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
+ORDER BY ticket.data_submissao DESC";
+        break;
+        case "popular":
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username
+FROM ticket 
+INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
+ORDER BY ticket.data_submissao ASC";
+        break;
+        case "top":
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username 
+FROM ticket 
+INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
+ORDER BY ticket.data_submissao ASC";
+        break;
+    }
+}else{
+    $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username
+FROM ticket 
+INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
+ORDER BY ticket.data_submissao DESC";
+}
+
+$query2 = "SELECT COUNT(comentario.texto)
+FROM `comentario` 
+INNER JOIN topico ON topico_id_topico = id_topico 
+WHERE id_topico = ?;";
 
 ?>
 
@@ -37,9 +70,9 @@ $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utiliza
     <section class="row justify-content-between text-center p-2">
         <article class="col-12 col-lg-6 filtro">
 
-            <button class="btn rounded-pill shadow bgClaro roxinho mr-3" ><i class="fas fa-clock fa-2x px-1"></i><span class="pb-2">Recente</span></button>
-            <button class="btn rounded-pill shadow bgClaro roxinho mr-3" ><i class="fas fa-fire fa-2x px-1"></i><span class="pb-2">Popular</span></button>
-            <button class="btn rounded-pill shadow bgClaro roxinho mr-3" ><i class="fas fa-arrow-up fa-2x px-1"></i><span class="pb-2">Top</span></button>
+            <a href="home.php?order=recente"> <button class="btn rounded-pill shadow bgClaro roxinho mr-3"><i class="fas fa-clock fa-2x px-1"></i><span class="pb-2">Recente</span></button></a>
+            <a href="home.php?order=popular"><button class="btn rounded-pill shadow bgClaro roxinho mr-3"><i class="fas fa-fire fa-2x px-1"></i><span class="pb-2">Popular</span></button></a>
+            <a href="home.php?order=top"><button class="btn rounded-pill shadow bgClaro roxinho mr-3"><i class="fas fa-arrow-up fa-2x px-1"></i><span class="pb-2">Top</span></button></a>
 
         </article>
         <article class="col-12 col-lg-6 text-center position-relative mt-lg-0 mt-4 search_box">
@@ -49,20 +82,22 @@ $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utiliza
     </section>
 </div>
 
-
+<div class="container" id="container">
     <?php
     if (mysqli_stmt_prepare($stmt,$query)){
         mysqli_stmt_execute($stmt);
         mysqli_stmt_bind_result($stmt, $titulo, $texto, $id, $autor);
     }
+    mysqli_stmt_store_result($stmt);
     while (mysqli_stmt_fetch($stmt)){
-      echo "<div class='container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98'>
+        ?>
+     <div class='container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98'>
     <div class='pl-3 py-4'>
         <img class='iconzito float-left pr-4' src='imgs/iconn.png'>
         <div class='row'>
             <article class='col-9'>
-                <a href='topico.php?id=$id'> <h3 class='titulo'> $titulo </h3> </a>
-<h5 class='titulo font-italic text-black-50'> $autor </h5>
+                <a href='topico.php?id=<?=$id?>'> <h3 class='titulo'> <?= $titulo ?></h3> </a>
+<h5 class='titulo font-italic text-black-50'> <?= $autor ?></h5>
 </article>
 <article class='col-3'>
     <div class='float-right'>
@@ -72,20 +107,31 @@ $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utiliza
 </article>
 </div>
 <hr>
-<a href='topico.php?id=$id'>
+<a href='topico.php?id=<?=$id?>'>
     <div>
-        <p class='align-self-start px-4'> $texto </p>
+        <p class='align-self-start px-4'> <?= $texto ?> </p>
     </div>
 </a>
 <div class='text-secondary font-italic'>
-    <span>5 Comentários</span>
-    <i class='fas fa-comment'></i>
-    <div class='float-right pr-4'>Postado há 2 horas</div>
-</div>
-</div>
-</div>";
+<?php
+    if (mysqli_stmt_prepare($stmt2,$query2)){
+          mysqli_stmt_bind_param($stmt2, 'i' , $id);
+          mysqli_stmt_execute($stmt2);
+          mysqli_stmt_bind_result( $stmt2, $count);
+          while (mysqli_stmt_fetch($stmt2)) {
+    ?>
+    <span > <?= $count ?> Comentários</span >
+    <i class='fas fa-comment' ></i >
+    <div class='float-right pr-4' > Postado há 2 horas </div >
+</div >
+</div >
+</div >
+        <?php
+    }
+    }
     }
     ?>
+</div>
 
 <a href="#" class="text-center text-secondary small cursor mt-4 ml-3 mb-0"><span class="mb-4">carregar mais tópicos...</span></a>
 
