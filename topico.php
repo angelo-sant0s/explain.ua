@@ -2,15 +2,43 @@
 <html lang="pt">
 <head>
     <?php
+
     include_once "helpers/meta_helper.php";
+
     include_once "helpers/css_helper.php";
+
     ?>
 
-    <title>Injeção de SQL em PHP</title>
+    <title> Post </title>
 </head>
 <body class="cinzaClaroBg" id="topico">
 
-<?php include_once "components/cp_nav.php";?>
+<?php
+
+include_once "components/cp_nav.php";
+
+require_once "connections/connections.php";
+
+$link = new_db_connection();
+
+$stmt = mysqli_stmt_init($link);
+
+$query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.data_submissao, utilizador.username, utilizador.id_utilizador FROM ticket INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador WHERE id_ticket = ?";
+
+if (isset($_GET["id"])){
+
+$id_ticket = $_GET["id"];
+
+if (mysqli_stmt_prepare($stmt,$query)){
+    mysqli_stmt_bind_param($stmt, 'i' , $id_ticket);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result( $stmt, $titulo,$corpo, $data_submissao, $autor, $idauthor);
+} else {
+    echo "ERROR: ". mysqli_error($link);
+}
+while (mysqli_stmt_fetch($stmt)){
+
+?>
 
 <main class="container textoEscuro texto fundoClaro p-4 p-xl-5">
     <section class="row justify-content-center mt-4">
@@ -21,8 +49,8 @@
                 </div>
                 <!-- falta upvote/downvote -->
                 <div class="col-10 col-sm-7 col-lg-8 mt-3 pt-3 pt-sm-0">
-                    <h3 class="titulo font-weight-bold mb-2">Injeção de SQL em PHP</h3>
-                    <p class="small font-italic  ml-2 mb-0">Submetido por <a href="#" class="text-secondary cursor">Ricardo Manuel</a><br>a 14-03-2021 às 16h32</p>
+                    <h3 class="titulo font-weight-bold mb-2"><?= $titulo ?></h3>
+                    <p class="small font-italic  ml-2 mb-0">Submetido por <a href="perfil.php?id=<?=$idauthor?>" class="text-secondary cursor"><?=$autor?></a><br><?= $data_submissao ?></p>
                 </div>
                 <div class="col-2 pt-4 pt-sm-3 text-right">
                     <i class="fas fa-angle-up fa-2x d-block cursor"></i>
@@ -32,13 +60,14 @@
         </article>
 
         <article class="col-11 col-md-9 my-4 mt-sm-5">
-            <p>Decidi praticar mais para Laboratório Multimédia 4 por iniciativa própria através de projetos extra e, por isso, desenvolvi uma página em PHP. Contudo, acredito que o meu código PHP não está protegido contra SQL injections, por exemplo:</p>
+            <p class="text-secondary"><?=$corpo?></p>
+            <!--<p>Decidi praticar mais para Laboratório Multimédia 4 por iniciativa própria através de projetos extra e, por isso, desenvolvi uma página em PHP. Contudo, acredito que o meu código PHP não está protegido contra SQL injections, por exemplo:</p>
             <code class="textoRosinha">
                 //----CONSULTA SQL----//<br>
                 $busca = mysql_query ('insert into Produtos (coluna) values(' . $valor . ')');
             </code>
             <p class="mt-3">Digamos que o utilizador usa DROP TABLE Produtos para o campo valor, ele vai inserir um novo registo cujo campo coluna será 1 e logo de seguida vai remover a tabela Produtos.</p>
-            <p>Como posso melhorar o meu código para prevenir esta situação?</p>
+            <p>Como posso melhorar o meu código para prevenir esta situação?</p>-->
         </article>
 
     </section>
@@ -218,13 +247,17 @@
         </article>
     </section>
 </main>
+    <?php
 
+}
+
+}
+?>
 <!-- Footer -->
 <?php include_once "components/cp_footer.php"?>
 
-
 <!-- jQuery first, then Popper.js,then Bootstrap JS -->
 <?php include_once "helpers/js_helper.php"; ?>
+
 </body>
 </html>
-

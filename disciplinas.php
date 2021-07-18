@@ -12,6 +12,32 @@
 
 
 <?php include_once "components/cp_nav.php"; ?>
+<?php
+require_once "connections/connections.php";
+$link= new_db_connection();
+$stmt=mysqli_stmt_init($link);
+
+if (isset($_GET["id"])) {
+    $id_cadeira = $_GET["id"];
+}
+
+
+
+$id_cadeira=1;
+
+$querry="SELECT cadeira.nome, ticket.titulo, ticket.corpo_mensagem, ticket.data_submissao, utilizador.nome, recursos.tipo_id_tipo, ticket.imagem, utilizador.id_utilizador FROM ticket INNER JOIN cadeira ON ticket.cadeira_id_cadeira=cadeira.id_cadeira INNER JOIN recursos ON recursos.ticket_id_ticket = ticket.id_ticket INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador";
+
+
+
+
+
+  if(mysqli_stmt_prepare($stmt,$querry)){
+      echo "estou aqui";
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt,$cadeira, $titulo, $mensagem, $data, $utilizador, $tiporec, $imagem, $id_user);
+  }
+
+?>
 
 <div class="container azul1b shadow borderElement p-5">
     <section class="row pt-3 ">
@@ -43,34 +69,56 @@
 
 </div>
 
-<div class="container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98">
-    <div class="pl-3 py-4">
-        <img class="iconzito float-left pr-4" src="imgs/iconn.png">
-        <div class="row">
-            <article class="col-9">
-                <h3 class="titulo"><a href="topico.html">Injeção de SQL em PHP</a></h3>
-                <h5 class="titulo font-italic text-black-50">Ricardo Manuel</h5>
+<!------------------>
+
+<?php
+
+while(mysqli_stmt_fetch($stmt)) {
+
+
+if($tiporec=="1"){
+    $tipofic="png";
+}
+
+
+echo "<div class=\"container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98\">
+    <div class=\"pl-3 py-4\">
+        <img class=\"iconzito float-left pr-4\" src=\"imgs/iconn.png\">
+        <div class=\"row\">
+            <article class=\"col-9\">
+                <h3 class=\"titulo\"><a href=\"topico.html\">" . $titulo . "</a></h3>
+                <a href=\"http://localhost/github/perfil.php?id=" . $id_user ." \"><h5 class=\"titulo font-italic text-black-50\">" . $utilizador . "</h5></a>
             </article>
-            <article class="col-3">
-                <div class="float-right">
-                    <i class="fas fa-angle-up fa-2x d-block"></i>
-                    <i class="fas fa-angle-down fa-2x d-block"></i>
+            <article class=\"col-3\">
+                <div class=\"float-right\">
+                    <i class=\"fas fa-angle-up fa-2x d-block\"></i>
+                    <i class=\"fas fa-angle-down fa-2x d-block\"></i>
                 </div>
             </article>
         </div>
 
         <hr>
-        <p class="texto pt-3 px-4 mb-0"> Decidi praticar mais para Laboratório Multimédia 4 por iniciativa própria através de projetos extra e, por isso, desenvolvi uma página em PHP. Contudo, acredito que o meu código PHP...</p>
-        <div class="text-center">
-            <img class="w-75 h-auto py-5" src="imgs/videochamada_ilu.png">
-        </div>
-        <div class="text-secondary font-italic">
+        <p class=\"texto pt-3 px-4 mb-0\">" . $mensagem . "</p>
+        
+       
+        <div class=\"text-center\">
+        ";
+    if(isset($imagem)){
+        echo "<img class=\"w-75 h-auto py-5\" src=\"imgs/".$imagem.".".$tipofic."\">";
+    }
+    else{ echo "<div class='py-4'></div>";}
+
+        echo "</div>
+        <div class=\"text-secondary font-italic\">
             <span>73 Comentários</span>
-            <i class="fas fa-comment"></i>
-            <div class="float-right pr-4">Postado há 3 horas</div>
+            <i class=\"fas fa-comment\"></i>
+            <div class=\"float-right pr-4\">Postado " . $data . "</div>
         </div>
     </div>
-</div>
+</div>";
+}
+?>
+<!------------------>
 
 <div class="container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98">
     <div class="pl-3 py-4">
