@@ -12,7 +12,53 @@
 
 <?php include_once "components/cp_nav.php"; ?>
 
+<?php
 
+if (!isset($_SESSION["username"]) || (($_GET["id"] != $_SESSION["user_id"]))) {
+    header("Location: ../blockedAccess.php");
+}
+
+$userid = $_GET["id"];
+
+// We need the function!
+require_once("connections/connections.php");
+
+
+// Create a new DB connection
+$link = new_db_connection();
+
+/* create a prepared statement */
+$stmt = mysqli_stmt_init($link);
+
+
+
+$query = "SELECT cadeira.nome FROM cadeira";
+
+if (mysqli_stmt_prepare($stmt, $query)) {
+
+    //mysqli_stmt_bind_param($stmt, 'i', $userid);
+
+    /* execute the prepared statement */
+    mysqli_stmt_execute($stmt);
+
+    /* bind result variables */
+    mysqli_stmt_bind_result($stmt,$nome);
+
+}
+
+
+
+mysqli_stmt_store_result($stmt);
+while (mysqli_stmt_fetch($stmt)) {
+
+}
+
+
+
+
+mysqli_stmt_close($stmt);
+
+?>
 
 
 <main class="container-fluid texto cor5" id="mainchat">
