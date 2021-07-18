@@ -63,7 +63,7 @@ if (mysqli_stmt_prepare($stmt, $query)) {
 
                     <article id="profileJoin" class="col-12 vh-55 position-absolute bg-profile">
                         <article class="col-12 text-center  profilePic">
-                            <img src="imgs/<?php echo $foto ?>" class="borderElement img-fluid profilePicSize">
+                            <img src="imgs/<?php echo $foto  ?>" class="borderElement img-fluid profilePicSize">
                         </article>
 
                         <article id="profileName" class="pt-4 col-12 text-centerfont-weight-bold rem2">
