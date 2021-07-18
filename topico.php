@@ -23,7 +23,10 @@ $link = new_db_connection();
 
 $stmt = mysqli_stmt_init($link);
 
-$query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.data_submissao, utilizador.username, utilizador.id_utilizador FROM ticket INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador WHERE id_ticket = ?";
+$query = "SELECT ticket.titulo, ticket.corpo_mensagem,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), utilizador.username, utilizador.id_utilizador, topico.pontuacao FROM ticket 
+INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador
+INNER JOIN topico ON topico.id_topico = ticket.topico_id_topicos
+WHERE id_ticket = ?";
 
 if (isset($_GET["id"])){
 
@@ -32,7 +35,7 @@ $id_ticket = $_GET["id"];
 if (mysqli_stmt_prepare($stmt,$query)){
     mysqli_stmt_bind_param($stmt, 'i' , $id_ticket);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result( $stmt, $titulo,$corpo, $data_submissao, $autor, $idauthor);
+    mysqli_stmt_bind_result( $stmt, $titulo,$corpo, $publishing_hour,$publishing_minute, $autor, $idauthor, $score);
 } else {
     echo "ERROR: ". mysqli_error($link);
 }
@@ -50,10 +53,23 @@ while (mysqli_stmt_fetch($stmt)){
                 <!-- falta upvote/downvote -->
                 <div class="col-10 col-sm-7 col-lg-8 mt-3 pt-3 pt-sm-0">
                     <h3 class="titulo font-weight-bold mb-2"><?= $titulo ?></h3>
-                    <p class="small font-italic  ml-2 mb-0">Submetido por <a href="perfil.php?id=<?=$idauthor?>" class="text-secondary cursor"><?=$autor?></a><br><?= $data_submissao ?></p>
+                    <p class="small font-italic  ml-2 mb-0">Submetido por <a href="perfil.php?id=<?=$idauthor?>" class="text-secondary cursor"><?=$autor?></a><br><?php
+                        if ($publishing_hour == 0){
+                            echo "Postado há ".$publishing_minute." minutos"; }
+                        else if ($publishing_hour > 0 && $publishing_hour < 24){
+                            echo "Postado há ".$publishing_hour ." horas";}
+                        else if ($publishing_hour < 24*7 && $publishing_hour > 24){
+                            $publishing_day = intval(($publishing_hour / 24));
+                            echo "Postado há ".$publishing_day." dias";
+                        }else{
+                            $publishing_week = intval(($publishing_hour / (24*7)));
+                            echo  "Postado há ". $publishing_week." semanas";
+                        }
+                        ?></p>
                 </div>
                 <div class="col-2 pt-4 pt-sm-3 text-right">
                     <i class="fas fa-angle-up fa-2x d-block cursor"></i>
+                    <?= $score ?>
                     <i class="fas fa-angle-down fa-2x d-block cursor"></i>
                 </div>
             </section>
@@ -61,13 +77,6 @@ while (mysqli_stmt_fetch($stmt)){
 
         <article class="col-11 col-md-9 my-4 mt-sm-5">
             <p class="text-secondary"><?=$corpo?></p>
-            <!--<p>Decidi praticar mais para Laboratório Multimédia 4 por iniciativa própria através de projetos extra e, por isso, desenvolvi uma página em PHP. Contudo, acredito que o meu código PHP não está protegido contra SQL injections, por exemplo:</p>
-            <code class="textoRosinha">
-                //----CONSULTA SQL----//<br>
-                $busca = mysql_query ('insert into Produtos (coluna) values(' . $valor . ')');
-            </code>
-            <p class="mt-3">Digamos que o utilizador usa DROP TABLE Produtos para o campo valor, ele vai inserir um novo registo cujo campo coluna será 1 e logo de seguida vai remover a tabela Produtos.</p>
-            <p>Como posso melhorar o meu código para prevenir esta situação?</p>-->
         </article>
 
     </section>

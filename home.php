@@ -23,28 +23,32 @@ $stmt2 = mysqli_stmt_init($local_link);
 if(isset($_GET['order'])){
     switch ($_GET['order']){
         case "recente":
-            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
+INNER JOIN topico ON topico.id_topico = ticket.topico_id_topicos
 ORDER BY ticket.data_submissao DESC";
         break;
         case "popular":
-            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
+INNER JOIN topico ON topico.id_topico = ticket.topico_id_topicos
 ORDER BY ticket.data_submissao ASC";
         break;
         case "top":
-            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username 
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
 FROM ticket 
-INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
-ORDER BY ticket.data_submissao ASC";
+INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador 
+INNER JOIN topico ON topico.id_topico = ticket.topico_id_topicos
+ORDER BY topico.pontuacao DESC";
         break;
     }
 }else{
-    $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username
+    $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
+INNER JOIN topico ON topico.id_topico = ticket.topico_id_topicos
 ORDER BY ticket.data_submissao DESC";
 }
 
@@ -86,7 +90,7 @@ WHERE id_topico = ?;";
     <?php
     if (mysqli_stmt_prepare($stmt,$query)){
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $titulo, $texto, $id, $autor);
+        mysqli_stmt_bind_result($stmt, $titulo, $texto, $id, $autor, $publishing_hour, $publishing_minute, $score);
     }
     mysqli_stmt_store_result($stmt);
     while (mysqli_stmt_fetch($stmt)){
@@ -102,6 +106,7 @@ WHERE id_topico = ?;";
 <article class='col-3'>
     <div class='float-right'>
         <i class='fas fa-angle-up fa-2x d-block'></i>
+        <?= $score ?>
         <i class='fas fa-angle-down fa-2x d-block'></i>
     </div>
 </article>
@@ -120,14 +125,26 @@ WHERE id_topico = ?;";
           mysqli_stmt_bind_result( $stmt2, $count);
           while (mysqli_stmt_fetch($stmt2)) {
     ?>
-    <span > <?= $count ?> Comentários</span >
+    <span > <?= $count; } ?> Comentários</span >
     <i class='fas fa-comment' ></i >
-    <div class='float-right pr-4' > Postado há 2 horas </div >
+    <div class='float-right pr-4' > Postado há
+        <?php
+        if ($publishing_hour == 0){
+        echo $publishing_minute." minutos"; }
+        else if ($publishing_hour > 0 && $publishing_hour < 24){
+            echo $publishing_hour ." horas";}
+        else if ($publishing_hour < 24*7 && $publishing_hour > 24){
+            $publishing_day = intval(($publishing_hour / 24));
+            echo $publishing_day." dias";
+        }else{
+            $publishing_week = intval(($publishing_hour / (24*7)));
+            echo    $publishing_week." semanas";
+        }
+        ?>  </div >
 </div >
 </div >
 </div >
         <?php
-    }
     }
     }
     ?>
