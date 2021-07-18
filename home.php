@@ -23,33 +23,33 @@ $stmt2 = mysqli_stmt_init($local_link);
 if(isset($_GET['order'])){
     switch ($_GET['order']){
         case "recente":
-            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
-INNER JOIN topico ON topico.id_topico = ticket.topico_id_topicos
-ORDER BY ticket.data_submissao DESC";
+INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
+ORDER BY topico.data_publicacao DESC";
         break;
         case "popular":
-            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
-INNER JOIN topico ON topico.id_topico = ticket.topico_id_topicos
+INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
 ORDER BY ticket.data_submissao ASC";
         break;
         case "top":
-            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador 
-INNER JOIN topico ON topico.id_topico = ticket.topico_id_topicos
+INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
 ORDER BY topico.pontuacao DESC";
         break;
     }
 }else{
-    $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, utilizador.username,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
+    $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
-INNER JOIN topico ON topico.id_topico = ticket.topico_id_topicos
-ORDER BY ticket.data_submissao DESC";
+INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
+ORDER BY topico.data_publicacao DESC";
 }
 
 $query2 = "SELECT COUNT(comentario.texto)
@@ -90,7 +90,7 @@ WHERE id_topico = ?;";
     <?php
     if (mysqli_stmt_prepare($stmt,$query)){
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $titulo, $texto, $id, $autor, $publishing_hour, $publishing_minute, $score);
+        mysqli_stmt_bind_result($stmt, $titulo, $texto, $id, $idtopico, $autor, $publishing_hour, $publishing_minute, $score);
     }
     mysqli_stmt_store_result($stmt);
     while (mysqli_stmt_fetch($stmt)){
@@ -120,7 +120,7 @@ WHERE id_topico = ?;";
 <div class='text-secondary font-italic'>
 <?php
     if (mysqli_stmt_prepare($stmt2,$query2)){
-          mysqli_stmt_bind_param($stmt2, 'i' , $id);
+          mysqli_stmt_bind_param($stmt2, 'i' , $idtopico);
           mysqli_stmt_execute($stmt2);
           mysqli_stmt_bind_result( $stmt2, $count);
           while (mysqli_stmt_fetch($stmt2)) {

@@ -25,7 +25,7 @@ $stmt = mysqli_stmt_init($link);
 
 $query = "SELECT ticket.titulo, ticket.corpo_mensagem,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), utilizador.username, utilizador.id_utilizador, topico.pontuacao FROM ticket 
 INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador
-INNER JOIN topico ON topico.id_topico = ticket.topico_id_topicos
+INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
 WHERE id_ticket = ?";
 
 if (isset($_GET["id"])){
@@ -67,10 +67,13 @@ while (mysqli_stmt_fetch($stmt)){
                         }
                         ?></p>
                 </div>
-                <div class="col-2 pt-4 pt-sm-3 text-right">
+                <div class="col-1 pt-4 pt-sm-3 text-right">
                     <i class="fas fa-angle-up fa-2x d-block cursor"></i>
                     <?= $score ?>
                     <i class="fas fa-angle-down fa-2x d-block cursor"></i>
+                </div>
+                <div class="col-1 pt-4 pt-sm-3 text-right">
+                    <a href="#" class="btn"><i class="far fa-star"></i></a>
                 </div>
             </section>
         </article>
