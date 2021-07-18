@@ -19,9 +19,6 @@
 if (!isset($_SESSION["username"]) || (($_GET["id"] != $_SESSION["user_id"]) && $_SESSION["role"] == 2)) {
     header("Location: ../blockedAccess.php");
 }
-else if ($_SESSION["role"] == 1 ) {
-
-}
 
 $userid = $_GET["id"];
 
@@ -35,7 +32,9 @@ $link = new_db_connection();
 /* create a prepared statement */
 $stmt = mysqli_stmt_init($link);
 
-$query = "SELECT nome FROM utilizador WHERE utilizador.id_utilizador = ?";
+
+// SET lc_time_names = 'pt_PT'; arranjar maneira de por isto antes para ficar em pt
+$query = " SELECT utilizador.nome, perfil.tipo_perfil, TIMESTAMPDIFF(YEAR, utilizador.data_nascimento ,CURDATE()), DAY(utilizador.data_registo), MONTHNAME (utilizador.data_registo), YEAR (utilizador.data_registo), utilizador.foto_perfil FROM utilizador INNER JOIN perfil ON perfil_idperfil = id_perfil WHERE utilizador.id_utilizador = ?";
 
 if (mysqli_stmt_prepare($stmt, $query)) {
 
@@ -45,12 +44,13 @@ if (mysqli_stmt_prepare($stmt, $query)) {
     mysqli_stmt_execute($stmt);
 
     /* bind result variables */
-    mysqli_stmt_bind_result($stmt,$nome);
+    mysqli_stmt_bind_result($stmt,$nome, $profile_name, $idade, $registo_dia, $registo_mes, $registo_ano, $foto);
 
 }
 
     $contador=0;
 
+    mysqli_stmt_store_result($stmt);
     while (mysqli_stmt_fetch($stmt)) {
 
             ?>
@@ -63,7 +63,7 @@ if (mysqli_stmt_prepare($stmt, $query)) {
 
                     <article id="profileJoin" class="col-12 vh-55 position-absolute bg-profile">
                         <article class="col-12 text-center  profilePic">
-                            <img src="imgs/face1.jpg" class="borderElement img-fluid profilePicSize">
+                            <img src="imgs/<?php echo $foto ?>" class="borderElement img-fluid profilePicSize">
                         </article>
 
                         <article id="profileName" class="pt-4 col-12 text-centerfont-weight-bold rem2">
@@ -83,16 +83,16 @@ if (mysqli_stmt_prepare($stmt, $query)) {
                             <article class="col-12 col-sm-12 col-md-6 text-center position-relative ">
                                 <div class=" ">
                                     <div class="mb-1 font-weight-bold rem1-3">Estatuto</div>
-                                    <div><?php ?></div>
+                                    <div><?= $profile_name ?></div>
                                 </div>
                             </article>
 
                             <article class="col-12 col-sm-12 col-md-6 text-center d-none d-sm-none d-md-block">
                                 <div class="font-weight-bold rem1-3">Membro desde:</div>
                                 <div class="position-relative mt-1">
-                                    <i class="fas fa-calendar rem4"><span class="position-absolute rem2 data-profile">31</span></i>
+                                    <i class="fas fa-calendar rem4"><span class="position-absolute rem2 data-profile"><?= $registo_dia ?></span></i>
                                 </div>
-                                <div class="mt-1">abril 2020</div>
+                                <div class="mt-1"><?php echo $registo_mes . " de " . $registo_ano?></div>
                             </article>
 
                         </section>
@@ -101,7 +101,7 @@ if (mysqli_stmt_prepare($stmt, $query)) {
                     <article class="col-6 col-sm-6 col-md-4 text-center position-relative">
                         <div class=" py-2">
                             <div class="mb-1 font-weight-bold rem1-3">Idade</div>
-                            <div>21 anos</div>
+                            <div><?= $idade ?> anos</div>
                         </div>
                     </article>
 
@@ -157,39 +157,56 @@ if (mysqli_stmt_prepare($stmt, $query)) {
                                 <article class="col-12 mb-3 font-weight-bold rem1-3 text-left text-md-center">
                                     Cadeiras Frequentadas
                                 </article>
+                                <?php
+                                /* create a prepared statement */
+                                $stmt2 = mysqli_stmt_init($link);
 
-                                <article class="col-4 col-sm-4 col-md-12 col-xl-4">
-                                    <section class="row  mx-2 py-2">
-                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 text-center text-md-right text-xl-center">
-                                            <img src="imgs/lab4.png" class="img-fluid faceIcon">
-                                        </article>
-                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 d-flex align-items-center justify-content-center justify-content-md-start justify-content-xl-center font-weight-bold">
-                                            <div>LAB 4</div>
-                                        </article>
-                                    </section>
-                                </article>
 
-                                <article class="col-4 col-sm-4 col-md-12 col-xl-4">
-                                    <section class="row  mx-2 py-2">
-                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 text-center text-md-right text-xl-center">
-                                            <img src="imgs/idf.png" class="img-fluid faceIcon">
-                                        </article>
-                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 d-flex align-items-center justify-content-center justify-content-md-start justify-content-xl-center font-weight-bold">
-                                            <div>IDF</div>
-                                        </article>
-                                    </section>
-                                </article>
+                                // SET lc_time_names = 'pt_PT'; arranjar maneira de por isto antes para ficar em pt
+                                $query2 = "SELECT cadeira.nome, cadeira.imagem, cadeira.id_cadeira FROM cadeira 
+                                            INNER JOIN cadeira_has_utilizador ON id_cadeira = cadeira_id_cadeira
+                                            WHERE utilizador_id_utilizador = ?";
 
-                                <article class="col-4 col-sm-4 col-md-12 col-xl-4">
-                                    <section class="row  mx-2 py-2">
-                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 text-center text-md-right text-xl-center">
-                                            <img src="imgs/sistemas.png" class="img-fluid faceIcon">
+                                if (mysqli_stmt_prepare($stmt2, $query2)) {
+
+                                mysqli_stmt_bind_param($stmt2, 'i', $userid);
+
+                                /* execute the prepared statement */
+                                mysqli_stmt_execute($stmt2);
+
+                                /* bind result variables */
+                                mysqli_stmt_bind_result($stmt2,$nomecadeira, $imagemcadeira, $cadeiraid);
+
+                                }
+
+
+
+                                while (mysqli_stmt_fetch($stmt2)) {
+
+                                ?>
+
+
+                                        <article class="col-4 col-sm-4 col-md-12 col-xl-4">
+                                            <a href="disciplinas.php?id=<?php echo $cadeiraid ?>" class="text-dark">
+                                                <section class="row  mx-2 py-2">
+                                                    <article class="col-12 col-sm-12 col-md-6 col-xl-12 text-center text-md-right text-xl-center">
+                                                        <img src="imgs/<?php echo $imagemcadeira?>" class="img-fluid faceIcon">
+                                                    </article>
+                                                    <article class="col-12 col-sm-12 col-md-6 col-xl-12 d-flex align-items-center justify-content-center justify-content-md-start justify-content-xl-center font-weight-bold">
+                                                        <div><?php echo $nomecadeira?></div>
+                                                    </article>
+                                                </section>
+                                            </a>
                                         </article>
-                                        <article class="col-12 col-sm-12 col-md-6 col-xl-12 d-flex align-items-center justify-content-center justify-content-md-start justify-content-xl-center font-weight-bold">
-                                            <div>SCM 2</div>
-                                        </article>
-                                    </section>
-                                </article>
+
+
+                                <?php
+
+                                }
+                                mysqli_stmt_close($stmt2);
+                                ?>
+
+
 
                             </section>
                         </div>
@@ -204,17 +221,59 @@ if (mysqli_stmt_prepare($stmt, $query)) {
                                 </article>
 
                                 <article class="col-12">
-                                    <section class="row mx-2 py-2 ">
-                                        <article class="col-2 col-sm-2 col-md-3 col-lg-4 col-xl-2 p-0 d-flex align-items-center justify-content-end">
-                                            <div>
-                                                <img src="imgs/lab4.png" class="img-fluid textIcon">
-                                            </div>
-                                        </article>
+                                    <?php
+                                    /* create a prepared statement */
+                                    $stmt3 = mysqli_stmt_init($link);
 
-                                        <article class="col-10 col-sm-10 col-md-9 col-lg-8 col-xl-10 d-flex align-items-center  ">
-                                            <div>Funções próprias em JavaScript</div>
-                                        </article>
-                                    </section>
+
+                                    // SET lc_time_names = 'pt_PT'; arranjar maneira de por isto antes para ficar em pt
+                                    $query3 = "SELECT utilizador_has_topico.topico_id_topico, ticket.titulo, cadeira.imagem FROM utilizador_has_topico
+                                            INNER JOIN topico ON topico.id_topico = utilizador_has_topico.topico_id_topico
+                                            INNER JOIN ticket ON topico.id_topico = ticket.topico_id_topico
+                                            INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
+                                            WHERE utilizador_has_topico.utilizador_id_utilizador = ?";
+
+                                    if (mysqli_stmt_prepare($stmt3, $query3)) {
+
+                                        mysqli_stmt_bind_param($stmt3, 'i', $userid);
+
+                                        /* execute the prepared statement */
+                                        mysqli_stmt_execute($stmt3);
+
+                                        /* bind result variables */
+                                        mysqli_stmt_bind_result($stmt3,$topicoid, $topicotitulo, $imagem_cadeira);
+
+                                    }
+
+
+
+                                    while (mysqli_stmt_fetch($stmt3)) {
+
+                                        ?>
+
+                                        <div class="borderSectionsElement m-auto"> </div>
+
+                                        <a href="topico.php?id=<?php echo $topicoid ?>" class="text-dark">
+                                            <section class="row mx-2 py-2 ">
+                                                <article class="col-2 col-sm-2 col-md-3 col-lg-4 col-xl-2 p-0 d-flex align-items-center justify-content-end">
+                                                    <div>
+                                                        <img src="imgs/<?php echo $imagem_cadeira ?>" class="img-fluid textIcon">
+                                                    </div>
+                                                </article>
+
+                                                <article class="col-10 col-sm-10 col-md-9 col-lg-8 col-xl-10 d-flex align-items-center  ">
+                                                    <div><?php echo $topicotitulo ?></div>
+                                                </article>
+                                            </section>
+                                        </a>
+
+
+                                        <?php
+
+                                    }
+                                    mysqli_stmt_close($stmt3);
+                                    ?>
+
                                     <!-- <div class="borderSectionsElement m-auto"></div> -->
                                 </article>
                             </section>
