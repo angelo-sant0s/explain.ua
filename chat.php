@@ -130,7 +130,11 @@ mysqli_stmt_close($stmt);
 
                 }
 
+                $num_ids = "";
+
                 while (mysqli_stmt_fetch($stmt)) {
+                    if ($num_ids=="") $num_ids = $ticket_id ;
+                    else $num_ids = $num_ids . " " . $ticket_id ;
                     ?>
 
 
@@ -194,6 +198,7 @@ mysqli_stmt_close($stmt);
 
 
                 mysqli_stmt_close($stmt);
+                echo "<h1 id='infochatids' class='d-none'>$num_ids</h1>";
 
                 ?>
                 </article>
@@ -230,14 +235,14 @@ mysqli_stmt_close($stmt);
                 mysqli_stmt_bind_result($stmt2,$ticket_id, $ticket_titulo, $ticket_mensagem, $submissão_ano, $submissão_mes, $submissão_dia, $submissão_hora, $submissão_minuto);
 
             }
-            $contadorprovisório=0;
+
             mysqli_stmt_store_result($stmt2);
             while (mysqli_stmt_fetch($stmt2)) {
-                $contadorprovisório++;
+
                 ?>
 
                     <!-- n tem aqui o echo-->
-                <section id="chatRow<?php $contadorprovisório ?>" class="row chatRow justify-content-center p-3 bg-chat-format">
+                <section id="chatRow<?php echo $ticket_id?>" class="row chatRow justify-content-center p-3 bg-chat-format">
 
                     <!-- resumo topioc -->
                     <article class="col-7">
@@ -338,20 +343,27 @@ mysqli_stmt_close($stmt);
 
 
             <section id="inputZone" class="row py-2 px-3 bg-inputzone">
-                <article class="col-9">
-                    <input id="chatInput" class="borderElement p-1 pl-3 borderPic Valign">
-                </article>
-                <article class="col-1">
-                    <i class="fas fa-arrow-alt-circle-right iconsSize Valign"></i>
-                </article>
+
+
+                <form id="formMessage" class="col-10 p-0 d-flex" role="form" action="scripts/sc_mensagem.php?id=1&ticketid=3" method="post">
+                    <article class="col-11 p-0">
+                        <input id="chatInput" class="borderElement p-1 pl-3 borderPic Valign" name="mensagem">
+                    </article>
+                    <article class="col-1">
+                        <button class="fas fa-arrow-alt-circle-right iconsSize Valign p-0 m-0 border-0
+ bg-transparent" type="submit"></button>
+                    </article>
+
+                </form>
+
+
+
                 <article class="col-1">
                     <i class="fas fa-images iconsSize Valign"></i>
                 </article>
                 <article class="col-1">
                     <i class="fas fa-video iconsSize Valign"></i>
                 </article>
-
-
             </section>
 
         </article>

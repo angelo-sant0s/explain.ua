@@ -63,6 +63,8 @@ if (document.body.contains(document.getElementById("videoChamada"))) {
 
 //---------------------------- chat
 
+
+
 function adjust_stuff () {
 
 
@@ -70,12 +72,12 @@ function adjust_stuff () {
     document.getElementById("mainchat").style.height = window.innerHeight - parseInt(document.getElementById("inputZone").offsetHeight) - parseInt(document.getElementById("navchat").offsetHeight)  + "px";
 
     if (window.innerWidth>=992) {
-        document.getElementById("chatRow").style.height = window.innerHeight -parseInt(document.getElementById("chattitle").offsetHeight) -parseInt(document.getElementById("inputZone").offsetHeight) -parseInt(document.getElementById("navchat").offsetHeight)   + "px"
+        document.getElementById("chatRow"+currentchatfocus).style.height = window.innerHeight -parseInt(document.getElementById("chattitle").offsetHeight) -parseInt(document.getElementById("inputZone").offsetHeight) -parseInt(document.getElementById("navchat").offsetHeight)   + "px"
         document.getElementById("conversaSection").style.display = "block"
         document.getElementById("chatSection").style.display = "block"
     }
     else {
-        document.getElementById("chatRow").style.height = window.innerHeight -parseInt(document.getElementById("chattitle").offsetHeight) -parseInt(document.getElementById("inputZone").offsetHeight)  -parseInt(document.getElementById("navchat").offsetHeight)   + "px"
+        document.getElementById("chatRow"+currentchatfocus).style.height = window.innerHeight -parseInt(document.getElementById("chattitle").offsetHeight) -parseInt(document.getElementById("inputZone").offsetHeight)  -parseInt(document.getElementById("navchat").offsetHeight)   + "px"
         if (isonchat) {
             document.getElementById("conversaSection").style.display = "none";
             document.getElementById("chatSection").style.display = "block"
@@ -102,20 +104,56 @@ function backBtn () {
         document.getElementById("conversaSection").style.display = "block";
         document.getElementById("chatSection").style.display = "none";
         isonchat = false;
+        // clear inputfield
     }
 }
 
+function d_none_chats () {
+    for (let i=0; i<ticketids.length; i++) {
+        let id = ticketids[i]
+        document.getElementById("chatRow"+ id).style.display = "none";
+    }
+}
+
+function d_flex_chat (id) {
+    document.getElementById("chatRow"+id).style.display = "flex"
+    currentchatfocus = id
+}
+
 if (document.body.contains(document.getElementById("chattitle"))) {
-    setInterval(adjust_stuff, 1000)
+    setInterval(adjust_stuff, 100)
+
+
+    document.getElementById("backtbn").onclick = function () {
+        backBtn()
+    }
+
+
+    ticketids = document.getElementById("infochatids").innerHTML
+    ticketids = ticketids.split( " ");
+    currentchatfocus = ticketids[0]
+    console.log(ticketids[0])
+
+    d_none_chats()
+    d_flex_chat(ticketids[0])
+
+    for (let i=0; i<ticketids.length; i++) {
+        let id = ticketids[i]
+        document.getElementById("smallchat"+id).onclick = function () {
+            d_none_chats()
+            d_flex_chat(id)
+            chatBtn()
+        }
+    }
+
+
+
 }
 
-document.getElementById("backtbn").onclick = function () {
-    backBtn()
-}
 
-document.getElementById("joao").onclick = function () {
-    chatBtn()
-}
+
+
+
 
 
 
