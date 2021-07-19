@@ -343,20 +343,27 @@ mysqli_stmt_close($stmt);
 
 
             <section id="inputZone" class="row py-2 px-3 bg-inputzone">
-                <article class="col-9">
-                    <input id="chatInput" class="borderElement p-1 pl-3 borderPic Valign">
-                </article>
-                <article class="col-1">
-                    <i class="fas fa-arrow-alt-circle-right iconsSize Valign"></i>
-                </article>
+
+
+                <form id="formMessage" class="col-10 p-0 d-flex" role="form" action="scripts/sc_mensagem.php?id=1&ticketid=3" method="post">
+                    <article class="col-11 p-0">
+                        <input id="chatInput" class="borderElement p-1 pl-3 borderPic Valign" name="mensagem">
+                    </article>
+                    <article class="col-1">
+                        <button class="fas fa-arrow-alt-circle-right iconsSize Valign p-0 m-0 border-0
+ bg-transparent" type="submit"></button>
+                    </article>
+
+                </form>
+
+
+
                 <article class="col-1">
                     <i class="fas fa-images iconsSize Valign"></i>
                 </article>
                 <article class="col-1">
                     <i class="fas fa-video iconsSize Valign"></i>
                 </article>
-
-
             </section>
 
         </article>
