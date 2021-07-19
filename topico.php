@@ -262,8 +262,6 @@ ORDER BY comentario.data_envio DESC;";
                     </section>
                 </div>
             <?php } ?>
-
-
                 <a href="#" class="text-secondary small cursor mt-4 ml-3 mb-0">carregar mais comentários...</a>
             </div>
         </article>
@@ -291,12 +289,12 @@ ORDER BY comentario.data_envio DESC;";
                         <img class='float-left mb-3 ml-2' src='imgs/$lafoto' height='40px' width='40px'>
                         <p class='float-left font-weight-bold m-0 pt-2 pl-2 mb-3'> $lenome </p>
                     </div>
-                    <textarea class='form-control borderElement font-italic p-3' id='FormControlTextarea1' rows='2' placeholder='Escreve um comentário...'></textarea>
-
+                <form  class='py-2 px-5 text-center' role='form' action='scripts/sc_leave_comment.php?id=$id_ticket' method='post'>
+                    <textarea class='form-control borderElement font-italic p-3' id='FormControlTextarea1' rows='2' placeholder='Escreve um comentário...' name='comment'></textarea>
                     <div class='d-flex justify-content-between small mt-3'>
-                        <a href='pedido_tickets.php'><button class='btn borderElement textoClaro comentAnexo titulo ml-1 azul1'>Deixar Comentario</button></a>
-                        <span><button class='btn rosinhab comentCirculo ml-1' id='enviarTicket'><i class='fas fa-chevron-right fa-lg textoClaro'></i></button></span>
+                        <button class='btn borderElement textoClaro comentAnexo titulo ml-1 azul1' type='submit'>Deixar Comentario</button>
                     </div>
+                </form>    
                 </div>
         </article>
     </section>";
