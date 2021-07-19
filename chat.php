@@ -49,6 +49,7 @@ if (!isset($_SESSION["username"]) || (($_GET["id"] != $_SESSION["user_id"]))) {
 }
 
 $userid = $_GET["id"];
+$perfilid = $_SESSION["role"];
 $botid = 3;
 
 
@@ -65,17 +66,17 @@ $stmt = mysqli_stmt_init($link);
 
 
 
-$query = "SELECT cadeira.nome FROM cadeira";
+$query = "SELECT utilizador.nome, utilizador.foto_perfil FROM utilizador WHERE utilizador.id_utilizador = ?";
 
 if (mysqli_stmt_prepare($stmt, $query)) {
 
-    //mysqli_stmt_bind_param($stmt, 'i', $userid);
+    mysqli_stmt_bind_param($stmt, 'i', $userid);
 
     /* execute the prepared statement */
     mysqli_stmt_execute($stmt);
 
     /* bind result variables */
-    mysqli_stmt_bind_result($stmt,$nome);
+    mysqli_stmt_bind_result($stmt,$postersname, $posterfoto);
 
 }
 
@@ -129,22 +130,25 @@ mysqli_stmt_close($stmt);
 
                 }
 
-
-
-
                 while (mysqli_stmt_fetch($stmt)) {
                     ?>
 
 
-                        <section id="joao" class="row p-2 custom-borderb cursorPointer">
+                        <section id="smallchat<?php echo $ticket_id?>" class="row p-2 custom-borderb cursorPointer">
                             <article class="col-2 p-0 please ">
-                                <img src="imgs/face1.jpg" class="img-fluid faceIcon">
+                                <img src="imgs/<?php
+                                if ($perfilid=2) {echo $mod_foto;}
+                                else echo $posterfoto
+                                ?>" class="img-fluid faceIcon">
                             </article>
 
                             <article class="col-10 p-0 pl-1 justify-content-between">
                                 <section class="row m-0 h-100">
                                     <article class="col-8 p-0">
-                                        <div class=""><?php echo $mod_nome?></div>
+                                        <div class=""><?php
+                                            if ($perfilid=2) {echo $mod_nome;}
+                                            else echo $postersname
+                                            ?></div>
                                     </article>
 
                                     <article class="col-4 p-0">

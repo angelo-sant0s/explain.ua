@@ -107,17 +107,17 @@ function backBtn () {
 
 if (document.body.contains(document.getElementById("chattitle"))) {
     setInterval(adjust_stuff, 1000)
-
-
-    document.getElementById("backtbn").onclick = function () {
-        backBtn()
-    }
-
-    document.getElementById("joao").onclick = function () {
-        chatBtn()
-    }
-
 }
+
+document.getElementById("backtbn").onclick = function () {
+    backBtn()
+}
+
+document.getElementById("joao").onclick = function () {
+    chatBtn()
+}
+
+
 
 
 
