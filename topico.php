@@ -100,10 +100,14 @@ while (mysqli_stmt_fetch($stmt)){
                 mysqli_stmt_bind_result($statement,$fav);
 
                 }
+                $counter = 0;
+
+
 
                 mysqli_stmt_store_result($statement);
 
                     while (mysqli_stmt_fetch($statement)) {
+                        $counter = 1;
                         if ($fav == 1) {
                             echo " <div class='col-1 pt-4 pt-sm-3 text-right'>
                     <a href='scripts/sc_favorito.php?id=$id_ticket' class='btn'><i class='fas fa-star'></i></a>
@@ -113,6 +117,11 @@ while (mysqli_stmt_fetch($stmt)){
                     <a href='scripts/sc_favorito.php?id=$id_ticket' class='btn'><i class='far fa-star'></i></a>
                 </div>";
                         }
+                    }
+                    if($counter == 0){
+                        echo " <div class='col-1 pt-4 pt-sm-3 text-right'>
+                    <a href='scripts/sc_favorito.php?id=$id_ticket' class='btn'><i class='far fa-star'></i></a>
+                </div>";
                     }
                 mysqli_stmt_close($statement);
 
