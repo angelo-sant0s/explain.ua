@@ -20,12 +20,14 @@ if (!isset($_SESSION["username"]) || (($_GET["id"] != $_SESSION["user_id"]))) {
 
 $userid = $_GET["id"];
 
+
 // We need the function!
 require_once("connections/connections.php");
 
 
 // Create a new DB connection
 $link = new_db_connection();
+
 
 /* create a prepared statement */
 $stmt = mysqli_stmt_init($link);
@@ -69,34 +71,99 @@ mysqli_stmt_close($stmt);
                 <article class="col-12 text-center p-3 bg-inputzone" >Conversa</article>
             </section>
 
+
+
             <section id="Conversas" class="row overflow-auto borders4">
                 <article class="col-12">
-                    <section id="joao" class="row p-2 custom-borderb cursorPointer">
-                        <article class="col-2 p-0 please ">
-                            <img src="imgs/face1.jpg" class="img-fluid faceIcon">
-                        </article>
+                <?php
+                /* create a prepared statement */
+                $stmt = mysqli_stmt_init($link);
 
-                        <article class="col-10 p-0 pl-1 justify-content-between">
-                            <section class="row m-0 h-100">
-                                <article class="col-8 p-0">
-                                    <div class="">João</div>
-                                </article>
+                $query = "SELECT ticket.utilizador_id_utilizador1, utilizador.nome, utilizador.foto_perfil, ticket.titulo, ticket.id_ticket, ticket.data_ultima, cadeira.sigla, HOUR(TIMEDIFF(NOW(), ticket.data_ultima)), MINUTE(TIMEDIFF(NOW(), ticket.data_ultima)), HOUR(ticket.data_ultima), MINUTE(ticket.data_ultima)
+                            FROM ticket
+                            INNER JOIN utilizador ON ticket.utilizador_id_utilizador1 = utilizador.id_utilizador
+                            INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
+                            WHERE ticket.utilizador_id_utilizador = ?  
+                            ORDER BY `ticket`.`data_ultima` DESC";
 
-                                <article class="col-4 p-0">
-                                    <div class=" text-right">14:20</div>
-                                </article>
+                if (mysqli_stmt_prepare($stmt, $query)) {
 
-                                <article class="col-12 p-0">
-                                    <div class="">LAB4 - Funções globais</div>
-                                </article>
-                            </section>
-                        </article>
-                    </section>
+                    mysqli_stmt_bind_param($stmt, 'i', $userid);
+
+                    /* execute the prepared statement */
+                    mysqli_stmt_execute($stmt);
+
+                    /* bind result variables */
+                    mysqli_stmt_bind_result($stmt,$mod_id, $mod_nome, $mod_foto, $ticket_nome, $ticket_id, $ticket_ultima, $cadeira_sigla, $publishing_hour, $publishing_minute, $relogio_horas, $relogio_minutos);
+
+                }
 
 
 
 
+                while (mysqli_stmt_fetch($stmt)) {
+                    ?>
+
+
+                        <section id="joao" class="row p-2 custom-borderb cursorPointer">
+                            <article class="col-2 p-0 please ">
+                                <img src="imgs/face1.jpg" class="img-fluid faceIcon">
+                            </article>
+
+                            <article class="col-10 p-0 pl-1 justify-content-between">
+                                <section class="row m-0 h-100">
+                                    <article class="col-8 p-0">
+                                        <div class=""><?php echo $mod_nome?></div>
+                                    </article>
+
+                                    <article class="col-4 p-0">
+                                        <div class=" text-right">
+
+                                            <?php
+
+                                            if ($publishing_hour < 24){
+                                                // horas
+                                                echo $relogio_horas.":".$relogio_minutos;}
+                                            else if ($publishing_hour < 247 && $publishing_hour > 24){
+                                                // ha quantos dias
+                                                $publishing_day = intval(($publishing_hour / 24));
+                                                echo $publishing_day;
+                                                if ($publishing_day==1) {echo " dia";}
+                                                else echo " dias";
+                                            }else{
+                                                // data
+                                                $publishing_week = intval(($publishing_hour / (247)));
+                                                echo    $publishing_week;
+                                                if ($publishing_week==1) {echo " semana";}
+                                                else echo " semanas";
+                                            }
+
+                                            ?>
+
+                                        </div>
+                                    </article>
+
+                                    <article class="col-12 p-0">
+                                        <div class=""><?php echo $cadeira_sigla?> - <?php echo $ticket_nome?></div>
+                                    </article>
+                                </section>
+                            </article>
+                        </section>
+
+
+                    <?php
+
+                }
+
+
+
+
+                mysqli_stmt_close($stmt);
+
+                ?>
                 </article>
+
+
 
 
             </section>

@@ -163,7 +163,7 @@ if (mysqli_stmt_prepare($stmt, $query)) {
 
 
                                 // SET lc_time_names = 'pt_PT'; arranjar maneira de por isto antes para ficar em pt
-                                $query2 = "SELECT cadeira.nome, cadeira.imagem, cadeira.id_cadeira FROM cadeira 
+                                $query2 = "SELECT cadeira.sigla, cadeira.imagem, cadeira.id_cadeira FROM cadeira 
                                             INNER JOIN cadeira_has_utilizador ON id_cadeira = cadeira_id_cadeira
                                             WHERE utilizador_id_utilizador = ?";
 
