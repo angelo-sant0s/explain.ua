@@ -345,7 +345,7 @@ mysqli_stmt_close($stmt);
             <section id="inputZone" class="row py-2 px-3 bg-inputzone">
 
 
-                <form id="formMessage" class="col-10 p-0 d-flex" role="form" action="scripts/sc_mensagem.php?id=1&ticketid=3" method="post">
+                <form id="formMessage" class="col-10 p-0 d-flex" role="form" action="scripts/sc_mensagem.php?id=1&ticketid=2" method="post">
                     <article class="col-11 p-0">
                         <input id="chatInput" class="borderElement p-1 pl-3 borderPic Valign" name="mensagem">
                     </article>

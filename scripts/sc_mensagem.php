@@ -2,14 +2,13 @@
 require_once "../connections/connections.php";
 session_start();
 
-if (isset($_SESSION["user_id"]) && isset($_POST["message"]) && $_SESSION["user_id"] == $_GET["id"] ) {
-    $userid = $_SESSION["user_id"];
-    $message = $_POST["message"];
-    $ticketid = $_GET["ticketid"];
-}
 
-// We need the function!
-require_once("connections/connections.php");
+
+
+if (isset($_SESSION["user_id"]) && isset($_POST["mensagem"]) && $_SESSION["user_id"] == $_GET["id"] ) {
+    $userid = $_SESSION["user_id"];
+    $message = $_POST["mensagem"];
+    $ticketid = $_GET["ticketid"];
 
 
 // Create a new DB connection
@@ -20,29 +19,30 @@ $link = new_db_connection();
 $stmt = mysqli_stmt_init($link);
 
 
-
-$query = "INSERT INTO `mensagens` (`id_mensagens`, `texto`, `data_envio`, `ticket_id_ticket`, `utilizador_id_utilizador`) VALUES ('NULL', ?, NOW(), ?, ?)";
+    $query = "INSERT INTO mensagens (id_mensagens, texto, data_envio, ticket_id_ticket, utilizador_id_utilizador) VALUES (NULL, ?, NOW(),?,? )";
+    $query2 = "UPDATE ticket SET data_ultima = NOW() WHERE ticket.id_ticket = ?";
 
 if (mysqli_stmt_prepare($stmt, $query)) {
-
     mysqli_stmt_bind_param($stmt, 'sii', $message, $ticketid, $userid);
-
-    /* execute the prepared statement */
     mysqli_stmt_execute($stmt);
-
-    /* bind result variables */
-    mysqli_stmt_bind_result($stmt,$nome);
-
 }
 
-mysqli_stmt_store_result($stmt);
-while (mysqli_stmt_fetch($stmt)) {
+    if (mysqli_stmt_prepare($stmt, $query2)) {
+        mysqli_stmt_bind_param($stmt, 'i', $ticketid);
+        mysqli_stmt_execute($stmt);
+    }
+    header("Location: ../chat.php?id=$userid");
 
-}
+
+
 
 
 
 
 mysqli_stmt_close($stmt);
 
+}
+
 ?>
+
+
