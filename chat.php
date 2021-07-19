@@ -130,7 +130,11 @@ mysqli_stmt_close($stmt);
 
                 }
 
+                $num_ids = "";
+
                 while (mysqli_stmt_fetch($stmt)) {
+                    if ($num_ids=="") $num_ids = $ticket_id ;
+                    else $num_ids = $num_ids . " " . $ticket_id ;
                     ?>
 
 
@@ -194,6 +198,7 @@ mysqli_stmt_close($stmt);
 
 
                 mysqli_stmt_close($stmt);
+                echo "<h1 id='infochatids' class='d-none'>$num_ids</h1>";
 
                 ?>
                 </article>
@@ -230,14 +235,14 @@ mysqli_stmt_close($stmt);
                 mysqli_stmt_bind_result($stmt2,$ticket_id, $ticket_titulo, $ticket_mensagem, $submissão_ano, $submissão_mes, $submissão_dia, $submissão_hora, $submissão_minuto);
 
             }
-            $contadorprovisório=0;
+
             mysqli_stmt_store_result($stmt2);
             while (mysqli_stmt_fetch($stmt2)) {
-                $contadorprovisório++;
+
                 ?>
 
                     <!-- n tem aqui o echo-->
-                <section id="chatRow<?php $contadorprovisório ?>" class="row chatRow justify-content-center p-3 bg-chat-format">
+                <section id="chatRow<?php echo $ticket_id?>" class="row chatRow justify-content-center p-3 bg-chat-format">
 
                     <!-- resumo topioc -->
                     <article class="col-7">
