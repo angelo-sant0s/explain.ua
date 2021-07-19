@@ -14,11 +14,42 @@
 
 <?php
 
+function msg_direita($mensagem, $foto){
+    echo "<section class='row mt-2 justify-content-end'>
+                                        <article class='col-8 p-1''>
+                                            <div class='p-2 bg-person2 borderElement'>".$mensagem."</div>
+                                        </article>
+                                        <article class='col-1 p-1 text-center''>
+                                            <img src='imgs/".$foto."' class='img-fluid faceIcon'>
+                                        </article>
+                                    </section>";
+}
+
+function msg_esquerda($mensagem, $foto){
+    echo "<section class='row mt-2'>
+                                        <article class='col-1 p-1 text-center'>
+                                            <img src='imgs/".$foto."' class='img-fluid faceIcon'>
+                                        </article>
+                                        <article class='col-8 p-1'>
+                                            <div class='p-2 bg-person1 borderElement'>$mensagem</div>
+                                        </article>
+                                   </section>";
+}
+
+/* Indicação de chamada*/
+
+                    /*<article class="col-12 my-3 text-center">
+                        <hr>
+                        <a href="videochamada.html" class="textoClaro"><span class="py-2 px-3 mt-2 bg-azul2 borderElement d-inline-block">Chamada iniciada</span></a>
+                    </article>
+                    */
+
 if (!isset($_SESSION["username"]) || (($_GET["id"] != $_SESSION["user_id"]))) {
     header("Location: ../blockedAccess.php");
 }
 
 $userid = $_GET["id"];
+$botid = 3;
 
 
 // We need the function!
@@ -176,63 +207,131 @@ mysqli_stmt_close($stmt);
                 <article class="col-10 text-center p-3" > Chat</article>
             </section>
 
-            <section id="chatRow" class="row chatRow justify-content-center p-3 bg-chat-format">
+            <?php
+            /* create a prepared statement */
+            $stmt2 = mysqli_stmt_init($link);
 
-                <!-- resumo topioc -->
-                <article class="col-7">
-                    <div class="resumoTop textoClaro bg-roxo borderElement font-italic text-center p-3 mx-5">
-                        As minhas dúvidas são as seguintes: em primeiro lugar, qual é a diferença entre scope de bloco e scope de função? E já agora, o conceito de scope de bloco sempre exisitu ou surgiu no EcmaScript6 com o aparecimento do let e do const?
-                    </div>
-                </article>
+            $query2 = "SELECT ticket.id_ticket, ticket.titulo, ticket.corpo_mensagem, YEAR(ticket.data_submissao), MONTHNAME(ticket.data_submissao), DAY(ticket.data_submissao), HOUR(ticket.data_submissao), MINUTE(ticket.data_submissao) FROM ticket  
+                        WHERE ticket.utilizador_id_utilizador = ?  
+                        ORDER BY `ticket`.`data_ultima` DESC";
 
-                <!-- divisao de 24h -->
-                <article class="col-7 text-center font-italic text-secondary">
-                    <hr>
-                    Ontem às 14:10
-                </article>
+            if (mysqli_stmt_prepare($stmt2, $query2)) {
 
-                <!-- corpo da mensagem -->
-                <article class="col-12">
+                mysqli_stmt_bind_param($stmt2, 'i', $userid);
+
+                /* execute the prepared statement */
+                mysqli_stmt_execute($stmt2);
+
+                /* bind result variables */
+                mysqli_stmt_bind_result($stmt2,$ticket_id, $ticket_titulo, $ticket_mensagem, $submissão_ano, $submissão_mes, $submissão_dia, $submissão_hora, $submissão_minuto);
+
+            }
+            $contadorprovisório=0;
+            mysqli_stmt_store_result($stmt2);
+            while (mysqli_stmt_fetch($stmt2)) {
+                $contadorprovisório++;
+                ?>
+
+                    <!-- n tem aqui o echo-->
+                <section id="chatRow<?php $contadorprovisório ?>" class="row chatRow justify-content-center p-3 bg-chat-format">
+
+                    <!-- resumo topioc -->
+                    <article class="col-7">
+                        <div class="resumoTop textoClaro bg-roxo borderElement font-italic text-center p-3 mx-5">
+                            <?php echo $ticket_mensagem?>
+                        </div>
+                    </article>
+
+                    <!-- divisao de 24h -->
+                    <article class="col-7 text-center font-italic text-secondary">
+                        <hr>
+                        <?php
+                        if ($submissão_hora == 0) $submissão_hora=00;
+                        if ($submissão_minuto == 0) $submissão_minuto=00;
+                        ?>
+                        <?php echo $submissão_dia ." de " . $submissão_mes . ", " . $submissão_ano ?>
+                        <br>
+                        <?php if ($submissão_hora == 0) echo "00";
+                        else echo $submissão_hora ;
+                        echo ":";
+                        if ($submissão_minuto == 0) echo "00";
+                        else echo $submissão_minuto ;
+                        ?>
+                    </article>
+
+                    <!-- corpo da mensagem -->
+                    <article class="col-12">
+
+                        <?php
+
+                        /* create a prepared statement */
+                        $stmt3 = mysqli_stmt_init($link);
 
 
-                    <section class="row mt-2">
-                        <article class="col-1 p-1 text-center">
-                            <img src="imgs/face1.jpg" class="img-fluid faceIcon">
-                        </article>
-                        <article class="col-8 p-1">
-                            <div class="p-2 bg-person1 borderElement">Olá Mafalda como estás? Quando estás disponivel para marcarmos uma videochamada?</div>
-                        </article>
-                    </section>
+
+                        $query3 = "SELECT ticket.id_ticket, mensagens.texto, mensagens.utilizador_id_utilizador, utilizador.perfil_idperfil, utilizador.foto_perfil FROM ticket
+                                        INNER JOIN mensagens ON mensagens.ticket_id_ticket = ticket.id_ticket
+                                        INNER JOIN utilizador ON utilizador.id_utilizador = mensagens.utilizador_id_utilizador
+                                        WHERE ticket.utilizador_id_utilizador = ? AND ticket.id_ticket = ?  
+                                        ORDER BY `mensagens`.`data_envio` ASC";
+
+                        if (mysqli_stmt_prepare($stmt3, $query3)) {
+
+                        mysqli_stmt_bind_param($stmt3, 'ii', $userid, $ticket_id);
+
+                        /* execute the prepared statement */
+                        mysqli_stmt_execute($stmt3);
+
+                        /* bind result variables */
+                        mysqli_stmt_bind_result($stmt3,$id_ticket_useless, $texto, $remetente_id, $remetente_permissao, $remetente_foto );
+
+                        }
 
 
-                    <section class="row mt-2 justify-content-end">
-                        <article class="col-8 p-1">
-                            <div class="p-2 bg-person2 borderElement">Olá João. Obrigada pela ajuda! Posso agora se tu puderes!</div>
-                        </article>
-                        <article class="col-1 p-1 text-center">
-                            <img src="imgs/face2.jpg" class="img-fluid faceIcon">
-                        </article>
-                    </section>
 
-                    <section class="row mt-2">
-                        <article class="col-1 p-1 text-center">
-                            <img src="imgs/face1.jpg" class="img-fluid faceIcon">
-                        </article>
-                        <article class="col-8 p-1">
-                            <div class="p-2 bg-person1 borderElement">Pode ser! vamos então.</div>
-                        </article>
-                    </section>
+                        mysqli_stmt_store_result($stmt3);
+                        while (mysqli_stmt_fetch($stmt3)) {
 
-                </article>
+                            if ($remetente_id == $botid) {
+                                // mensagens do bot
+                            }
+                            else if ($_SESSION["role"]==1 && $remetente_permissao == 1) {
+                                msg_direita($texto, $remetente_foto);
+                            }
+                            else if ($_SESSION["role"]==1 && $remetente_permissao == 2) {
+                                msg_esquerda($texto, $remetente_foto);
+                            }
+                            else if ($_SESSION["role"]==2 && $remetente_permissao == 2) {
+                                msg_direita($texto, $remetente_foto);
+                            }
+                            else if ($_SESSION["role"]==2 && $remetente_permissao == 1) {
+                                msg_esquerda($texto, $remetente_foto);
+                            }
 
 
-                <!-- Indicação de chamada -->
-                <article class="col-12 my-3 text-center">
-                    <hr>
-                    <a href="videochamada.html" class="textoClaro"><span class="py-2 px-3 mt-2 bg-azul2 borderElement d-inline-block">Chamada iniciada</span></a>
-                </article>
+                        }
 
-            </section>
+
+
+                        mysqli_stmt_close($stmt3);
+
+                        ?>
+
+
+
+
+                </section>
+
+
+                <?php
+
+            }
+
+            mysqli_stmt_close($stmt2);
+
+            ?>
+
+
 
             <section id="inputZone" class="row py-2 px-3 bg-inputzone">
                 <article class="col-9">
@@ -254,7 +353,7 @@ mysqli_stmt_close($stmt);
         </article>
 
 
-    </section>
+        </section>
 
 </main>
 
