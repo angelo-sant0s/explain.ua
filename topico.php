@@ -19,11 +19,13 @@ include_once "components/cp_nav.php";
 
 require_once "connections/connections.php";
 
+$userid = $_SESSION["user_id"];
+
 $link = new_db_connection();
 
 $stmt = mysqli_stmt_init($link);
 
-$query = "SELECT ticket.titulo, ticket.corpo_mensagem,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), utilizador.username, utilizador.id_utilizador, topico.pontuacao, topico.id_topico, cadeira.imagem
+$query = "SELECT ticket.titulo, ticket.corpo_mensagem,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), utilizador.username, utilizador.id_utilizador, topico.pontuacao, topico.id_topico, cadeira.imagem 
 FROM ticket 
 INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador
 INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
@@ -37,10 +39,13 @@ $id_ticket = $_GET["id"];
 if (mysqli_stmt_prepare($stmt,$query)){
     mysqli_stmt_bind_param($stmt, 'i' , $id_ticket);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result( $stmt, $titulo,$corpo, $publishing_hour,$publishing_minute, $autor, $idauthor,$score, $id_topico, $cadeira_img);
+    mysqli_stmt_bind_result( $stmt, $titulo,$corpo, $publishing_hour,$publishing_minute, $autor, $idauthor,$score, $id_topico,$cadeira_img);
 } else {
     echo "ERROR: ". mysqli_error($link);
 }
+
+mysqli_stmt_store_result($stmt);
+
 while (mysqli_stmt_fetch($stmt)){
 
 ?>
@@ -52,7 +57,6 @@ while (mysqli_stmt_fetch($stmt)){
                 <div class="col-12 col-sm-3 col-lg-2 text-center">
                     <img src="imgs/<?=$cadeira_img?>" height="100px" width="100px">
                 </div>
-                <!-- falta upvote/downvote -->
                 <div class="col-10 col-sm-7 col-lg-8 mt-3 pt-3 pt-sm-0">
                     <h3 class="titulo font-weight-bold mb-2"><?= $titulo ?></h3>
                     <p class="small font-italic  ml-2 mb-0">Submetido por <a href="perfil.php?id=<?=$idauthor?>" class="text-secondary cursor"><?=$autor?></a><br><?php
@@ -69,14 +73,50 @@ while (mysqli_stmt_fetch($stmt)){
                         }
                         ?></p>
                 </div>
+                <!-- falta upvote/downvote -->
                 <div class="col-1 pt-4 pt-sm-3 text-right">
                     <i class="fas fa-angle-up fa-2x d-block cursor"></i>
                     <?= $score ?>
                     <i class="fas fa-angle-down fa-2x d-block cursor"></i>
                 </div>
-                <div class="col-1 pt-4 pt-sm-3 text-right">
-                    <a href="#" class="btn"><i class="far fa-star"></i></a>
-                </div>
+                <?php
+
+                $statement = mysqli_stmt_init($link);
+
+                $buscafav = "SELECT utilizador_has_topico.favorito
+                 FROM utilizador_has_topico 
+                 INNER JOIN utilizador ON utilizador.id_utilizador = utilizador_has_topico.utilizador_id_utilizador
+                 INNER JOIN topico ON topico.id_topico = utilizador_has_topico.topico_id_topico
+                 WHERE utilizador.id_utilizador = ?  AND topico.id_topico = ?";
+
+                if (mysqli_stmt_prepare($statement, $buscafav)) {
+
+                mysqli_stmt_bind_param($statement, 'ii', $userid, $id_topico);
+
+                /* execute the prepared statement */
+                mysqli_stmt_execute($statement);
+
+                /* bind result variables */
+                mysqli_stmt_bind_result($statement,$fav);
+
+                }
+
+                mysqli_stmt_store_result($statement);
+
+                    while (mysqli_stmt_fetch($statement)) {
+                        if ($fav == 1) {
+                            echo " <div class='col-1 pt-4 pt-sm-3 text-right'>
+                    <a href='scripts/sc_favorito.php?id=$id_ticket' class='btn'><i class='fas fa-star'></i></a>
+                </div>";
+                        } else {
+                            echo " <div class='col-1 pt-4 pt-sm-3 text-right'>
+                    <a href='scripts/sc_favorito.php?id=$id_ticket' class='btn'><i class='far fa-star'></i></a>
+                </div>";
+                        }
+                    }
+                mysqli_stmt_close($statement);
+
+                ?>
             </section>
         </article>
 
@@ -126,17 +166,17 @@ while (mysqli_stmt_fetch($stmt)){
 
 $stmt2 = mysqli_stmt_init($link);
 
-$query2 = "SELECT comentario.texto, utilizador.username, comentario.pontuacao, utilizador.foto_perfil, HOUR(TIMEDIFF(NOW(),comentario.data_envio)), MINUTE(TIMEDIFF(NOW(), comentario.data_envio)) 
+$query2 = "SELECT comentario.id_comentario,comentario.texto, comentario.pontuacao, utilizador.username, utilizador.foto_perfil, HOUR(TIMEDIFF(NOW(),comentario.data_envio)), MINUTE(TIMEDIFF(NOW(), comentario.data_envio)) 
 FROM comentario
-INNER JOIN utilizador ON comentario.utilizador_id_utilizador = utilizador_id_utilizador
+INNER JOIN utilizador ON utilizador.id_utilizador = comentario.utilizador_id_utilizador
 INNER JOIN topico On topico.id_topico = comentario.topico_id_topico
-WHERE topico.id_topico = ? 
+WHERE topico.id_topico = ?
 ORDER BY comentario.pontuacao DESC LIMIT 1";
 
 if (mysqli_stmt_prepare($stmt2,$query2)){
     mysqli_stmt_bind_param($stmt2, 'i' , $id_topico);
     mysqli_stmt_execute($stmt2);
-    mysqli_stmt_bind_result( $stmt2, $top_comment,$top_user, $top_score,$top_pfp, $top_envio_hora,$top_envio_minuto);
+    mysqli_stmt_bind_result( $stmt2, $id_comment,$top_comment,$top_score, $top_user,$top_pfp, $top_envio_hora,$top_envio_minuto);
 } else {
     echo "ERROR: ". mysqli_error($link);
 }
