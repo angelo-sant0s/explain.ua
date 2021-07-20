@@ -285,9 +285,9 @@ while (mysqli_stmt_fetch($stmt2)){
                             <p><?=$top_comment?></p>
                             <div class="mt-4 pr-2 mb-0 d-block">
                                 <div class="float-right">
-                                    <i class="fas fa-angle-up fa-sm d-block cursor"></i>
+                                    <a href="scripts/sc_upvote_comment.php?id=<?=$id_comment?>" class="btn"><i class="fas fa-angle-up fa-sm d-block cursor"></i></a>
                                     <?= $top_score ?>
-                                    <i class="fas fa-angle-down fa-sm d-block cursor"></i>
+                                    <a href="scripts/sc_upvote_comment.php?id=<?=$id_comment?>" class="btn"><i class="fas fa-angle-down fa-sm d-block cursor"></i></a>
                                 </div>
                                 <span class="float-left font-italic small text-secondary pt-2">
                                     <?php
@@ -332,7 +332,7 @@ while (mysqli_stmt_fetch($stmt2)){
 
                 $stmt1 = mysqli_stmt_init($link);
 
-                $query1 = "SELECT comentario.texto, utilizador.username, comentario.pontuacao, HOUR(TIMEDIFF(NOW(),comentario.data_envio)), MINUTE(TIMEDIFF(NOW(), comentario.data_envio)), utilizador.foto_perfil
+                $query1 = "SELECT comentario.texto, utilizador.username, comentario.pontuacao, HOUR(TIMEDIFF(NOW(),comentario.data_envio)), MINUTE(TIMEDIFF(NOW(), comentario.data_envio)), utilizador.foto_perfil, comentario.id_comentario
 FROM comentario
 INNER JOIN ticket ON ticket.topico_id_topico = comentario.topico_id_topico
 INNER JOIN topico ON topico.id_topico = comentario.topico_id_topico
@@ -343,7 +343,7 @@ ORDER BY comentario.data_envio DESC;";
                 if (mysqli_stmt_prepare($stmt1,$query1)){
                     mysqli_stmt_bind_param($stmt1, 'i' , $id_topico);
                     mysqli_stmt_execute($stmt1);
-                    mysqli_stmt_bind_result( $stmt1, $comment, $pessoa, $comment_score, $comment_hour, $comment_minute, $fotos);
+                    mysqli_stmt_bind_result( $stmt1, $comment, $pessoa, $comment_score, $comment_hour, $comment_minute, $fotos, $id_comment2);
                 } else {
                     echo "ERROR: ". mysqli_error($link);
                 }
@@ -364,9 +364,9 @@ ORDER BY comentario.data_envio DESC;";
 
                             <div class="mt-4 pr-2 mb-0 d-block">
                                 <div class="float-right">
-                                    <i class="fas fa-angle-up fa-sm d-block cursor"></i>
+                                    <a href="scripts/sc_upvote_comment.php?id=<?=$id_comment2?>" class="btn"> <i class="fas fa-angle-up fa-sm d-block cursor"></i></a>
                                     <?= $comment_score ?>
-                                    <i class="fas fa-angle-down fa-sm d-block cursor"></i>
+                                    <a href="scripts/sc_downvote_comment.php?id=<?=$id_comment2?>" class="btn"><i class="fas fa-angle-down fa-sm d-block cursor"></i></a>
                                 </div>
                                 <span class="float-left font-italic small text-secondary pt-2">
                                 <?php
