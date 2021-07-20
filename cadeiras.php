@@ -39,19 +39,19 @@
             <div class="text-center m-auto py-5 px-3 w-100 row d-none d-lg-flex d-xl-flex bkk-color2 borderElement">
                 <div class=" m-auto pt-5">
                     <div class="icooon  centercenter m-auto bolinhaa ">
-                        <a href="disciplinas.html"><img src="imgs/Artboard 1.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
+                        <a href="disciplinas.php?id=4"><img src="imgs/Artboard 1.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
                     </div>
                     <p class="texto font-weight-bold">LAB4</p>
                 </div>
                 <div class=" m-auto pt-5">
                     <div class="icooon  centercenter m-auto bolinhaa ">
-                        <a href="disciplinas.html"><img src="imgs/Artboard 3.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
+                        <a href="disciplinas.php?id=4"><img src="imgs/Artboard 3.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
                     </div>
                     <p class="texto font-weight-bold">IDF</p>
                 </div>
                 <div class=" m-auto pt-5">
                     <div class="icooon  centercenter m-auto bolinhaa ">
-                        <a href="disciplinas.html"><img src="imgs/Artboard 2.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
+                        <a href="disciplinas.php?id=4"><img src="imgs/Artboard 2.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
                     </div>
                     <p class="texto font-weight-bold">SCM2</p>
                 </div>
@@ -62,23 +62,23 @@
             <div class="slide-horizontal d-lg-none d-xl-none pt-5 bkk-color2 shadow borderElement">
                 <div class="conteudo ">
                     <div class="item text-center">
-                        <a href="disciplinas.html"><img src="imgs/Artboard 2.png" class="ajustaa my-auto px-2 py-3 pl-3 w-100 h-auto hoverrr bolinhaa "></a>
+                        <a href="disciplinas.php?id=4"><img src="imgs/Artboard 2.png" class="ajustaa my-auto px-2 py-3 pl-3 w-100 h-auto hoverrr bolinhaa "></a>
                         <p class="pl-3 texto font-weight-bold">SCM2</p>
                     </div>
                     <div class="item text-center">
-                        <a href="disciplinas.html"><img src="imgs/Artboard 1.png" class="ajustaa my-auto px-2 py-3 pl-3 w-100 h-auto hoverrr bolinhaa "></a>
+                        <a href="disciplinas.php?id=4"><img src="imgs/Artboard 1.png" class="ajustaa my-auto px-2 py-3 pl-3 w-100 h-auto hoverrr bolinhaa "></a>
                         <p class="pl-3 texto font-weight-bold">LAB3</p>
                     </div>
                     <div class="item text-center">
-                        <a href="disciplinas.html"><img src="imgs/Artboard 1.png" class="ajustaa my-auto px-2 py-3 pl-3 w-100 h-auto hoverrr bolinhaa "></a>
+                        <a href="disciplinas.php?id=4"><img src="imgs/Artboard 1.png" class="ajustaa my-auto px-2 py-3 pl-3 w-100 h-auto hoverrr bolinhaa "></a>
                         <p class="pl-3 texto font-weight-bold">LAB4</p>
                     </div>
                     <div class="item text-center">
-                        <a href="disciplinas.html"><img src="imgs/Artboard 6.png" class="ajustaa my-auto px-2 py-3 pl-3 w-100 h-auto hoverrr bolinhaa "></a>
+                        <a href="disciplinas.php?id=4"><img src="imgs/Artboard 6.png" class="ajustaa my-auto px-2 py-3 pl-3 w-100 h-auto hoverrr bolinhaa "></a>
                         <p class="pl-3 texto font-weight-bold">II</p>
                     </div>
                     <div class="item text-center">
-                        <a href="disciplinas.html"><img src="imgs/Artboard 5.png" class="ajustaa my-auto px-2 py-3 pl-3 w-100 h-auto hoverrr bolinhaa "></a>
+                        <a href="disciplinas.php?id=4"><img src="imgs/Artboard 5.png" class="ajustaa my-auto px-2 py-3 pl-3 w-100 h-auto hoverrr bolinhaa "></a>
                         <p class="pl-3 texto font-weight-bold">TC</p>
                     </div>
 
