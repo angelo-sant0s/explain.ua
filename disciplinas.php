@@ -6,7 +6,7 @@
     include_once "helpers/css_helper.php";
     ?>
 
-    <title>Laboratório Multimédia 4</title>
+    <title>Explain.ua</title>
 </head>
 <body class="bgClaro">
 
@@ -22,32 +22,41 @@ if (isset($_GET["id"])) {
 }
 
 
+echo $id_cadeira;
+$confirma=0;
 
-$id_cadeira=1;
-
-$querry="SELECT cadeira.nome, ticket.titulo, ticket.corpo_mensagem, ticket.data_submissao, utilizador.nome, recursos.tipo_id_tipo, ticket.imagem, utilizador.id_utilizador FROM ticket INNER JOIN cadeira ON ticket.cadeira_id_cadeira=cadeira.id_cadeira INNER JOIN recursos ON recursos.ticket_id_ticket = ticket.id_ticket INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador";
+$querry="SELECT cadeira.nome, ticket.titulo, ticket.corpo_mensagem, ticket.data_submissao, utilizador.nome, recursos.tipo_id_tipo, ticket.imagem, utilizador.id_utilizador, cadeira.imagem, cadeira.sigla FROM ticket INNER JOIN cadeira ON ticket.cadeira_id_cadeira=cadeira.id_cadeira INNER JOIN recursos ON recursos.ticket_id_ticket = ticket.id_ticket INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador WHERE cadeira.id_cadeira = ?";
 
 
 
 
 
   if(mysqli_stmt_prepare($stmt,$querry)){
-      echo "estou aqui";
+        mysqli_stmt_bind_param($stmt, 's', $id_cadeira);
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt,$cadeira, $titulo, $mensagem, $data, $utilizador, $tiporec, $imagem, $id_user);
+        mysqli_stmt_bind_result($stmt,$cadeira, $titulo, $mensagem, $data, $utilizador, $tiporec, $imagem, $id_user, $imagem_cad, $sigla_cad);
   }
 
+
+while(mysqli_stmt_fetch($stmt)) {
+    if($confirma==0){
 ?>
+
+
 
 <div class="container azul1b shadow borderElement p-5">
     <section class="row pt-3 ">
         <article class="col-12 text-center andabaixo">
-            <img src="imgs/Artboard%201.png">
-            <h3 class="titulo textoClaro font-weight-bold pt-5">Laboratório Multimédia 4</h3>
+            <img src="imgs/<?=$imagem_cad?>.png">
+            <h3 class="titulo textoClaro font-weight-bold pt-5"><?=$cadeira?></h3>
         </article>
     </section>
-
 </div>
+<?php
+        $confirma=1;
+}
+}
+?>
 
 <div class="container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98 shadow">
     <section class="row text-center pt-2">
@@ -73,7 +82,26 @@ $querry="SELECT cadeira.nome, ticket.titulo, ticket.corpo_mensagem, ticket.data_
 
 <?php
 
-while(mysqli_stmt_fetch($stmt)) {
+mysqli_stmt_close($stmt);
+
+$stmt1=mysqli_stmt_init($link);
+
+
+$querry1="SELECT cadeira.nome, ticket.titulo, ticket.corpo_mensagem, ticket.data_submissao, utilizador.nome, recursos.tipo_id_tipo, ticket.imagem, utilizador.id_utilizador, cadeira.imagem, cadeira.sigla FROM ticket INNER JOIN cadeira ON ticket.cadeira_id_cadeira=cadeira.id_cadeira INNER JOIN recursos ON recursos.ticket_id_ticket = ticket.id_ticket INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador WHERE cadeira.id_cadeira = ?";
+
+
+
+
+
+if(mysqli_stmt_prepare($stmt1,$querry1)){
+    mysqli_stmt_bind_param($stmt1, 's', $id_cadeira);
+    mysqli_stmt_execute($stmt1);
+    mysqli_stmt_bind_result($stmt1,$cadeira1, $titulo1, $mensagem1, $data1, $utilizador1, $tiporec1, $imagem1, $id_user1, $imagem_cad1, $sigla_cad1);
+}
+
+
+
+while(mysqli_stmt_fetch($stmt1)) {
 
 
 if($tiporec=="1"){
@@ -86,8 +114,8 @@ echo "<div class=\"container-lg container-fluid bkk-color borderElement  py-3 my
         <img class=\"iconzito float-left pr-4\" src=\"imgs/iconn.png\">
         <div class=\"row\">
             <article class=\"col-9\">
-                <h3 class=\"titulo\"><a href=\"topico.html\">" . $titulo . "</a></h3>
-                <a href=\"http://localhost/github/perfil.php?id=" . $id_user ." \"><h5 class=\"titulo font-italic text-black-50\">" . $utilizador . "</h5></a>
+                <h3 class=\"titulo\"><a href=\"topico.html\">" . $titulo1 . "</a></h3>
+                <a href=\"http://localhost/github/perfil.php?id=" . $id_user1 ." \"><h5 class=\"titulo font-italic text-black-50\">" . $utilizador1 . "</h5></a>
             </article>
             <article class=\"col-3\">
                 <div class=\"float-right\">
@@ -98,13 +126,13 @@ echo "<div class=\"container-lg container-fluid bkk-color borderElement  py-3 my
         </div>
 
         <hr>
-        <p class=\"texto pt-3 px-4 mb-0\">" . $mensagem . "</p>
+        <p class=\"texto pt-3 px-4 mb-0\">" . $mensagem1 . "</p>
         
        
         <div class=\"text-center\">
         ";
-    if(isset($imagem)){
-        echo "<img class=\"w-75 h-auto py-5\" src=\"imgs/".$imagem.".".$tipofic."\">";
+    if(isset($imagem1)){
+        echo "<img class=\"w-75 h-auto py-5\" src=\"imgs/$imagem1.$tipofic\">";
     }
     else{ echo "<div class='py-4'></div>";}
 
@@ -112,7 +140,7 @@ echo "<div class=\"container-lg container-fluid bkk-color borderElement  py-3 my
         <div class=\"text-secondary font-italic\">
             <span>73 Comentários</span>
             <i class=\"fas fa-comment\"></i>
-            <div class=\"float-right pr-4\">Postado " . $data . "</div>
+            <div class=\"float-right pr-4\">Postado " . $data1 . "</div>
         </div>
     </div>
 </div>";
@@ -120,60 +148,6 @@ echo "<div class=\"container-lg container-fluid bkk-color borderElement  py-3 my
 ?>
 <!------------------>
 
-<div class="container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98">
-    <div class="pl-3 py-4">
-        <img class="iconzito float-left pr-4" src="imgs/iconn.png">
-        <div class="row">
-            <article class="col-9">
-                <h3 class="titulo">Arrays Multidimensionais</h3>
-                <h5 class="titulo font-italic text-black-50">Nuno Silva</h5>
-            </article>
-            <article class="col-3">
-                <div class="float-right">
-                    <i class="fas fa-angle-up fa-2x d-block"></i>
-                    <i class="fas fa-angle-down fa-2x d-block"></i>
-                </div>
-            </article>
-        </div>
-        <hr>
-        <div class="">
-            <p class="align-self-start px-4">
-                Não estou a conseguir retirar elementos específicos de um array multidimensional. Surge um erro no PHP quanto tento usar...
-            </p>
-        </div>
-        <div class="text-secondary font-italic">
-            <span>134 Comentários</span>
-            <i class="fas fa-comment"></i>
-            <div class="float-right pr-4">Postado há 5 horas</div>
-        </div>
-    </div>
-</div>
-
-<div class="container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98">
-    <div class="pl-3 py-4">
-        <img class="iconzito float-left pr-4" src="imgs/iconn.png">
-        <div class="row">
-            <article class="col-9">
-                <h3 class="titulo">Criação de tabelas no Workbench</h3>
-                <h5 class="titulo font-italic text-black-50">Bruno Miguel</h5>
-            </article>
-            <article class="col-3">
-                <div class="float-right">
-                    <i class="fas fa-angle-up fa-2x d-block"></i>
-                    <i class="fas fa-angle-down fa-2x d-block"></i>
-                </div>
-            </article>
-        </div>
-
-        <hr>
-        <div>
-            <p class="align-self-start px-4">Decidi praticar mais para Laboratório Multimédia 4 por iniciativa própria através de projetos extra e, por isso, desenvolvi uma...</p>
-        </div>
-        <div class="text-secondary font-italic">
-            <span>3 Comentários</span>
-            <i class="fas fa-comment"></i>
-            <div class="float-right pr-4">Postado há 8 horas</div>
-        </div>
     </div>
 </div>
 
