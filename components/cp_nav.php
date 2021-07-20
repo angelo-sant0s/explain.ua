@@ -29,7 +29,7 @@ if(isset($_SESSION["username"])) {
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?= $session ?>
                 </a>
-                <div class="dropdown-menu text-sm-right" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu text-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="perfil.php?id=<?=$userid?>">Perfil</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="scripts/sc_logout.php">Terminar Sessão</a>

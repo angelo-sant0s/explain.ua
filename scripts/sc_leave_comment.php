@@ -34,7 +34,7 @@ WHERE ticket.id_ticket = ?";
                     mysqli_stmt_close($stmt);
                     $stmt = mysqli_stmt_init($link);
 
-                    $query1 = "INSERT INTO comentario (comentario.texto, comentario.topico_id_topico, comentario.utilizador_id_utilizador, comentario.data_envio, comentario.pontuacao, comentario.votos_id_votos, comentario.id_comentario) VALUES (?, ?, ?,NOW(),0,1, NULL);";
+                    $query1 = "INSERT INTO comentario (comentario.texto, comentario.topico_id_topico, comentario.utilizador_id_utilizador, comentario.data_envio, comentario.pontuacao, comentario.id_comentario) VALUES (?, ?, ?,NOW(),0, NULL);";
 
 
                     if (mysqli_stmt_prepare($stmt, $query1)) {
