@@ -11,95 +11,114 @@
 <body class="bkk-color">
 
 <?php include_once "components/cp_nav.php"; ?>
+<?php
+require_once "connections/connections.php";
+
+$check=0;
+if (isset($_SESSION["username"])) {
+    $user = $_SESSION["username"];
+    $check=1;
+}
+
+
+
+if (isset($_GET["ano"])) {
+    $ano = $_GET["ano"];
+}
+
+
+if($ano==1){
+    $semestre1=1;
+    $semestre2=2;
+}
+if($ano==2){
+    $semestre1=3;
+    $semestre2=4;
+}
+if($ano==3){
+    $semestre1=5;
+    $semestre2=6;
+}
+
+
+$link= new_db_connection();
+$statement=mysqli_stmt_init($link);
+
+
+$querry="SELECT cadeira.nome, cadeira.id_cadeira, cadeira.semestre_id_semestre,cadeira.imagem, cadeira.sigla  FROM cadeira WHERE cadeira.semestre_id_semestre=?";
+
+if(mysqli_stmt_prepare($statement,$querry)){
+    mysqli_stmt_bind_param($statement, 'i', $semestre1);
+    mysqli_stmt_execute($statement);
+    mysqli_stmt_bind_result($statement,$nomecad, $id_cadeira, $semestre, $icon_cadeira, $sigla_cadeira);
+}
+
+?>
 
 
 <main>
     <div class="container-fluid my-5">
         <div class="row">
             <div class="roxinhob col-sm-12 text-center py-3 my-5 mb-5">
-                <h2 class="text-dark titulo pl-4 greyText font-weight-bold">1º ano</h2>
+                <h2 class="text-dark titulo pl-4 greyText font-weight-bold"><?= $ano ?>º ano</h2>
             </div>
 
             <div class="m-auto w-75 text-center seila">
+
+
+
+
                 <button class="btn azul1b borderElement col-lg-8 col-md-12 mx-auto my-4 py-4 hoverrr3 " data-toggle="collapse"
                         data-target="#cadsem1" role="button" aria-expanded="false" aria-controls="collapseExample">
 
 
-                    <h3 class="texto titulo pl-4 greyText">1º semestre</h3>
+                    <h3 class="texto titulo pl-4 greyText"> 1º Semestre</h3>
 
                 </button>
-                <div class="collapse negmar2 col-lg-8 col-md-12 mx-auto px-0" id="cadsem1">
+<!------------------------>
+                <?php
+
+                while(mysqli_stmt_fetch($statement)) {
+
+
+
+                    ?>
+
+                    <div class="collapse negmar2 col-lg-8 col-md-12 mx-auto px-0" id="cadsem1">
 
                     <div class="text-center m-auto py-5 px-3 w-100 row bkk-color2 borderElement">
                         <div class=" m-auto pt-5 px-3">
                             <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 3.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa"></a>
+                                <a href="disciplinas.php?id=<?=$id_cadeira?>"><img src="imgs/<?=$icon_cadeira?>.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa"></a>
                             </div>
-                            <p class="pt-2">IDF</p>
-                        </div>
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 4.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                            <p class="pt-2">SOM</p>
-                        </div>
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 5.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                            <p class="pt-2">TC</p>
-                        </div>
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 1.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                            <p class="pt-2">LAB1</p>
-                        </div>
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 6.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                            <p class="pt-2">II</p>
-                        </div>
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 2.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                            <p class="pt-2">SCM1</p>
+                            <p class="pt-2"><?=$nomecad?></p>
                         </div>
 
-                        <div class=" m-auto pt-5 col d-sm-none">
-                            <div class="icooon  centercenter m-auto bolinhaa ajustaa2  ">
-                                <a href=""><img  class="ajustaa2 my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                        </div>
-                        <div class=" m-auto pt-5 col d-sm-none">
-                            <div class="icooon  centercenter m-auto bolinhaa ajustaa2">
-                                <a href=""><img  class="ajustaa2 my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                        </div>
-                        <div class=" m-auto pt-5 col d-sm-none">
-                            <div class="icooon  centercenter m-auto bolinhaa ajustaa2">
-                                <a href=""><img  class="ajustaa2 my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                        </div>
-                        <div class=" m-auto pt-5 col  d-none d-lg-block">
-                            <div class="icooon  centercenter m-auto bolinhaa ajustaa2">
-                                <a href=""><img  class="ajustaa2 my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                        </div>
-                        <div class=" m-auto pt-5 col d-none d-lg-block ">
-                            <div class="icooon  centercenter m-auto bolinhaa ajustaa2">
-                                <a href=""><img  class="ajustaa2 my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                        </div>
 
 
                     </div>
 
                 </div>
 
+                <?php
+        }
 
+                mysqli_stmt_close($statement);
+
+                $stmt=mysqli_stmt_init($link);
+
+
+                $querry1="SELECT cadeira.nome, cadeira.id_cadeira, cadeira.semestre_id_semestre,cadeira.imagem, cadeira.sigla  FROM cadeira WHERE cadeira.semestre_id_semestre=?";
+
+                if(mysqli_stmt_prepare($stmt,$querry1)){
+                    mysqli_stmt_bind_param($stmt, 'i', $semestre2);
+                    mysqli_stmt_execute($stmt);
+                    mysqli_stmt_bind_result($stmt,$nomecad1, $id_cadeira1, $semestre1, $icon_cadeira1, $sigla_cadeira1);
+                }
+
+                ?>
+
+<!------------------------>
                 <button class="btn azul2b borderElement col-lg-8 col-md-12 mx-auto my-4 py-4 hoverrr3 mb-5" data-toggle="collapse"
                         href="#cadsem2" role="button" aria-expanded="false" aria-controls="collapseExample">
 
@@ -107,75 +126,34 @@
                     <h3 class="texto titulo pl-4 greyText">2º semestre</h3>
 
                 </button>
-                <div class="collapse negmar2 col-lg-8 col-md-12 mx-auto px-0" id="cadsem2">
-                    <div class="text-center m-auto py-5 px-3 w-100 row bkk-color2 borderElement">
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 3.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa"></a>
-                            </div>
-                            <p class="pt-2">IDF</p>
-                        </div>
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 4.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                            <p class="pt-2">SOM</p>
-                        </div>
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 5.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                            <p class="pt-2">TC</p>
-                        </div>
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 1.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                            <p class="pt-2">LAB1</p>
-                        </div>
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 6.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                            <p class="pt-2">II</p>
-                        </div>
-                        <div class=" m-auto pt-5 px-3">
-                            <div class="icooon  centercenter m-auto bolinhaa ">
-                                <a href="disciplinas.html"><img src="imgs/Artboard 2.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                            <p class="pt-2">SCM1</p>
-                        </div>
+                <?php
 
-                        <div class=" m-auto pt-5 col d-sm-none">
-                            <div class="icooon  centercenter m-auto bolinhaa ajustaa2  ">
-                                <a href=""><img  class="ajustaa2 my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                        </div>
-                        <div class=" m-auto pt-5 col d-sm-none">
-                            <div class="icooon  centercenter m-auto bolinhaa ajustaa2">
-                                <a href=""><img  class="ajustaa2 my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                        </div>
-                        <div class=" m-auto pt-5 col d-sm-none">
-                            <div class="icooon  centercenter m-auto bolinhaa ajustaa2">
-                                <a href=""><img  class="ajustaa2 my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                        </div>
-                        <div class=" m-auto pt-5 col  d-none d-lg-block">
-                            <div class="icooon  centercenter m-auto bolinhaa ajustaa2">
-                                <a href=""><img  class="ajustaa2 my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                        </div>
-                        <div class=" m-auto pt-5 col d-none d-lg-block ">
-                            <div class="icooon  centercenter m-auto bolinhaa ajustaa2">
-                                <a href=""><img  class="ajustaa2 my-auto p-0 w-100 h-auto hoverrr bolinhaa "></a>
-                            </div>
-                        </div>
+                while(mysqli_stmt_fetch($stmt)) {
 
+
+
+                    ?>
+
+                    <div class="collapse negmar2 col-lg-8 col-md-12 mx-auto px-0" id="cadsem2">
+
+                        <div class="text-center m-auto py-5 px-3 w-100 row bkk-color2 borderElement">
+                            <div class=" m-auto pt-5 px-3">
+                                <div class="icooon  centercenter m-auto bolinhaa ">
+                                    <a href="disciplinas.php?id=<?=$id_cadeira1?>"><img src="imgs/<?=$icon_cadeira1?>.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa"></a>
+                                </div>
+                                <p class="pt-2"><?=$nomecad1?></p>
+                            </div>
+
+
+
+                        </div>
 
                     </div>
 
-                </div>
+                    <?php
+                }
+
+                ?>
 
 
 

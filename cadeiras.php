@@ -23,9 +23,9 @@
 
             <div class="text-center m-auto py-5 px-3 w-100 row bkk-color2 borderElement pb-5">
 
-                <a class="textoEscuro cursor greyText mx-auto my-4  col-sm-10 col-md-10 col-lg" href="cadeiras_ano.html"><button class="shadow azul1b w-75 centercenter hoverrr2  borderElement"> <h3 class="py-3 mx-lg-4 my-4 m-auto texto textoClaro font-weight-bold">1º ano</h3></button></a>
-                <a class="textoEscuro cursor greyText mx-auto my-4 col-sm-10 col-md-10 col-lg" href="cadeiras_ano.html"> <button class="shadow azul1b w-75 centercenter hoverrr2  borderElement"> <h3 class="py-3 mx-lg-4 my-4 m-auto texto textoClaro font-weight-bold">2º ano</h3></button></a>
-                <a class="textoEscuro cursor greyText mx-auto my-4 col-sm-10 col-md-10 col-lg" href="cadeiras_ano.html">   <button class="shadow azul1b w-75 centercenter hoverrr2  borderElement"> <h3 class="py-3 mx-lg-4 my-4 m-auto texto textoClaro font-weight-bold">3º ano</h3></button></a>
+                <a class="textoEscuro cursor greyText mx-auto my-4  col-sm-10 col-md-10 col-lg" href="cadeira_ano.php?ano=1"><button class="shadow azul1b w-75 centercenter hoverrr2  borderElement"> <h3 class="py-3 mx-lg-4 my-4 m-auto texto textoClaro font-weight-bold">1º ano</h3></button></a>
+                <a class="textoEscuro cursor greyText mx-auto my-4 col-sm-10 col-md-10 col-lg" href="cadeira_ano.php?ano=2"> <button class="shadow azul1b w-75 centercenter hoverrr2  borderElement"> <h3 class="py-3 mx-lg-4 my-4 m-auto texto textoClaro font-weight-bold">2º ano</h3></button></a>
+                <a class="textoEscuro cursor greyText mx-auto my-4 col-sm-10 col-md-10 col-lg" href="cadeira_ano.php?ano=3">   <button class="shadow azul1b w-75 centercenter hoverrr2  borderElement"> <h3 class="py-3 mx-lg-4 my-4 m-auto texto textoClaro font-weight-bold">3º ano</h3></button></a>
 
             </div>
         </div>
