@@ -425,15 +425,18 @@ mysqli_stmt_close($stmt);
             <section id="inputZone" class="row py-2 px-3 bg-inputzone">
 
 
-                <form id="formMessage" class="col-10 p-0 d-flex" role="form" action="scripts/sc_mensagem.php?id=1&ticketid=2" method="post">
+                <form id="formMessage" class="col-10 p-0 d-flex" role="form" action="esta action é definida no javascript" method="post">
                     <article class="col-11 p-0">
                         <input id="chatInput" class="borderElement p-1 pl-3 borderPic Valign" name="mensagem">
                     </article>
                     <article class="col-1">
-                        <button class="fas fa-arrow-alt-circle-right iconsSize Valign p-0 m-0 border-0
- bg-transparent" type="submit"></button>
+                        <button class="fas fa-arrow-alt-circle-right iconsSize Valign p-0 m-0 border-0 bg-transparent" type="submit"></button>
                     </article>
+                </form>
 
+                <form class=" align-items-center text-center py-3  " action="scripts/sc_upload_file.php?id=<?php echo $userid ?>" method=post enctype=multipart/form-data>
+                    <input class="border-1 mx-2  text-light px-0 col-6 position-relative"  type="file" name="fileToUpload" id="fileToUpload">
+                    <input class="border-1 btn btn-light my-0 col-4 mx-1" type="submit" value="uplod" name="submit">
                 </form>
 
 

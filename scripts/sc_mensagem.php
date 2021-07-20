@@ -3,21 +3,12 @@ require_once "../connections/connections.php";
 session_start();
 
 
-
-
 if (isset($_SESSION["user_id"]) && isset($_POST["mensagem"]) && $_SESSION["user_id"] == $_GET["id"] ) {
     $userid = $_SESSION["user_id"];
     $message = $_POST["mensagem"];
     $ticketid = $_GET["ticketid"];
 
-echo "is it";
-
-
-// Create a new DB connection
 $link = new_db_connection();
-
-
-/* create a prepared statement */
 $stmt = mysqli_stmt_init($link);
 
 
@@ -34,13 +25,7 @@ if (mysqli_stmt_prepare($stmt, $query)) {
         mysqli_stmt_execute($stmt);
     }
     header("Location: ../chat.php?id=$userid");
-
-
-
-
-
-
-
+    
 mysqli_stmt_close($stmt);
 
 }
