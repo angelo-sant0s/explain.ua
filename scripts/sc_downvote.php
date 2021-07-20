@@ -5,7 +5,7 @@ session_start();
 if (isset($_GET["id"])) {
 
     $id_ticket = $_GET["id"];
-
+    $id_cadeira = $_GET["cadeira"];
     $userid = $_SESSION["user_id"];
 
     $link = new_db_connection();
@@ -88,10 +88,12 @@ WHERE utilizador_has_topico.utilizador_id_utilizador = ? AND  utilizador_has_top
                     if (mysqli_stmt_execute($stmt1)) {
                         // Acção de sucesso
                         mysqli_stmt_close($stmt1);
+                        if(isset($_GET["cadeira"])){
+                            header("Location: ../disciplinas.php?id=$id_cadeira");}else{
                         if(isset($_GET["ticket"])){
                             header("Location: ../topico.php?id=$id_ticket");
                         } else header("Location: ../home.php");
-
+                        }
                     } else {
                         // Acção de erro
                         echo "Error:" . mysqli_stmt_error($stmt1);
