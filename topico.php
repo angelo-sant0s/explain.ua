@@ -145,10 +145,10 @@ while (mysqli_stmt_fetch($stmt)){
                             }
                         }
                         if ($controlador == 0){
-                                echo "<a href='scripts/sc_upvote.php?id=$id_ticket&ticket=$id_ticket' class='btn text-black-50'><i class='fas fa-angle-up fa-2x d-block'></i></a>
+                            echo "<a href='scripts/sc_upvote.php?id=$id_ticket&ticket=$id_ticket' class='btn text-black-50'><i class='fas fa-angle-up fa-2x d-block'></i></a>
                        $score 
                      <a href='scripts/sc_downvote.php?id=$id_ticket&ticket=$id_ticket' class='btn text-black-50'><i class='fas fa-angle-down fa-2x d-block'></i></a>";
-                            }
+                        }
                     }
 
 
@@ -168,13 +168,13 @@ while (mysqli_stmt_fetch($stmt)){
 
                 if (mysqli_stmt_prepare($statement, $buscafav)) {
 
-                mysqli_stmt_bind_param($statement, 'ii', $userid, $id_topico);
+                    mysqli_stmt_bind_param($statement, 'ii', $userid, $id_topico);
 
-                /* execute the prepared statement */
-                mysqli_stmt_execute($statement);
+                    /* execute the prepared statement */
+                    mysqli_stmt_execute($statement);
 
-                /* bind result variables */
-                mysqli_stmt_bind_result($statement,$fav);
+                    /* bind result variables */
+                    mysqli_stmt_bind_result($statement,$fav);
 
                 }
                 $counter = 0;
@@ -183,23 +183,23 @@ while (mysqli_stmt_fetch($stmt)){
 
                 mysqli_stmt_store_result($statement);
 
-                    while (mysqli_stmt_fetch($statement)) {
-                        $counter = 1;
-                        if ($fav == 1) {
-                            echo " <div class='col-1 pt-4 pt-sm-3 text-right'>
+                while (mysqli_stmt_fetch($statement)) {
+                    $counter = 1;
+                    if ($fav == 1) {
+                        echo " <div class='col-1 pt-4 pt-sm-3 text-right'>
                     <a href='scripts/sc_favorito.php?id=$id_ticket' class='btn'><i class='fas fa-star'></i></a>
                 </div>";
-                        } else {
-                            echo " <div class='col-1 pt-4 pt-sm-3 text-right'>
-                    <a href='scripts/sc_favorito.php?id=$id_ticket' class='btn'><i class='far fa-star'></i></a>
-                </div>";
-                        }
-                    }
-                    if($counter == 0){
+                    } else {
                         echo " <div class='col-1 pt-4 pt-sm-3 text-right'>
                     <a href='scripts/sc_favorito.php?id=$id_ticket' class='btn'><i class='far fa-star'></i></a>
                 </div>";
                     }
+                }
+                if($counter == 0){
+                    echo " <div class='col-1 pt-4 pt-sm-3 text-right'>
+                    <a href='scripts/sc_favorito.php?id=$id_ticket' class='btn'><i class='far fa-star'></i></a>
+                </div>";
+                }
                 mysqli_stmt_close($statement);
 
                 ?>
@@ -212,9 +212,9 @@ while (mysqli_stmt_fetch($stmt)){
 
     </section>
     <?php
-         }
     }
-?>
+    }
+    ?>
 
     <section class="row justify-content-center">
         <article class="col-12 col-md-11 mt-4">
@@ -248,26 +248,26 @@ while (mysqli_stmt_fetch($stmt)){
     </section>
     <section class="row justify-content-center">
         <article class="col-12 col-md-11 mt-4">
-<?php
+            <?php
 
-$stmt2 = mysqli_stmt_init($link);
+            $stmt2 = mysqli_stmt_init($link);
 
-$query2 = "SELECT comentario.id_comentario,comentario.texto, comentario.pontuacao, utilizador.username, utilizador.foto_perfil, HOUR(TIMEDIFF(NOW(),comentario.data_envio)), MINUTE(TIMEDIFF(NOW(), comentario.data_envio)) 
+            $query2 = "SELECT comentario.id_comentario,comentario.texto, comentario.pontuacao, utilizador.username, utilizador.foto_perfil, HOUR(TIMEDIFF(NOW(),comentario.data_envio)), MINUTE(TIMEDIFF(NOW(), comentario.data_envio)) 
 FROM comentario
 INNER JOIN utilizador ON utilizador.id_utilizador = comentario.utilizador_id_utilizador
 INNER JOIN topico On topico.id_topico = comentario.topico_id_topico
 WHERE topico.id_topico = ?
 ORDER BY comentario.pontuacao DESC LIMIT 1";
 
-if (mysqli_stmt_prepare($stmt2,$query2)){
-    mysqli_stmt_bind_param($stmt2, 'i' , $id_topico);
-    mysqli_stmt_execute($stmt2);
-    mysqli_stmt_bind_result( $stmt2, $id_comment,$top_comment,$top_score, $top_user,$top_pfp, $top_envio_hora,$top_envio_minuto);
-} else {
-    echo "ERROR: ". mysqli_error($link);
-}
-while (mysqli_stmt_fetch($stmt2)){
-?>
+            if (mysqli_stmt_prepare($stmt2,$query2)){
+                mysqli_stmt_bind_param($stmt2, 'i' , $id_topico);
+                mysqli_stmt_execute($stmt2);
+                mysqli_stmt_bind_result( $stmt2, $id_comment,$top_comment,$top_score, $top_user,$top_pfp, $top_envio_hora,$top_envio_minuto);
+            } else {
+                echo "ERROR: ". mysqli_error($link);
+            }
+            while (mysqli_stmt_fetch($stmt2)){
+            ?>
 
             <div class="cinzaClaroBg borderElement pb-3">
                 <div class="roxinhob borderElement textoClaro titulo py-4 px-3 p-sm-4 p-xl-5">
@@ -285,37 +285,37 @@ while (mysqli_stmt_fetch($stmt2)){
                             <p><?=$top_comment?></p>
                             <div class="mt-4 pr-2 mb-0 d-block">
                                 <div class="float-right">
-                                    <a href="scripts/sc_upvote_comment.php?id=<?=$id_comment?>" class="btn"><i class="fas fa-angle-up fa-sm d-block cursor"></i></a>
+                                    <a href="scripts/sc_upvote_comment.php?id=<?=$id_comment?>&post=<?=$id_ticket?>" class="btn"><i class="fas fa-angle-up fa-sm d-block cursor"></i></a>
                                     <?= $top_score ?>
-                                    <a href="scripts/sc_upvote_comment.php?id=<?=$id_comment?>" class="btn"><i class="fas fa-angle-down fa-sm d-block cursor"></i></a>
+                                    <a href="scripts/sc_upvote_comment.php?id=<?=$id_comment?>&post=<?=$id_ticket?>" class="btn"><i class="fas fa-angle-down fa-sm d-block cursor"></i></a>
                                 </div>
                                 <span class="float-left font-italic small text-secondary pt-2">
                                     <?php
                                     if ($top_envio_hora == 0){
-                            echo "Postado há ".$top_envio_minuto." minutos"; }
-                        else if ($top_envio_hora > 0 && $top_envio_hora < 24){
-                            echo "Postado há ".$top_envio_hora ." horas";}
-                        else if ($top_envio_hora < 24*7 && $top_envio_hora > 24){
-                            $top_envio_dia = intval(($top_envio_hora / 24));
-                            echo "Postado há ".$top_envio_dia." dias";
-                        }else{
-                            $top_envio_week = intval(($top_envio_hora / (24*7)));
-                            echo  "Postado há ". $top_envio_week." semanas";
-                        }
-                        ?>
+                                        echo "Postado há ".$top_envio_minuto." minutos"; }
+                                    else if ($top_envio_hora > 0 && $top_envio_hora < 24){
+                                        echo "Postado há ".$top_envio_hora ." horas";}
+                                    else if ($top_envio_hora < 24*7 && $top_envio_hora > 24){
+                                        $top_envio_dia = intval(($top_envio_hora / 24));
+                                        echo "Postado há ".$top_envio_dia." dias";
+                                    }else{
+                                        $top_envio_week = intval(($top_envio_hora / (24*7)));
+                                        echo  "Postado há ". $top_envio_week." semanas";
+                                    }
+                                    ?>
                                 </span>
                             </div>
                         </div>
                     </section>
                 </div>
-        <?php
-        }
+                <?php
+                }
 
-        $stmt3 = mysqli_stmt_init($link);
+                $stmt3 = mysqli_stmt_init($link);
 
-        $query3 = "SELECT COUNT(comentario.texto) FROM comentario WHERE comentario.topico_id_topico = ?";
+                $query3 = "SELECT COUNT(comentario.texto) FROM comentario WHERE comentario.topico_id_topico = ?";
 
-        if (mysqli_stmt_prepare($stmt3,$query3)){
+                if (mysqli_stmt_prepare($stmt3,$query3)){
                     mysqli_stmt_bind_param($stmt3, 'i' , $id_topico);
                     mysqli_stmt_execute($stmt3);
                     mysqli_stmt_bind_result( $stmt3, $total);
@@ -323,7 +323,7 @@ while (mysqli_stmt_fetch($stmt2)){
                     echo "ERROR: ". mysqli_error($link);
                 }
                 while (mysqli_stmt_fetch($stmt3)){
-            ?>
+                ?>
 
                 <div class="azul1 borderElement textoClaro titulo py-4 px-3 p-sm-4 p-xl-5">
                     <h5 class="m-0">Comentários (<?= $total; } ?>)</h5>
@@ -350,25 +350,25 @@ ORDER BY comentario.data_envio DESC;";
                 while (mysqli_stmt_fetch($stmt1)){
 
 
-                ?>
+                    ?>
 
-                <div class="fundoClaro borderElement m-3 py-4 px-3 p-sm-4 p-xl-5">
-                    <section class="row">
-                        <div class="col-12">
-                            <img class="float-left" src="imgs/<?= $fotos?>" height="40px" width="40px">
-                            <p class="float-left font-weight-bold m-0 pt-2 pl-2"><?= $pessoa ?></p>
-                        </div>
+                    <div class="fundoClaro borderElement m-3 py-4 px-3 p-sm-4 p-xl-5">
+                        <section class="row">
+                            <div class="col-12">
+                                <img class="float-left" src="imgs/<?= $fotos?>" height="40px" width="40px">
+                                <p class="float-left font-weight-bold m-0 pt-2 pl-2"><?= $pessoa ?></p>
+                            </div>
 
-                        <div class="col-12 mt-4">
-                            <p><?= $comment ?></p>
+                            <div class="col-12 mt-4">
+                                <p><?= $comment ?></p>
 
-                            <div class="mt-4 pr-2 mb-0 d-block">
-                                <div class="float-right">
-                                    <a href="scripts/sc_upvote_comment.php?id=<?=$id_comment2?>" class="btn"> <i class="fas fa-angle-up fa-sm d-block cursor"></i></a>
-                                    <?= $comment_score ?>
-                                    <a href="scripts/sc_downvote_comment.php?id=<?=$id_comment2?>" class="btn"><i class="fas fa-angle-down fa-sm d-block cursor"></i></a>
-                                </div>
-                                <span class="float-left font-italic small text-secondary pt-2">
+                                <div class="mt-4 pr-2 mb-0 d-block">
+                                    <div class="float-right">
+                                        <a href="scripts/sc_upvote_comment.php?id=<?=$id_comment2?>&post=<?=$id_ticket?>" class="btn"> <i class="fas fa-angle-up fa-sm d-block cursor"></i></a>
+                                        <?= $comment_score ?>
+                                        <a href="scripts/sc_downvote_comment.php?id=<?=$id_comment2?>&post=<?=$id_ticket?>" class="btn"><i class="fas fa-angle-down fa-sm d-block cursor"></i></a>
+                                    </div>
+                                    <span class="float-left font-italic small text-secondary pt-2">
                                 <?php
                                 if ($comment_hour == 0){
                                     echo "Postado há ".$comment_minute." minutos"; }
@@ -383,11 +383,11 @@ ORDER BY comentario.data_envio DESC;";
                                 }
                                 ?>
                                 </span>
+                                </div>
                             </div>
-                        </div>
-                    </section>
-                </div>
-            <?php } ?>
+                        </section>
+                    </div>
+                <?php } ?>
                 <a href="#" class="text-secondary small cursor mt-4 ml-3 mb-0">carregar mais comentários...</a>
             </div>
         </article>
