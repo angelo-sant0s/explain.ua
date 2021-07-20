@@ -110,11 +110,6 @@ while (mysqli_stmt_fetch($stmt)){
 
                         $statement1 = mysqli_stmt_init($link);
 
-                        $upvote = "SELECT utilizador_has_topico.votos_id_votos
-                        FROM utilizador_has_topico
-                        INNER JOIN utilizador ON utilizador.id_utilizador = utilizador_has_topico.utilizador_id_utilizador
-                        INNER JOIN topico ON topico.id_topico = utilizador_has_topico.topico_id_topico
-                        WHERE utilizador.id_utilizador = ?  AND topico.id_topico = ?";
 
                         if (mysqli_stmt_prepare($statement1, $score_track)) {
 
