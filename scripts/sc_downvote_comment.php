@@ -116,3 +116,4 @@ WHERE comentario_has_utilizador.utilizador_id_utilizador = ? AND  comentario_has
 
 
 
+
