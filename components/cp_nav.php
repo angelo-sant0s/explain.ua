@@ -4,11 +4,11 @@ session_start();
 
 ?>
 
-<nav class="navbar sticky-top d-flex navbar-expand-md bgClaro" id="navchat">
+<nav class="navbar sticky-top d-flex navbar-expand-md bgClaro justify-content-between" id="navchat">
     <a class="navbar-brand" href="home.php">
         <img src="imgs/logo.svg" alt="logo" class="img-fluid px-2" width="90px">
     </a>
-    <div class="justify-content-center d-flex d-md-none justify-content-md-right">
+    <div class="justify-content-center d-flex d-md-none">
         <button type="button" class="btn"><i class="fas fa-bell fa-2x roxinho mx-2"></i></button>
         <button type="button" class="btn"><a href="chat.php"><i class="fas fa-comment fa-2x roxinho mx-2"></i></a></button>
     </div>
@@ -18,18 +18,25 @@ session_start();
     <div class="collapse navbar-collapse d-md-flex justify-content-md-center" id="navbarSupportedContent">
         <ul class="navbar-nav text-right">
             <li class="nav-item">
-                <a class="nav-link corazul" href="home.php">Home</a>
+                <a class="nav-link" href="home.php">Home</a>
             </li>
             <?php
-            if(isset($_SESSION["username"])){ ?>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"><?=$_SESSION['username']?> <span class="caret"></span></a>
-                       <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                           <li><a class="dropdown-item drop_click" href="perfil.php?user=<?=$_SESSION['username']?>">Profile</a></li>
-                           <li><a class="dropdown-item" href="scripts/sc_logout.php">Logout</a></li>
-                       </ul>
-               </li>
-            <?php }
+if(isset($_SESSION["username"])) {
+    $session = $_SESSION["username"];
+    $userid = $_SESSION["user_id"];
+    ?>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?= $session ?>
+                </a>
+                <div class="dropdown-menu text-sm-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="perfil.php?id=<?=$userid?>">Perfil</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="scripts/sc_logout.php">Terminar Sessão</a>
+                </div>
+            </li>
+
+         <?php }
             ?>
             <li class="nav-item">
                 <a class="nav-link" href="cadeiras.php">Cadeiras</a>
@@ -37,13 +44,10 @@ session_start();
             <li class="nav-item">
                 <a class="nav-link" href="tickets.php">Ticket</a>
             </li>
-            <li class="nav-item d-md-none pt-2">
-                <a href="index.php"><i class="fas fa-sign-out-alt fa-2x roxinho"></i></a>
-            </li>
         </ul>
     </div>
     <div class="justify-content-center d-none d-md-flex justify-content-md-right">
         <button type="button" class="btn"><i class="fas fa-bell fa-2x roxinho mx-2"></i></button>
-        <button type="button" class="btn"><a href="chat.html"><i class="fas fa-comment fa-2x roxinho mx-2"></i></a></button>
+        <button type="button" class="btn"><a href="chat.php?id=<?=$userid?>"><i class="fas fa-comment fa-2x roxinho mx-2"></i></a></button>
     </div>
 </nav>

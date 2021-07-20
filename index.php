@@ -77,7 +77,7 @@
                     </div>
                     <div class="modalinputs">
                         <i class="fas fa-key"></i>
-                        <input type="text" placeholder="password" name="password">
+                        <input type="password" placeholder="password" name="password">
                     </div>
                     <input type="checkbox" id="savepassword" name="savepassword" value="xd" class="mt-2">
                     <label for="savepassword" class="text-black-50 titulo">guardar password</label><br>

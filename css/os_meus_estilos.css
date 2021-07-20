@@ -325,16 +325,19 @@ nav a{
     display: inline-block!important;
 }
 
+nav a:link{
+    color: #998DC5;
+}
 
-
-.nav-link:hover{
+.nav-link:hover {
     border-bottom: 2px solid #998DC5;
     color: #998DC5;
     border-top: 2px solid #998DC5;
 }
 
-nav a:link{
+.dropdown-item:hover{
     color: #998DC5;
+    border-bottom: #998DC5 2px solid;
 }
 
 .filtro button:hover{
@@ -487,22 +490,6 @@ footer a:hover{
 
 
 
-/* Footer */
-
-footer p{
-    border-top: white 1px solid;
-}
-
-footer a{
-    color:#F4F4F4 ;
-    text-decoration: none;
-}
-
-footer a:hover{
-    color: #998DC5;
-    border: none;
-    text-decoration: none;
-}
 
 
 .tamanho{
@@ -512,34 +499,6 @@ footer a:hover{
 .tamanho h4{
     font-size: 20px;
 }
-
-/* Navbar */
-
-nav{
-    font-family: 'Exo 2', sans-serif;
-}
-
-nav a{
-    text-decoration: none;
-    color: #444444;
-    padding: 0 5px;
-    display: inline-block!important;
-}
-
-
-
-.nav-link:hover{
-    border-bottom: 2px solid #998DC5;
-    color: #998DC5;
-    border-top: 2px solid #998DC5;
-}
-
-nav a:link{
-    color: #998DC5;
-}
-
-
-
 
 /* Juliana tickets */
 
