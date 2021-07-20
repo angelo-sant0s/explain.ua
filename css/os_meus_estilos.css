@@ -802,3 +802,17 @@ a.cursor:hover {
 #padding{
     padding-right: 20px;
 }
+
+#hometopic a{
+    color: #998DC5;
+}
+
+#hometopic a:hover{
+    color: #6699CC;
+    text-decoration: none;
+}
+
+#hometopic a:link{
+    color: #998DC5;
+    text-decoration: none;
+}

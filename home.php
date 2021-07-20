@@ -23,32 +23,36 @@ $stmt2 = mysqli_stmt_init($local_link);
 if(isset($_GET['order'])){
     switch ($_GET['order']){
         case "recente":
-            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao,cadeira.imagem
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
 INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
+INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
 ORDER BY topico.data_publicacao DESC";
         break;
         case "popular":
-            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao,cadeira.imagem
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
 INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
+INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
 ORDER BY ticket.data_submissao ASC";
         break;
         case "top":
-            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
+            $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username, HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao,cadeira.imagem
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador 
 INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
+INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
 ORDER BY topico.pontuacao DESC";
         break;
     }
 }else{
-    $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao
+    $query = "SELECT ticket.titulo, ticket.corpo_mensagem, ticket.id_ticket, topico.id_topico, utilizador.username,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), topico.pontuacao,cadeira.imagem
 FROM ticket 
 INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
 INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
+INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
 ORDER BY topico.data_publicacao DESC";
 }
 
@@ -90,18 +94,18 @@ WHERE id_topico = ?;";
     <?php
     if (mysqli_stmt_prepare($stmt,$query)){
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $titulo, $texto, $id, $idtopico, $autor, $publishing_hour, $publishing_minute, $score);
+        mysqli_stmt_bind_result($stmt, $titulo, $texto, $id, $idtopico, $autor, $publishing_hour, $publishing_minute, $score, $cadeirapfp);
     }
     mysqli_stmt_store_result($stmt);
     while (mysqli_stmt_fetch($stmt)){
         ?>
-     <div class='container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98'>
+     <div class='container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98' id="hometopic">
     <div class='pl-3 py-4'>
-        <img class='iconzito float-left pr-4' src='imgs/iconn.png'>
+        <img class='iconzito float-left pr-4' src='imgs/<?=$cadeirapfp?>'>
         <div class='row'>
             <article class='col-9'>
-                <a href='topico.php?id=<?=$id?>'> <h3 class='titulo'> <?= $titulo ?></h3> </a>
-<h5 class='titulo font-italic text-black-50'> <?= $autor ?></h5>
+                <a href='topico.php?id=<?=$id?>'> <h2 class='titulo corazul'> <?= $titulo ?></h2> </a>
+<h5 class='titulo font-italic text-black-50'> Submetido  por <span class="textoAzul1"><?= $autor ?></span></h5>
 </article>
 <article class='col-3'>
     <div class='float-right'>
