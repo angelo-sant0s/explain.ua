@@ -25,7 +25,7 @@ $link = new_db_connection();
 
 $stmt = mysqli_stmt_init($link);
 
-$query = "SELECT ticket.titulo, ticket.corpo_mensagem,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), utilizador.username, utilizador.id_utilizador, topico.pontuacao, topico.id_topico, cadeira.imagem 
+$query = "SELECT ticket.titulo, ticket.corpo_mensagem,HOUR(TIMEDIFF(NOW(), topico.data_publicacao)), MINUTE(TIMEDIFF(NOW(), topico.data_publicacao)), utilizador.username, utilizador.id_utilizador,topico.id_topico, cadeira.imagem 
 FROM ticket 
 INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador
 INNER JOIN topico ON topico.id_topico = ticket.topico_id_topico
@@ -39,7 +39,7 @@ $id_ticket = $_GET["id"];
 if (mysqli_stmt_prepare($stmt,$query)){
     mysqli_stmt_bind_param($stmt, 'i' , $id_ticket);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result( $stmt, $titulo,$corpo, $publishing_hour,$publishing_minute, $autor, $idauthor,$score, $id_topico,$cadeira_img);
+    mysqli_stmt_bind_result( $stmt, $titulo,$corpo, $publishing_hour,$publishing_minute, $autor, $idauthor , $id_topico,$cadeira_img);
 } else {
     echo "ERROR: ". mysqli_error($link);
 }
@@ -75,9 +75,84 @@ while (mysqli_stmt_fetch($stmt)){
                 </div>
                 <!-- falta upvote/downvote -->
                 <div class="col-1 pt-4 pt-sm-3 text-right">
-                    <i class="fas fa-angle-up fa-2x d-block cursor"></i>
-                    <?= $score ?>
-                    <i class="fas fa-angle-down fa-2x d-block cursor"></i>
+                    <?php
+                    $statement2 = mysqli_stmt_init($link);
+
+                    $upvote = "SELECT utilizador_has_topico.votos_id_votos
+        FROM utilizador_has_topico
+        INNER JOIN utilizador ON utilizador.id_utilizador = utilizador_has_topico.utilizador_id_utilizador
+        INNER JOIN topico ON topico.id_topico = utilizador_has_topico.topico_id_topico
+        WHERE utilizador.id_utilizador = ?  AND topico.id_topico = ?";
+
+                    if (mysqli_stmt_prepare($statement2, $upvote)) {
+
+                        mysqli_stmt_bind_param($statement2, 'ii', $userid, $id_topico);
+
+                        /* execute the prepared statement */
+                        mysqli_stmt_execute($statement2);
+
+                        /* bind result variables */
+                        mysqli_stmt_bind_result($statement2,$vote);
+
+                    }
+
+                    $controlador = 0;
+
+                    mysqli_stmt_store_result($statement2);
+
+                    while(mysqli_stmt_fetch($statement2)){
+
+
+                        $score_track ="SELECT SUM(votos.valor_voto)
+                           FROM votos
+                           INNER JOIN utilizador_has_topico ON utilizador_has_topico.votos_id_votos = votos.id_votos
+                           WHERE utilizador_has_topico.topico_id_topico = ?";
+
+                        $statement1 = mysqli_stmt_init($link);
+
+
+                        if (mysqli_stmt_prepare($statement1, $score_track)) {
+
+                            mysqli_stmt_bind_param($statement1, 'i', $id_topico);
+
+                            /* execute the prepared statement */
+                            mysqli_stmt_execute($statement1);
+
+                            /* bind result variables */
+                            mysqli_stmt_bind_result($statement1,$score);
+
+                        }
+
+                        mysqli_stmt_store_result($statement1);
+
+                        while(mysqli_stmt_fetch($statement1)) {
+
+
+                            $controlador = 1;
+
+                            if ($vote == 1) {
+                                echo "<a href='scripts/sc_upvote.php?id=$id_ticket&ticket=$id_ticket' class='btn text-black-50'><i class='fas fa-angle-up fa-2x d-block'></i></a>
+                       $score 
+                     <a href='scripts/sc_downvote.php?id=$id_ticket&ticket=$id_ticket' class='btn text-black-50'><i class='fas fa-angle-down fa-2x d-block'></i></a>";
+                            } else if ($vote == 2) {
+                                echo "<a href='scripts/sc_upvote.php?id=$id_ticket&ticket=$id_ticket' class='btn text-black-50'><i class='fas fa-angle-up fa-2x d-block'></i></a>
+                       $score 
+                     <a href='scripts/sc_downvote.php?id=$id_ticket&ticket=$id_ticket' class='btn corazul'><i class='fas fa-chevron-down fa-2x d-block'></i></a>";
+                            } else if ($vote == 3) {
+                                echo "<a href='scripts/sc_upvote.php?id=$id_ticket&ticket=$id_ticket' class='btn corazul'><i class='fas fa-chevron-up fa-2x'></i></a>
+                       $score 
+                     <a href='scripts/sc_downvote.php?id=$id_ticket?' class='btn text-black-50'><i class='fas fa-angle-down fa-2x d-block'></i></a>";
+                            } else if ($controlador == 0) {
+                                echo "<a href='scripts/sc_upvote.php?id=$id_ticket&ticket=$id_ticket' class='btn text-black-50'><i class='fas fa-angle-up fa-2x d-block'></i></a>
+                       $score 
+                     <a href='scripts/sc_downvote.php?id=$id_ticket&ticket=$id_ticket' class='btn text-black-50'><i class='fas fa-angle-down fa-2x d-block'></i></a>";
+                            }
+                        }
+                    }
+
+                    mysqli_stmt_close($statement2)
+
+                    ?>
                 </div>
                 <?php
 
