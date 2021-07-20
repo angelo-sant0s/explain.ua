@@ -6,6 +6,8 @@ if (isset($_GET["id"])){
 
     $id_comment = $_GET["id"];
 
+    $id_ticket = $_GET["post"];
+
     $userid = $_SESSION["user_id"];
 
     $link = new_db_connection();
@@ -62,9 +64,9 @@ WHERE comentario_has_utilizador.utilizador_id_utilizador = ? AND  comentario_has
                 $stmt1 = mysqli_stmt_init($link);
 
                 if ($contador_temp == 0) {
-                    $query1 = "INSERT INTO utilizador_has_topico (utilizador_has_topico.utilizador_id_utilizador, utilizador_has_topico.topico_id_topico,utilizador_has_topico.votos_id_votos) VALUES(?,?,3)";
+                    $query1 = "INSERT INTO comentario_has_utilizador(comentario_has_utilizador.comentario_id_comentario , comentario_has_utilizador.utilizador_id_utilizador,comentario_has_utilizador.votos_id_votos,comentario_has_utilizador.data_voto) VALUES(?,?,3,NOW())";
                 } else {
-                    $query1 = "UPDATE `utilizador_has_topico` SET `votos_id_votos` = ? WHERE `utilizador_has_topico`.`utilizador_id_utilizador` = ? AND `utilizador_has_topico`.`topico_id_topico` = ?";
+                    $query1 = "UPDATE `comentario_has_utilizador` SET `votos_id_votos` = ? WHERE `comentario_has_utilizador`.`utilizador_id_utilizador` = ? AND `comentario_has_utilizador`.`comentario_id_comentario` = ?";
                 }
 
                 echo $z;
@@ -72,13 +74,13 @@ WHERE comentario_has_utilizador.utilizador_id_utilizador = ? AND  comentario_has
                 if (mysqli_stmt_prepare($stmt1, $query1)) {
 
                     if ($contador_temp == 0) {
-                        mysqli_stmt_bind_param($stmt1, 'ii', $userid, $id_topico);
+                        mysqli_stmt_bind_param($stmt1, 'ii', $id_comment, $userid);
                     } else if ($z == 3 and $contador_temp != 0) {
                         $voto = 1;
-                        mysqli_stmt_bind_param($stmt1, 'iii', $voto, $userid, $id_topico);
+                        mysqli_stmt_bind_param($stmt1, 'iii', $voto, $userid, $id_comment);
                     } else if ($z != 3 and $contador_temp != 0) {
                         $voto = 3;
-                        mysqli_stmt_bind_param($stmt1, 'iii', $voto, $userid, $id_topico);
+                        mysqli_stmt_bind_param($stmt1, 'iii', $voto, $userid, $id_comment);
                     }
 
 
