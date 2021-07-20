@@ -1,14 +1,14 @@
 <?php
 
-require_once "../connections/connection.php";
+require_once "../connections/connections.php";
 
 session_start();
-$target_dir = "../recursos/";
+$target_dir = "../imgs/recursos/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-if (isset($_SESSION["id_user"])) {
-    $id_utlizador = $_SESSION["id_user"];
+if (isset($_SESSION["user_id"])) {
+    $id_utlizador = $_SESSION["user_id"];
 }
 
 if(isset($_POST["submit"])) {
@@ -44,10 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($image) {
         $filename = stripslashes($_FILES['fileToUpload']['name']);
         $extension = $imageFileType;
-        if (($extension != "jpg") && ($extension != "jpeg")
-            && ($extension != "png") && ($extension != "gif")) {
-            $errors = 1;
-        }
+        if (($extension != "jpg") && ($extension != "jpeg") && ($extension != "png") && ($extension != "gif")) {$errors = 1;}
         else {
             $size = filesize($_FILES['fileToUpload']['tmp_name']);
             if ($size > 50000000 * 1024) {
@@ -76,17 +73,17 @@ if ($uploadOk == 0) {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 
         // Update do campo imagem na tabela X
-        $user = $_SESSION["username"];
         $link = new_db_connection();
         $stmt = mysqli_stmt_init($link);
         $nome_imagem= htmlspecialchars( basename( $_FILES["fileToUpload"]["name"]));
-        $query ="UPDATE `utilizadores` SET `imagem_perfil_link` = "."'$nome_imagem'"." WHERE `id_utilizadores` = "."'$id_utlizador'";
+        $query ="UPDATE utilizador SET foto_perfil = ? WHERE utilizador.id_utilizador = ?";
         if (mysqli_stmt_prepare($stmt, $query)) {
+            mysqli_stmt_bind_param($stmt, 'si', $nome_imagem, $id_utlizador);
             mysqli_stmt_execute($stmt);
         }else {
             echo mysqli_stmt_error($stmt);
         }
-        header("Location: ../index.php?id=$id_utlizador");
+        header("Location: ../perfil.php?id=$id_utlizador");
 
         // Redirecionar para página qualquer
     } else {
