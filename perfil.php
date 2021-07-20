@@ -72,7 +72,8 @@ while (mysqli_stmt_fetch($stmt)) {
             </article>
 
             <form class=" align-items-center text-center py-3  " action="scripts/sc_upload_photo.php?id=<?php echo $userid ?>" method=post enctype=multipart/form-data>
-                <input class="border-1 mx-2  text-light px-0 col-6 " type="file" name="fileToUpload" id="fileToUpload">
+
+                <input class="border-1 mx-2  text-light px-0 col-6 position-relative" type="file" name="fileToUpload" id="fileToUpload">
                 <input class="border-1 btn btn-light my-0 col-4 mx-1" type="submit" value="Upload Image" name="submit">
             </form>
 
