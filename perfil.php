@@ -63,14 +63,17 @@ if (mysqli_stmt_prepare($stmt, $query)) {
 
                     <article id="profileJoin" class="col-12 vh-55 position-absolute bg-profile">
                         <article class="col-12 text-center  profilePic">
-                            <img src="imgs/<?php echo $foto  ?>" class="borderElement img-fluid profilePicSize">
+                            <img src="imgs/recursos/<?php echo $foto  ?>" class="borderElement img-fluid profilePicSize">
                         </article>
 
                         <article id="profileName" class="pt-4 col-12 text-centerfont-weight-bold rem2">
                             <div class="text-center"><?= $nome ?></div>
                         </article>
                     </article>
-
+                    <form class=" align-items-center text-center py-3  " action="scripts/sc_upload_photo.php?id=<?php $userid ?>" method=post enctype=multipart/form-data>
+                        <input class="border-1 mx-2  text-light px-0 col-6 " type="file" name="fileToUpload" id="fileToUpload">
+                        <input class="border-1 btn btn-light my-0 col-4 mx-1" type="submit" value="Upload Image" name="submit">
+                    </form>
 
 
 
