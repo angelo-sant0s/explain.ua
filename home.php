@@ -116,49 +116,48 @@ WHERE id_topico = ?;";
         <?php
         $statement = mysqli_stmt_init($local_link);
 
+        $score_track = "SELECT SUM(votos.valor_voto)
+                           FROM votos
+                           INNER JOIN utilizador_has_topico ON utilizador_has_topico.votos_id_votos = votos.id_votos
+                           WHERE utilizador_has_topico.topico_id_topico = ?";
+
         $upvote = "SELECT utilizador_has_topico.votos_id_votos
         FROM utilizador_has_topico
         INNER JOIN utilizador ON utilizador.id_utilizador = utilizador_has_topico.utilizador_id_utilizador
         INNER JOIN topico ON topico.id_topico = utilizador_has_topico.topico_id_topico
         WHERE utilizador.id_utilizador = ?  AND topico.id_topico = ?";
 
-        if (mysqli_stmt_prepare($statement, $upvote)) {
+        if (mysqli_stmt_prepare($statement, $score_track)) {
 
-        mysqli_stmt_bind_param($statement, 'ii', $userid, $idtopico);
+        mysqli_stmt_bind_param($statement, 'i', $idtopico);
 
         /* execute the prepared statement */
         mysqli_stmt_execute($statement);
 
         /* bind result variables */
-        mysqli_stmt_bind_result($statement,$vote);
+        mysqli_stmt_bind_result($statement,$score);
 
         }
-
-        $controlador = 0;
 
 
         mysqli_stmt_store_result($statement);
 
         while(mysqli_stmt_fetch($statement)) {
 
-            $controlador = 1;
+            $controlador = 0;
 
-            $score_track = "SELECT SUM(votos.valor_voto)
-                           FROM votos
-                           INNER JOIN utilizador_has_topico ON utilizador_has_topico.votos_id_votos = votos.id_votos
-                           WHERE utilizador_has_topico.topico_id_topico = ?";
 
             $statement1 = mysqli_stmt_init($local_link);
 
-            if (mysqli_stmt_prepare($statement1, $score_track)) {
+            if (mysqli_stmt_prepare($statement1, $upvote)) {
 
-                mysqli_stmt_bind_param($statement1, 'i', $idtopico);
+                mysqli_stmt_bind_param($statement1, 'ii', $userid,  $idtopico);
 
                 /* execute the prepared statement */
                 mysqli_stmt_execute($statement1);
 
                 /* bind result variables */
-                mysqli_stmt_bind_result($statement1, $score);
+                mysqli_stmt_bind_result($statement1, $vote);
 
             }
 
@@ -167,6 +166,7 @@ WHERE id_topico = ?;";
 
             while (mysqli_stmt_fetch($statement1)) {
 
+                $controlador = 1;
 
                 if ($vote == 1) {
                     echo "<a href='scripts/sc_upvote.php?id=$id' class='btn text-black-50'><i class='fas fa-angle-up fa-2x d-block'></i></a>
@@ -182,11 +182,10 @@ WHERE id_topico = ?;";
                      <a href='scripts/sc_downvote.php?id=$id' class='btn text-black-50'><i class='fas fa-angle-down fa-2x d-block'></i></a>";
                 }
             }
-            $score2 = $score;
         }
             if ($controlador == 0) {
                 echo "<a href='scripts/sc_upvote.php?id=$id' class='btn text-black-50'><i class='fas fa-angle-up fa-2x d-block'></i></a>
-                       $score2 
+                       $score 
                      <a href='scripts/sc_downvote.php?id=$id' class='btn text-black-50'><i class='fas fa-angle-down fa-2x d-block'></i></a>";
             }
          mysqli_stmt_close($statement);
