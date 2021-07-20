@@ -180,11 +180,11 @@ WHERE id_topico = ?;";
                        $score 
                      <a href='scripts/sc_downvote.php?id=$id' class='btn corazul'><i class='fas fa-chevron-down fa-2x d-block'></i></a>";
             } else if ($vote == 3) {
-                echo "<a href='scripts/sc_upvote.php?id=$id?' class='btn corazul'><i class='fas fa-chevron-up fa-2x'></i></a>
+                echo "<a href='scripts/sc_upvote.php?id=$id' class='btn corazul'><i class='fas fa-chevron-up fa-2x'></i></a>
                        $score 
-                     <a href='scripts/sc_downvote.php?id=$id?' class='btn text-black-50'><i class='fas fa-angle-down fa-2x d-block'></i></a>";
+                     <a href='scripts/sc_downvote.php?id=$id' class='btn text-black-50'><i class='fas fa-angle-down fa-2x d-block'></i></a>";
             } else if ($controlador == 0) {
-                echo "<a href='scripts/sc_upvote.php?id=$id?' class='btn text-black-50'><i class='fas fa-angle-up fa-2x d-block'></i></a>
+                echo "<a href='scripts/sc_upvote.php?id=$id' class='btn text-black-50'><i class='fas fa-angle-up fa-2x d-block'></i></a>
                        $score 
                      <a href='scripts/sc_downvote.php?id=$id' class='btn text-black-50'><i class='fas fa-angle-down fa-2x d-block'></i></a>";
             }

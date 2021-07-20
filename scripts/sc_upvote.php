@@ -2,7 +2,7 @@
 require_once "../connections/connections.php";
 session_start();
 
-if (isset($_GET["id"]))
+if (isset($_GET["id"])){
 
     $id_ticket = $_GET["id"];
 
@@ -75,47 +75,45 @@ WHERE utilizador_has_topico.utilizador_id_utilizador = ? AND  utilizador_has_top
 
                     if ($contador_temp == 0) {
                         mysqli_stmt_bind_param($stmt1, 'ii', $userid, $id_topico);
-                    } else if ($z == 3 AND $contador_temp != 0) {
+                    } else if ($z == 3 and $contador_temp != 0) {
                         $voto = 1;
                         mysqli_stmt_bind_param($stmt1, 'iii', $voto, $userid, $id_topico);
-                    } else if ($z != 3 AND $contador_temp != 0) {
+                    } else if ($z != 3 and $contador_temp != 0) {
                         $voto = 3;
                         mysqli_stmt_bind_param($stmt1, 'iii', $voto, $userid, $id_topico);
                     }
 
 
+                    // Devemos validar também o resultado do execute!
+                    if (mysqli_stmt_execute($stmt1)) {
+                        // Acção de sucesso
+                        mysqli_stmt_close($stmt1);
+                        if(isset($_GET["ticket"])){
+                            header("Location: ../topico.php?id=$id_ticket");
+                        }else header("Location: ../home.php");
 
-
-                        // Devemos validar também o resultado do execute!
-                        if (mysqli_stmt_execute($stmt1)) {
-                            // Acção de sucesso
-                            mysqli_stmt_close($stmt1);
-                            header("Location: ../home.php");
-
-                        } else {
-                            // Acção de erro
-                            echo "Error:" . mysqli_stmt_error($stmt1);
-                            header("Location: ../home.php");
-                        }
-                    }
-                else {
+                    } else {
                         // Acção de erro
-                        echo "Error:" . mysqli_error($link);
+                        echo "Error:" . mysqli_stmt_error($stmt1);
                         header("Location: ../home.php");
                     }
-
+                } else {
+                    // Acção de erro
+                    echo "Error:" . mysqli_error($link);
+                    header("Location: ../home.php");
                 }
 
             }
-        else {
-                echo mysqli_stmt_error($stmt);
-            }
-
 
         } else {
             echo mysqli_stmt_error($stmt);
         }
 
+
+    } else {
+        echo mysqli_stmt_error($stmt);
+    }
+}
 
 
 
