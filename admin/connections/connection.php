@@ -4,8 +4,8 @@ error_reporting(E_ALL);
 function new_db_connection()
 {
     // Define working environment
-    $env = "labmm";
-    //$env = "localhost";
+    //$env = "labmm";
+    $env = "localhost";
 
     // Variables for the database connection
     if ($env == "labmm") {
@@ -18,7 +18,7 @@ function new_db_connection()
         $hostname = 'localhost';
         $username = "root";
         $password = "";
-        $dbname = "";
+        $dbname = "deca_20l4_30";
     }
 
 // Makes the connection
