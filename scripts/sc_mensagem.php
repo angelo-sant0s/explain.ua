@@ -10,6 +10,8 @@ if (isset($_SESSION["user_id"]) && isset($_POST["mensagem"]) && $_SESSION["user_
     $message = $_POST["mensagem"];
     $ticketid = $_GET["ticketid"];
 
+echo "is it";
+
 
 // Create a new DB connection
 $link = new_db_connection();

@@ -116,33 +116,49 @@ function d_none_chats () {
 }
 
 function d_flex_chat (id) {
-    document.getElementById("chatRow"+id).style.display = "flex"
-    currentchatfocus = id
+    document.getElementById("chatRow"+id).style.display = "flex";
+    currentchatfocus = id;
+
+}
+
+function scrolltoview (id) {
+    document.getElementById("msg"+id).scrollIntoView();
 }
 
 if (document.body.contains(document.getElementById("chattitle"))) {
     setInterval(adjust_stuff, 100)
 
-
     document.getElementById("backtbn").onclick = function () {
         backBtn()
     }
 
-
+    userid = document.getElementById("userid").innerHTML
     ticketids = document.getElementById("infochatids").innerHTML
     ticketids = ticketids.split( " ");
     currentchatfocus = ticketids[0]
-    console.log(ticketids[0])
+    lastmsgid = document.getElementById("lastmessageid").innerHTML
+    lastmsgid = lastmsgid.split(" ");
 
     d_none_chats()
     d_flex_chat(ticketids[0])
+    document.getElementById("formMessage").action = "scripts/sc_mensagem.php?id="+userid+"&ticketid="+ticketids[0]+""
 
+    console.log(lastmsgid[0])
+    console.log(ticketids[0])
     for (let i=0; i<ticketids.length; i++) {
+
         let id = ticketids[i]
+        let msgid = lastmsgid[i]
         document.getElementById("smallchat"+id).onclick = function () {
             d_none_chats()
             d_flex_chat(id)
+            setTimeout(function (){scrolltoview(msgid)},50)
+
             chatBtn()
+
+            document.getElementById("formMessage").action = "scripts/sc_mensagem.php?id="+userid+"&ticketid="+id+""
+            console.log("running")
+
         }
     }
 

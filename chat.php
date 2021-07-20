@@ -14,8 +14,10 @@
 
 <?php
 
-function msg_direita($mensagem, $foto){
-    echo "<section class='row mt-2 justify-content-end'>
+$lastmsgarray = "";
+
+function msg_direita($mensagem, $foto, $idmsg){
+    echo "<section id='msg".$idmsg."' class='row mt-2 justify-content-end'>
                                         <article class='col-8 p-1''>
                                             <div class='p-2 bg-person2 borderElement'>".$mensagem."</div>
                                         </article>
@@ -25,8 +27,8 @@ function msg_direita($mensagem, $foto){
                                     </section>";
 }
 
-function msg_esquerda($mensagem, $foto){
-    echo "<section class='row mt-2'>
+function msg_esquerda($mensagem, $foto, $idmsg){
+    echo "<section id='msg".$idmsg."' class='row mt-2'>
                                         <article class='col-1 p-1 text-center'>
                                             <img src='imgs/".$foto."' class='img-fluid faceIcon'>
                                         </article>
@@ -48,9 +50,9 @@ if (!isset($_SESSION["username"]) || (($_GET["id"] != $_SESSION["user_id"]))) {
     header("Location: ../blockedAccess.php");
 }
 
-$userid = $_GET["id"];
+$userid = $_SESSION["user_id"];
 $perfilid = $_SESSION["role"];
-$botid = 3;
+$botid = 0;
 
 
 // We need the function!
@@ -111,12 +113,24 @@ mysqli_stmt_close($stmt);
                 /* create a prepared statement */
                 $stmt = mysqli_stmt_init($link);
 
-                $query = "SELECT ticket.utilizador_id_utilizador1, utilizador.nome, utilizador.foto_perfil, ticket.titulo, ticket.id_ticket, ticket.data_ultima, cadeira.sigla, HOUR(TIMEDIFF(NOW(), ticket.data_ultima)), MINUTE(TIMEDIFF(NOW(), ticket.data_ultima)), HOUR(ticket.data_ultima), MINUTE(ticket.data_ultima)
+                if ($_SESSION["role"]==2) {
+                    $query = "SELECT ticket.utilizador_id_utilizador1, utilizador.nome, utilizador.foto_perfil, ticket.titulo, ticket.id_ticket, ticket.data_ultima, cadeira.sigla, HOUR(TIMEDIFF(NOW(), ticket.data_ultima)), MINUTE(TIMEDIFF(NOW(), ticket.data_ultima)), HOUR(ticket.data_ultima), MINUTE(ticket.data_ultima)
                             FROM ticket
                             INNER JOIN utilizador ON ticket.utilizador_id_utilizador1 = utilizador.id_utilizador
                             INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
                             WHERE ticket.utilizador_id_utilizador = ?  
                             ORDER BY `ticket`.`data_ultima` DESC";
+                }
+                else if ($_SESSION["role"]==1) {
+                    $query = "SELECT ticket.utilizador_id_utilizador, utilizador.nome, utilizador.foto_perfil, ticket.titulo, ticket.id_ticket, ticket.data_ultima, cadeira.sigla, HOUR(TIMEDIFF(NOW(), ticket.data_ultima)), MINUTE(TIMEDIFF(NOW(), ticket.data_ultima)), HOUR(ticket.data_ultima), MINUTE(ticket.data_ultima)
+                            FROM ticket
+                            INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador
+                            INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
+                            WHERE ticket.utilizador_id_utilizador1 = ?
+                            ORDER BY `ticket`.`data_ultima` DESC";
+                }
+
+
 
                 if (mysqli_stmt_prepare($stmt, $query)) {
 
@@ -199,7 +213,7 @@ mysqli_stmt_close($stmt);
 
                 mysqli_stmt_close($stmt);
                 echo "<h1 id='infochatids' class='d-none'>$num_ids</h1>";
-
+                echo "<h1 id='userid' class='d-none'>$userid</h1>"
                 ?>
                 </article>
 
@@ -220,9 +234,17 @@ mysqli_stmt_close($stmt);
             /* create a prepared statement */
             $stmt2 = mysqli_stmt_init($link);
 
-            $query2 = "SELECT ticket.id_ticket, ticket.titulo, ticket.corpo_mensagem, YEAR(ticket.data_submissao), MONTHNAME(ticket.data_submissao), DAY(ticket.data_submissao), HOUR(ticket.data_submissao), MINUTE(ticket.data_submissao) FROM ticket  
+
+            if ($_SESSION["role"]==2) {
+                $query2 = "SELECT ticket.id_ticket, ticket.titulo, ticket.corpo_mensagem, YEAR(ticket.data_submissao), MONTHNAME(ticket.data_submissao), DAY(ticket.data_submissao), HOUR(ticket.data_submissao), MINUTE(ticket.data_submissao) FROM ticket  
                         WHERE ticket.utilizador_id_utilizador = ?  
                         ORDER BY `ticket`.`data_ultima` DESC";
+            }
+            else if ($_SESSION["role"]==1) {
+                $query2 = "SELECT ticket.id_ticket, ticket.titulo, ticket.corpo_mensagem, YEAR(ticket.data_submissao), MONTHNAME(ticket.data_submissao), DAY(ticket.data_submissao), HOUR(ticket.data_submissao), MINUTE(ticket.data_submissao) FROM ticket  
+                        WHERE ticket.utilizador_id_utilizador1 = ?  
+                        ORDER BY `ticket`.`data_ultima` DESC";
+            }
 
             if (mysqli_stmt_prepare($stmt2, $query2)) {
 
@@ -278,11 +300,22 @@ mysqli_stmt_close($stmt);
 
 
 
-                        $query3 = "SELECT ticket.id_ticket, mensagens.texto, mensagens.utilizador_id_utilizador, utilizador.perfil_idperfil, utilizador.foto_perfil FROM ticket
+
+
+                        if ($_SESSION["role"]==2) {
+                            $query3 = "SELECT ticket.id_ticket, mensagens.texto, mensagens.utilizador_id_utilizador, utilizador.perfil_idperfil, utilizador.foto_perfil, mensagens.id_mensagens FROM ticket
                                         INNER JOIN mensagens ON mensagens.ticket_id_ticket = ticket.id_ticket
                                         INNER JOIN utilizador ON utilizador.id_utilizador = mensagens.utilizador_id_utilizador
                                         WHERE ticket.utilizador_id_utilizador = ? AND ticket.id_ticket = ?  
                                         ORDER BY `mensagens`.`data_envio` ASC";
+                        }
+                        else if ($_SESSION["role"]==1) {
+                            $query3 = "SELECT ticket.id_ticket, mensagens.texto, mensagens.utilizador_id_utilizador, utilizador.perfil_idperfil, utilizador.foto_perfil, mensagens.id_mensagens FROM ticket
+                                        INNER JOIN mensagens ON mensagens.ticket_id_ticket = ticket.id_ticket
+                                        INNER JOIN utilizador ON utilizador.id_utilizador = mensagens.utilizador_id_utilizador
+                                        WHERE ticket.utilizador_id_utilizador1 = ? AND ticket.id_ticket = ?  
+                                        ORDER BY `mensagens`.`data_envio` ASC";
+                        }
 
                         if (mysqli_stmt_prepare($stmt3, $query3)) {
 
@@ -292,7 +325,7 @@ mysqli_stmt_close($stmt);
                         mysqli_stmt_execute($stmt3);
 
                         /* bind result variables */
-                        mysqli_stmt_bind_result($stmt3,$id_ticket_useless, $texto, $remetente_id, $remetente_permissao, $remetente_foto );
+                        mysqli_stmt_bind_result($stmt3,$id_ticket_useless, $texto, $remetente_id, $remetente_permissao, $remetente_foto, $mensagem_id );
 
                         }
 
@@ -305,20 +338,27 @@ mysqli_stmt_close($stmt);
                                 // mensagens do bot
                             }
                             else if ($_SESSION["role"]==1 && $remetente_permissao == 1) {
-                                msg_direita($texto, $remetente_foto);
+                                msg_direita($texto, $remetente_foto, $mensagem_id);
                             }
                             else if ($_SESSION["role"]==1 && $remetente_permissao == 2) {
-                                msg_esquerda($texto, $remetente_foto);
+                                msg_esquerda($texto, $remetente_foto, $mensagem_id);
                             }
                             else if ($_SESSION["role"]==2 && $remetente_permissao == 2) {
-                                msg_direita($texto, $remetente_foto);
+                                msg_direita($texto, $remetente_foto, $mensagem_id);
                             }
                             else if ($_SESSION["role"]==2 && $remetente_permissao == 1) {
-                                msg_esquerda($texto, $remetente_foto);
+                                msg_esquerda($texto, $remetente_foto, $mensagem_id);
                             }
+
 
 
                         }
+                        if ($lastmsgarray=="") {
+                            $lastmsgarray = "$mensagem_id";
+                        }
+                        else ($lastmsgarray = $lastmsgarray . " " . $mensagem_id);
+
+
 
 
 
@@ -337,7 +377,7 @@ mysqli_stmt_close($stmt);
             }
 
             mysqli_stmt_close($stmt2);
-
+            echo "<h1 id='lastmessageid' class='d-none'>$lastmsgarray</h1>";
             ?>
 
 
