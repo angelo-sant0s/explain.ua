@@ -331,8 +331,47 @@ mysqli_stmt_close($stmt);
 
 
 
+
+
                         mysqli_stmt_store_result($stmt3);
                         while (mysqli_stmt_fetch($stmt3)) {
+
+                            if ($texto=="") {
+
+                                $stmt10 = mysqli_stmt_init($link);
+                                $query10 = "SELECT recursos.link_recurso, tipo.terminacao FROM recursos INNER JOIN tipo ON tipo.id_tipo = recursos.tipo_id_tipo WHERE recursos.mensagens_id_mensagens = ?";
+                                if (mysqli_stmt_prepare($stmt10, $query10)) {
+                                    mysqli_stmt_bind_param($stmt10, 'i', $mensagem_id);
+                                    mysqli_stmt_execute($stmt10);
+                                    mysqli_stmt_bind_result($stmt10,$nome_recurso, $tipo_recurso);
+                                }
+                                mysqli_stmt_store_result($stmt10);
+                                while (mysqli_stmt_fetch($stmt10)) {
+                                    switch ($tipo_recurso){
+                                        case ".jpg":
+                                        case ".gif":
+                                        case ".png":
+                                            $texto = "<img src='imgs/recursos/$nome_recurso$tipo_recurso'>";
+                                            break;
+                                        case ".mp4":
+                                        case ".mov":
+                                            $texto = "<video  controls>
+                                                          <source src='imgs/recursos/$nome_recurso.mp4' type='video/mp4'>
+                                                          <source src='imgs/recursos/$nome_recurso.mov' type='video/mov'>
+                                                       </video>";
+                                            break;
+                                        case ".mp3":
+                                            $texto = "<audio controls>
+                                                          <source src='imgs/recursos/$nome_recurso.mp3' type='audio/mpeg'>
+                                                      </audio>";
+                                            break;
+                                    }
+
+
+                                }
+                                mysqli_stmt_close($stmt10);
+
+                            }
 
                             if ($remetente_id == $botid) {
                                 // mensagens do bot
@@ -344,6 +383,7 @@ mysqli_stmt_close($stmt);
                                 msg_esquerda($texto, $remetente_foto, $mensagem_id);
                             }
                             else if ($_SESSION["role"]==2 && $remetente_permissao == 2) {
+
                                 msg_direita($texto, $remetente_foto, $mensagem_id);
                             }
                             else if ($_SESSION["role"]==2 && $remetente_permissao == 1) {
