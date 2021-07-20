@@ -109,9 +109,9 @@ WHERE id_topico = ?;";
 </article>
 <article class='col-3'>
     <div class='float-right'>
-        <i class='fas fa-angle-up fa-2x d-block'></i>
+        <a href="scripts/sc_upvote.php?id=<?=$idtopico?>" class="btn text-black-50"><i class='fas fa-angle-up fa-2x d-block'></i></a>
         <?= $score ?>
-        <i class='fas fa-angle-down fa-2x d-block'></i>
+        <a href="scripts/sc_downvote.php?id=<?=$idtopico?>" class="btn text-black-50"><i class='fas fa-angle-down fa-2x d-block'></i></a>
     </div>
 </article>
 </div>
