@@ -15,10 +15,10 @@ $stmt = mysqli_stmt_init($link);
     $query = "INSERT INTO mensagens (id_mensagens, texto, data_envio, ticket_id_ticket, utilizador_id_utilizador) VALUES (NULL, ?, NOW(),?,? )";
     $query2 = "UPDATE ticket SET data_ultima = NOW() WHERE ticket.id_ticket = ?";
 
-if (mysqli_stmt_prepare($stmt, $query)) {
-    mysqli_stmt_bind_param($stmt, 'sii', $message, $ticketid, $userid);
-    mysqli_stmt_execute($stmt);
-}
+    if (mysqli_stmt_prepare($stmt, $query)) {
+        mysqli_stmt_bind_param($stmt, 'sii', $message, $ticketid, $userid);
+        mysqli_stmt_execute($stmt);
+    }
 
     if (mysqli_stmt_prepare($stmt, $query2)) {
         mysqli_stmt_bind_param($stmt, 'i', $ticketid);

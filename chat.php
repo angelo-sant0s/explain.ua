@@ -22,7 +22,7 @@ function msg_direita($mensagem, $foto, $idmsg){
                                             <div class='p-2 bg-person2 borderElement'>".$mensagem."</div>
                                         </article>
                                         <article class='col-1 p-1 text-center''>
-                                            <img src='imgs/".$foto."' class='img-fluid faceIcon'>
+                                            <img src='imgs/recursos/".$foto."' class='img-fluid faceIcon'>
                                         </article>
                                     </section>";
 }
@@ -30,7 +30,7 @@ function msg_direita($mensagem, $foto, $idmsg){
 function msg_esquerda($mensagem, $foto, $idmsg){
     echo "<section id='msg".$idmsg."' class='row mt-2'>
                                         <article class='col-1 p-1 text-center'>
-                                            <img src='imgs/".$foto."' class='img-fluid faceIcon'>
+                                            <img src='imgs/recursos/".$foto."' class='img-fluid faceIcon'>
                                         </article>
                                         <article class='col-8 p-1'>
                                             <div class='p-2 bg-person1 borderElement'>$mensagem</div>
@@ -154,7 +154,7 @@ mysqli_stmt_close($stmt);
 
                         <section id="smallchat<?php echo $ticket_id?>" class="row p-2 custom-borderb cursorPointer">
                             <article class="col-2 p-0 please ">
-                                <img src="imgs/<?php
+                                <img src="imgs/recursos/<?php
                                 if ($perfilid=2) {echo $mod_foto;}
                                 else echo $posterfoto
                                 ?>" class="img-fluid faceIcon">
@@ -351,7 +351,7 @@ mysqli_stmt_close($stmt);
                                         case ".jpg":
                                         case ".gif":
                                         case ".png":
-                                            $texto = "<img src='imgs/recursos/$nome_recurso$tipo_recurso'>";
+                                            $texto = "<img  class='img-fluid' src='imgs/recursos/$nome_recurso$tipo_recurso'>";
                                             break;
                                         case ".mp4":
                                         case ".mov":
@@ -434,7 +434,7 @@ mysqli_stmt_close($stmt);
                     </article>
                 </form>
 
-                <form class=" align-items-center text-center py-3  " action="scripts/sc_upload_file.php?id=<?php echo $userid ?>" method=post enctype=multipart/form-data>
+                <form id="formMessage2" class=" align-items-center text-center py-3  " action="scripts/sc_upload_file.php?id=<?php echo $userid ?>" method=post enctype=multipart/form-data>
                     <input class="border-1 mx-2  text-light px-0 col-6 position-relative"  type="file" name="fileToUpload" id="fileToUpload">
                     <input class="border-1 btn btn-light my-0 col-4 mx-1" type="submit" value="uplod" name="submit">
                 </form>

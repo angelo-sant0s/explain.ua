@@ -9,25 +9,30 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 
     $stmt = mysqli_stmt_init($link);
 
-    $query = "SELECT password_hash, perfil_idperfil, id_utilizador FROM utilizador WHERE username LIKE ?";
+    $query = "SELECT password_hash, perfil_idperfil, id_utilizador, ativo FROM utilizador WHERE username LIKE ?";
 
     if (mysqli_stmt_prepare($stmt, $query)) {
         mysqli_stmt_bind_param($stmt, 's', $username);
 
         if (mysqli_stmt_execute($stmt)) {
 
-            mysqli_stmt_bind_result($stmt, $password_hash, $perfil, $user_id);
+            mysqli_stmt_bind_result($stmt, $password_hash, $perfil, $user_id,$ativo);
 
             if (mysqli_stmt_fetch($stmt)) {
                 if (password_verify($password, $password_hash)) {
-                    // Guardar sessão de utilizador
-                    session_start();
-                    $_SESSION["username"] = $username;
-                    $_SESSION["role"] = $perfil;
-                    $_SESSION["user_id"] = $user_id;
+                    if ($ativo == 1) {
+                        // Guardar sessão de utilizador
+                        session_start();
+                        $_SESSION["username"] = $username;
+                        $_SESSION["role"] = $perfil;
+                        $_SESSION["user_id"] = $user_id;
 
-                    // Feedback de sucesso
-                    header("Location: ../home.php");
+                        // Feedback de sucesso
+                        header("Location: ../home.php");
+                    } else {
+                        echo "Conta Desativada";
+                        echo "<a href='../index.php'>Try again</a>";
+                    }
                 } else {
                     // Password está errada
                     echo "Incorrect credentials!";

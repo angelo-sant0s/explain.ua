@@ -125,6 +125,8 @@ function scrolltoview (id) {
     document.getElementById("msg"+id).scrollIntoView();
 }
 
+
+
 if (document.body.contains(document.getElementById("chattitle"))) {
     setInterval(adjust_stuff, 100)
 
@@ -142,6 +144,7 @@ if (document.body.contains(document.getElementById("chattitle"))) {
     d_none_chats()
     d_flex_chat(ticketids[0])
     document.getElementById("formMessage").action = "scripts/sc_mensagem.php?id="+userid+"&ticketid="+ticketids[0]+""
+    document.getElementById("formMessage2").action = "scripts/sc_upload_file.php?id="+userid+"&ticketid="+ticketids[0]+""
 
     console.log(lastmsgid[0])
     console.log(ticketids[0])
@@ -157,6 +160,7 @@ if (document.body.contains(document.getElementById("chattitle"))) {
             chatBtn()
 
             document.getElementById("formMessage").action = "scripts/sc_mensagem.php?id="+userid+"&ticketid="+id+""
+            document.getElementById("formMessage2").action = "scripts/sc_upload_file.php?id="+userid+"&ticketid="+id+""
             console.log("running")
 
         }
@@ -225,4 +229,14 @@ if (document.body.contains(document.getElementById("ticketsMain"))) {
     }
 
 
+}
+
+/* ---------------------------------------------------------------------- Pedido de tickets */
+
+
+if (document.body.contains(document.getElementById("cadeiraEscolha"))) {
+    document.getElementById("cadeiraEscolha").onclick = function () {
+        seila=document.getElementById("cadeiraEscolha").value
+        console.log(seila)
+    }
 }

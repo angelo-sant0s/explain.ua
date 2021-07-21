@@ -10,7 +10,8 @@
 </head>
 <body class="cinzaClaroBg">
 
-<?php include_once "components/cp_nav.php"; ?>
+<?php include_once "components/cp_nav.php";
+require_once("connections/connections.php");?>
 
 <main class="container textoEscuro texto fundoClaro borderElement my-5 p-4 p-xl-5">
     <section class="row justify-content-center">
@@ -30,10 +31,29 @@
 
             <select class="custom-select rosinha textoClaro mt-2 borderElement px-4 dropTicket" id="cadeiraEscolha">
                 <option selected>Cadeira...</option>
-                <option value="1">Ergonomia Cognitiva</option>
-                <option value="2">Laboratório Multimédia 3</option>
-                <option value="3">Sociologia da Comunicação</option>
-                <option value="4">Sistemas de Comunicação Multimédia I</option>
+
+                <?php
+                $link = new_db_connection();
+                $stmt = mysqli_stmt_init($link);
+                $query = "SELECT cadeira.nome, cadeira.id_cadeira FROM cadeira";
+
+                if (mysqli_stmt_prepare($stmt, $query)) {
+                    //mysqli_stmt_bind_param($stmt, 'i', $userid);
+                    mysqli_stmt_execute($stmt);
+                    mysqli_stmt_bind_result($stmt,$nome_cadeira, $id_cadeira);
+                }
+
+                mysqli_stmt_store_result($stmt);
+                while (mysqli_stmt_fetch($stmt)) {
+                    echo "<option value='$id_cadeira'>$nome_cadeira</option>";
+                }
+
+                mysqli_stmt_close($stmt);
+
+                ?>
+
+
+
             </select>
         </article>
 
@@ -133,6 +153,7 @@
         document.getElementById('acao').style.visibility = "hidden";
     };
 </script>
+<script src="js/js.js"></script>
 
 </body>
 </html>

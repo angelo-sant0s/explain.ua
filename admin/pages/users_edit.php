@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>explain.ua - Gestão de user</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -46,6 +46,47 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
+                <?php
+                if(isset($_GET["id"])){
+
+                    $userid = $_GET["id"];
+
+                    require_once("../connections/connection.php");
+
+                    $idutilizador = $_SESSION["user_id"];
+
+
+// Create a new DB connection
+                    $link = new_db_connection();
+
+
+                    /* create a prepared statement */
+                    $stmt = mysqli_stmt_init($link);
+
+
+
+                    $query = "SELECT utilizador.id_utilizador, utilizador.email,utilizador.username, utilizador.nome, utilizador.data_registo, perfil.tipo_perfil, utilizador.ativo FROM `utilizador`
+                              INNER JOIN perfil ON utilizador.perfil_idperfil = perfil.id_perfil
+                              WHERE utilizador.id_utilizador = ?";
+
+                    if (mysqli_stmt_prepare($stmt, $query)) {
+
+                        mysqli_stmt_bind_param($stmt, 'i', $userid);
+
+                        /* execute the prepared statement */
+                        mysqli_stmt_execute($stmt);
+
+                        /* bind result variables */
+                        mysqli_stmt_bind_result($stmt,$id,$email,$username,$nome,$data_registo,$role,$ativo);
+
+                    }
+
+
+
+                    mysqli_stmt_store_result($stmt);
+                    while (mysqli_stmt_fetch($stmt)) {
+
+                    ?>
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -65,41 +106,80 @@
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                             <form role="form" method="post" action="../scripts/sc_users_update.php">
-                                                <input type="hidden" name="id_users" value="{$id_users}">
+                                                <input type="hidden" name="id_users" value="<?=$id?>">
                                                 <div class="form-group">
                                                     <label>ID do utilizador</label>
-                                                    <p class="form-control-static">{id_users}</p>
+                                                    <p class="form-control-static"><?=$id?></p>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Data de criação</label>
-                                                    <p class="form-control-static">{date_creation}</p>
+                                                    <p class="form-control-static"><?= $data_registo ?></p>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Username</label>
                                                     <input class="form-control" name="username"
-                                                           value="{$username}">
+                                                           value="<?=$username?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Email</label>
-                                                    <input class="form-control" name="email" value="{$email}">
+                                                    <input class="form-control" name="email" value="<?=$email?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Estado</label>
                                                     <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" name="active">Activo
-                                                        </label>
+                                                        <?php
+                                                        if($ativo == 1){
+                                                            $checked = 'checked="checked"';
+                                                        }else{
+                                                            $checked = '';
+                                                        }
+                                                        echo '<label>
+                                                            <input type="checkbox" value="active" name="active" '.$checked.'>Activo
+                                                        </label>';
+
+                                                        
+                                                        ?>
                                                     </div>
                                                 </div>
-
                                                 <div class="form-group">
                                                     <label>Perfil</label>
                                                     <select class="form-control" name="id_roles">
-                                                        <option value='{id_roles}'>{roles_decription}</option>
+                                                        <?php
+                                                        $stmt1 = mysqli_stmt_init($link);
+
+
+
+                                                        $query1 = "SELECT perfil.tipo_perfil  FROM `perfil`";
+
+                                                        if (mysqli_stmt_prepare($stmt1, $query1)) {
+
+                                                            /* execute the prepared statement */
+                                                            mysqli_stmt_execute($stmt1);
+
+                                                            /* bind result variables */
+                                                            mysqli_stmt_bind_result($stmt1,$perfil);
+
+                                                        }
+
+
+                                                        while (mysqli_stmt_fetch($stmt1)) {
+                                                            ?>
+                                                            <option value='<?=$perfil?>' <?php if ($perfil==$role){ echo "selected";}?>><?=$perfil?></option>
+                                                        <?php
+                                                        }
+
+                                                        mysqli_stmt_close($stmt1);
+
+
+
+                                                        ?>
                                                     </select>
                                                 </div>
-                                                <button type="submit" class="btn btn-info">Submeter alterações
-                                                </button>
+                                                <?php
+                                                if( $idutilizador != $id ){
+                                                    echo "<button type='submit' class='btn btn-info'>Submeter alterações</button>";
+                                                }
+                                                ?>
                                             </form>
                                 <!-- /.table-responsive -->
                             </div>
@@ -109,6 +189,21 @@
                     </div>
 
                 </div>
+                <?php
+
+                }
+
+
+
+
+                mysqli_stmt_close($stmt);
+
+
+                }else{ header("location: users.php");}
+
+
+
+                ?>
 
 
             </div>
@@ -121,7 +216,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2019</span>
+                    <span>explain.ua &copy;  2019</span>
                 </div>
             </div>
         </footer>
