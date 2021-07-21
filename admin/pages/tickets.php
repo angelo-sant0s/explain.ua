@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>explain.ua - Gestão de users</title>
+    <title>explain.ua - Gestão de tickets</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -51,7 +49,7 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Gestão de utilizadores</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Gestão de tickets</h1>
                 </div>
 
                 <!-- Content Row -->
@@ -60,12 +58,12 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Utilizadores registados
+                                Tickets
                             </div>
 
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form action="users.php" method="get">
+                                <form action="tickets.php" method="get">
                                     <div class="input-group">
                                         <input type="text" class="bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" name="search_submit">
                                         <div class="input-group-append">
@@ -79,11 +77,11 @@
                                         <thead>
                                         <tr>
                                             <th>Id</th>
+                                            <th>Titulo</th>
+                                            <th>Cadeira</th>
                                             <th>Username</th>
-                                            <th>Email</th>
-                                            <th>Data Criação</th>
-                                            <th>Perfil</th>
-                                            <th>Ativo</th>
+                                            <th>Data Submissão</th>
+                                            <th>Estado</th>
                                             <th>Operações</th>
                                         </tr>
                                         </thead>
@@ -99,35 +97,34 @@
                                             if(isset($_GET["search_submit"])){
 
                                                 $search = $_GET["search_submit"];
-                                                $query = "SELECT utilizador.id_utilizador, utilizador.email,utilizador.username, utilizador.nome, utilizador.data_registo, perfil.tipo_perfil, utilizador.ativo  FROM `utilizador`
-                                                          INNER JOIN perfil ON utilizador.perfil_idperfil = perfil.id_perfil
-                                                          WHERE utilizador.username LIKE '%".$search."%' OR utilizador.email LIKE '%".$search."%' OR perfil.tipo_perfil LIKE '%".$search."%'";
+                                                $query = "SELECT ticket.id_ticket, ticket.titulo, cadeira.nome, utilizador.username, data_submissao, estado.nome FROM `ticket`
+                                                          INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
+                                                          INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
+                                                          INNER JOIN estado ON estado.id_estado = ticket.estado_id_estado
+                                                          WHERE utilizador.username LIKE '%".$search."%' OR ticket.titulo LIKE '%".$search."%' OR estado.nome LIKE '%".$search."%' OR cadeira.nome LIKE '%".$search."%'";
                                             }else{
-                                            $query = "SELECT utilizador.id_utilizador, utilizador.email,utilizador.username, utilizador.nome, utilizador.data_registo, perfil.tipo_perfil,utilizador.ativo  FROM `utilizador`
-                                                      INNER JOIN perfil ON utilizador.perfil_idperfil = perfil.id_perfil";
+                                            $query = "SELECT ticket.id_ticket, ticket.titulo, cadeira.nome, utilizador.username, data_submissao, estado.nome FROM `ticket`
+                                                      INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
+                                                      INNER JOIN utilizador ON utilizador.id_utilizador = ticket.utilizador_id_utilizador
+                                                      INNER JOIN estado ON estado.id_estado = ticket.estado_id_estado";
                                             }
 
                                             if (mysqli_stmt_prepare($stmt, $query)) {
                                                 mysqli_stmt_execute($stmt);
-                                                mysqli_stmt_bind_result($stmt, $id, $email, $username, $nome, $date_criaton, $role,$ativo);
+                                                mysqli_stmt_bind_result($stmt, $id, $titulo, $cadeira_nome, $username, $date, $estado);
                                             };
 
                                             while (mysqli_stmt_fetch($stmt)){
-                                                if($ativo == 1){
-                                                    $ativon = 'Sim';
-                                                }else{
-                                                    $ativon = 'Não';
-                                                }
+
                                                                   echo "<tbody>
                                                                         <tr>
                                                                         <td>".$id."</td>
+                                                                        <td>".$titulo."</td>
+                                                                        <td>".$cadeira_nome."</td>
                                                                         <td>".$username."</td>
-                                                                        <td>".$email."</td>
-                                                                        <td>".$date_criaton."</td>
-                                                                        <td>".$role."</td>
-                                                                 
-                                                                        <td>".$ativon."</td>
-                                                                        <td><a href='users_edit.php?id=$id' class='btn'><i class='fas fa-edit'></i></a></td>
+                                                                        <td>".$date."</td>
+                                                                        <td>".$estado."</td>
+                                                                        <td><a href='tickets_edit.php?id=$id' class='btn'><i class='fas fa-edit'></i></a></td>
                                                                         </tr>
                                                                         </tbody>";
                                             }

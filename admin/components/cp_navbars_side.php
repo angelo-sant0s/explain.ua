@@ -41,6 +41,12 @@ require_once "../scripts/sc_check_admin.php";
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Utilizadores</span></a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="tickets.php">
+            <i class="fas fa-fw fa-ticket-alt"></i>
+            <span>Tickets</span>
+        </a>
+    </li>
 
 
     <!-- Divider -->
