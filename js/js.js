@@ -66,6 +66,7 @@ if (document.body.contains(document.getElementById("videoChamada"))) {
 
 
 function adjust_stuff () {
+    console.log("wtf")
 
 
 
@@ -201,29 +202,32 @@ function keepButtonUp () {
 }
 
 
-
+/* -------------------------------------------------------------------- Tickets ----------------------------*/
 
 if (document.body.contains(document.getElementById("ticketsMain"))) {
 
-
+    arrayidsticket = document.getElementById("arrayids").innerHTML
+    arrayidsticket = arrayidsticket.split( " ");
 
     document.getElementById("botaoNovo").style.top = window.innerHeight - document.getElementById("botaoNovo").offsetHeight - 30  + "px"
 
 
     setInterval(keepButtonUp, 1000)
 
-    for (let i=1; i<=4; i++) {
-        document.getElementById("botaoFora"+i).onclick = function () {
+    for (let i=0; i< arrayidsticket.length; i++) {
+        console.log(arrayidsticket[i])
+        document.getElementById("botaoFora"+arrayidsticket[i]).onclick = function () {
 
-            if (window["estado"+i] === "baixo") {
-                window["estado"+i] = "cima"
-                document.getElementById("botaoDentro"+i).style.transform = "rotate(00deg)"
+            if (window["estado"+arrayidsticket[i]] === "baixo") {
+                window["estado"+arrayidsticket[i]] = "cima"
+                document.getElementById("botaoDentro"+arrayidsticket[i]).style.transform = "rotate(00deg)"
 
             }
             else {
-                window["estado"+i] = "baixo"
-                document.getElementById("botaoDentro"+i).style.transform = "rotate(180deg)"
+                window["estado"+arrayidsticket[i]] = "baixo"
+                document.getElementById("botaoDentro"+arrayidsticket[i]).style.transform = "rotate(180deg)"
             }
+            console.log(arrayidsticket[i])
 
         }
     }
@@ -231,7 +235,7 @@ if (document.body.contains(document.getElementById("ticketsMain"))) {
 
 }
 
-/* ---------------------------------------------------------------------- Pedido de tickets */
+/* ---------------------------------------------------------------------- Pedido de tickets ------------------------------------------------------------*/
 
 
 if (document.body.contains(document.getElementById("cadeiraEscolha"))) {
