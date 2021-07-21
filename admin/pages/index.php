@@ -242,8 +242,6 @@ require_once "../connections/connection.php";
                     </div>
                 </div>
 
-
-
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
