@@ -71,11 +71,22 @@ while (mysqli_stmt_fetch($stmt)) {
                 </article>
             </article>
 
-            <form class=" align-items-center text-center py-3  " action="scripts/sc_upload_photo.php?id=<?php echo $userid ?>" method=post enctype=multipart/form-data>
-
+            <form class=" align-items-center text-center py-3 col-4 " action="scripts/sc_upload_photo.php?id=<?php echo $userid ?>" method=post enctype=multipart/form-data>
                 <input class="border-1 mx-2  text-light px-0 col-6 position-relative" type="file" name="fileToUpload" id="fileToUpload">
                 <input class="border-1 btn btn-light my-0 col-4 mx-1" type="submit" value="Upload Image" name="submit">
             </form>
+
+            <div class="d-flex align-items-center justify-content-between mb-3 mx-auto col-8 ">
+<!--                <h5>Mudar nome de utilizador</h5>-->
+            <form class='text-light mx-auto text-center ' method=post action="scripts/sc_newuser.php?id=<?php echo $userid ?>" id="usrform">
+
+                <span class="text-black-50">New username:</span> <input class='my-3' type="text" name="usrname">
+                <span class="text-black-50 pl-2">Password:</span>     <input class='my-3' type="password" name="password">
+                <input class='my-3' type="submit">
+
+            </form>
+
+            </div>
 
 
 
