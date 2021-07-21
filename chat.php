@@ -114,41 +114,79 @@ mysqli_stmt_close($stmt);
                 $stmt = mysqli_stmt_init($link);
 
                 if ($_SESSION["role"]==2) {
-                    $query = "SELECT ticket.utilizador_id_utilizador1, utilizador.nome, utilizador.foto_perfil, ticket.titulo, ticket.id_ticket, ticket.data_ultima, cadeira.sigla, HOUR(TIMEDIFF(NOW(), ticket.data_ultima)), MINUTE(TIMEDIFF(NOW(), ticket.data_ultima)), HOUR(ticket.data_ultima), MINUTE(ticket.data_ultima)
+                    $query = "SELECT  ticket.titulo, ticket.id_ticket, ticket.data_ultima, cadeira.sigla, HOUR(TIMEDIFF(NOW(), ticket.data_ultima)), MINUTE(TIMEDIFF(NOW(), ticket.data_ultima)), HOUR(ticket.data_ultima), MINUTE(ticket.data_ultima)
                             FROM ticket
-                            INNER JOIN utilizador ON ticket.utilizador_id_utilizador1 = utilizador.id_utilizador
+                            INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador
                             INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
                             WHERE ticket.utilizador_id_utilizador = ?  
                             ORDER BY `ticket`.`data_ultima` DESC";
+                    if (mysqli_stmt_prepare($stmt, $query)) {
+
+                        mysqli_stmt_bind_param($stmt, 'i', $userid);
+
+                        /* execute the prepared statement */
+                        mysqli_stmt_execute($stmt);
+
+                        /* bind result variables */
+                        mysqli_stmt_bind_result($stmt, $ticket_nome, $ticket_id, $ticket_ultima, $cadeira_sigla, $publishing_hour, $publishing_minute, $relogio_horas, $relogio_minutos);
+
+                    }
                 }
                 else if ($_SESSION["role"]==1) {
-                    $query = "SELECT ticket.utilizador_id_utilizador, utilizador.nome, utilizador.foto_perfil, ticket.titulo, ticket.id_ticket, ticket.data_ultima, cadeira.sigla, HOUR(TIMEDIFF(NOW(), ticket.data_ultima)), MINUTE(TIMEDIFF(NOW(), ticket.data_ultima)), HOUR(ticket.data_ultima), MINUTE(ticket.data_ultima)
+                    $query = "SELECT  ticket.titulo, ticket.id_ticket, ticket.data_ultima, cadeira.sigla, HOUR(TIMEDIFF(NOW(), ticket.data_ultima)), MINUTE(TIMEDIFF(NOW(), ticket.data_ultima)), HOUR(ticket.data_ultima), MINUTE(ticket.data_ultima)
                             FROM ticket
                             INNER JOIN utilizador ON ticket.utilizador_id_utilizador = utilizador.id_utilizador
                             INNER JOIN cadeira ON cadeira.id_cadeira = ticket.cadeira_id_cadeira
                             WHERE ticket.utilizador_id_utilizador1 = ?
                             ORDER BY `ticket`.`data_ultima` DESC";
+                    if (mysqli_stmt_prepare($stmt, $query)) {
+
+                        mysqli_stmt_bind_param($stmt, 'i', $userid);
+
+                        /* execute the prepared statement */
+                        mysqli_stmt_execute($stmt);
+
+                        /* bind result variables */
+                        mysqli_stmt_bind_result($stmt, $ticket_nome, $ticket_id, $ticket_ultima, $cadeira_sigla, $publishing_hour, $publishing_minute, $relogio_horas, $relogio_minutos);
+
+                    }
                 }
 
 
 
-                if (mysqli_stmt_prepare($stmt, $query)) {
 
-                    mysqli_stmt_bind_param($stmt, 'i', $userid);
-
-                    /* execute the prepared statement */
-                    mysqli_stmt_execute($stmt);
-
-                    /* bind result variables */
-                    mysqli_stmt_bind_result($stmt,$mod_id, $mod_nome, $mod_foto, $ticket_nome, $ticket_id, $ticket_ultima, $cadeira_sigla, $publishing_hour, $publishing_minute, $relogio_horas, $relogio_minutos);
-
-                }
 
                 $num_ids = "";
-
+                mysqli_stmt_store_result($stmt);
                 while (mysqli_stmt_fetch($stmt)) {
                     if ($num_ids=="") $num_ids = $ticket_id ;
                     else $num_ids = $num_ids . " " . $ticket_id ;
+                    ?>
+
+                    <?php
+                    $link20 = new_db_connection();
+                    $stmt20 = mysqli_stmt_init($link);
+                    if ($_SESSION["role"]==2) {$query20 = "SELECT utilizador.nome, utilizador.foto_perfil FROM utilizador INNER JOIN ticket ON ticket.utilizador_id_utilizador1 = utilizador.id_utilizador WHERE ticket.id_ticket = ?";}
+                    else {$query20 = "SELECT utilizador.nome, utilizador.foto_perfil FROM utilizador INNER JOIN ticket ON ticket.utilizador_id_utilizador = utilizador.id_utilizador WHERE ticket.id_ticket = ?";}
+
+                    if (mysqli_stmt_prepare($stmt20, $query20)) {
+                        mysqli_stmt_bind_param($stmt20, 'i', $ticket_id);
+                        mysqli_stmt_execute($stmt20);
+                        mysqli_stmt_bind_result($stmt20,$mod_nome, $mod_foto);
+                    }
+
+                    mysqli_stmt_store_result($stmt20);
+
+                    if (mysqli_stmt_fetch($stmt20)) {
+
+                    }
+                    else {
+                        $mod_nome = "Sem mentor atríbuído";
+                        $mod_foto = "default.jpg";
+                    }
+
+                    mysqli_stmt_close($stmt20);
+
                     ?>
 
 
