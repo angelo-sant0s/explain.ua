@@ -217,30 +217,125 @@ while (mysqli_stmt_fetch($stmt)){
 
     <section class="row justify-content-center">
         <article class="col-12 col-md-11 mt-4">
-
             <div class="cinzaClaroBg borderElement pb-2">
                 <div class="azul1 borderElement textoClaro titulo py-4 px-3 p-sm-4 p-xl-5">
                     <h5 class="m-0">Esclarecimento do mentor</h5>
                 </div>
 
                 <div class="cinzaClaroBg borderElement py-4 px-3 p-sm-4 p-xl-5">
+            <?php
+            $link = new_db_connection();
+            $stmt15 = mysqli_stmt_init($link);
+            $query15 = "SELECT utilizador.username, utilizador.id_utilizador FROM utilizador INNER JOIN ticket ON ticket.utilizador_id_utilizador1 = utilizador.id_utilizador WHERE ticket.id_ticket = ? ";
+
+            if (mysqli_stmt_prepare($stmt15, $query15)) {
+                mysqli_stmt_bind_param($stmt15, 'i', $id_ticket);
+                mysqli_stmt_execute($stmt15);
+                mysqli_stmt_bind_result($stmt15,$username, $mod_id);
+            }
+
+            mysqli_stmt_store_result($stmt15);
+            while (mysqli_stmt_fetch($stmt15)) {
+                ?>
+
                     <img class="float-left" src="imgs/icon_avatar.png" height="40px" width="40px">
-                    <p class="float-left font-weight-bold m-0 pt-2 pl-2">Jorge Santos<span class="small font-italic text-success ml-1">mentor</span></p>
+                    <p class="float-left font-weight-bold m-0 pt-2 pl-2"><?php echo $username?><span class="small font-italic text-success ml-1">mentor</span></p>
+                <br>
+                <br>
 
-                    <img class="img-fluid mt-4" src="imgs/videochamada_ilu.png">
-                    <p class="font-weight-bold textoAzul1 mt-4 ml-2">NOTAS</p>
-                    <p>Exemplo de prepared statements com mysqli:</p>
-                    <code class="textoRosinha">
-                        $db = new mysqli('localhost', 'usuario', 'senha', 'teste');<br>
-                        $sql = 'INSERT INTO tabela(campo1, campo2, campo3) VALUES(?, ?, ?)';<br>
-                        $stmt = $db->prepare($sql);<br>
-                        $var1 = 1; $var2 = 'foo'; $var3 = 1.99;<br>
-                        $stmt->bind_param('isd', $var1, $var2, $var3);<br>
-                        $stmt->execute();<br>
-                    </code>
 
-                    <p class="font-weight-bold textoAzul1 mt-4 ml-2">ANEXOS</p>
-                    <a class="font-italic text-secondary cursor" href="https://www.php.net/manual/en/mysqli-stmt.bind-param.php">Manual de PHP: bind_param</a>
+            <?php
+            }
+            ?>
+                    <section class="row">
+
+
+                        <?php
+
+            mysqli_stmt_close($stmt15);
+
+
+
+            $stmt16 = mysqli_stmt_init($link);
+            $query16 = "SELECT recursos.link_recurso, recursos.tipo_id_tipo, tipo.terminacao FROM recursos
+INNER JOIN mensagens ON mensagens.id_mensagens = recursos.mensagens_id_mensagens
+INNER JOIN ticket ON ticket.id_ticket = mensagens.ticket_id_ticket
+INNER JOIN tipo ON tipo.id_tipo = recursos.tipo_id_tipo
+WHERE ticket.id_ticket = ?";
+
+            if (mysqli_stmt_prepare($stmt16, $query16)) {
+                mysqli_stmt_bind_param($stmt16, 'i', $id_ticket);
+                mysqli_stmt_execute($stmt16);
+                mysqli_stmt_bind_result($stmt16,$link, $id_terminacao, $terminacao);
+            }
+
+            mysqli_stmt_store_result($stmt16);
+            while (mysqli_stmt_fetch($stmt16)) {
+                ?>
+                    <article class="col-12 col-sm-12 col-md-6 col-lg-4">
+                        <?php
+                        switch ($terminacao) {
+                            case ".jpg":
+                            case ".png":
+                            case ".gif":
+                                echo "<img class='img-fluid mt-4 my-4' src='imgs/recursos/$link$terminacao'>";
+                                break;
+                            case ".mov":
+                                echo "<video  controls class='my-4'>
+                                            <source src='imgs/recursos/$link.mov' type='video/mov'>
+                                        </video>";
+                            case ".mp4":
+                                echo "<video  controls class='img-fluid'>
+                                            <source src='imgs/recursos/$link.mp4' type='video/mp4'>
+                                        </video>";
+                                break;
+                            case ".mp3":
+                                echo "<audio class='my-4' controls style='width: 230px'>
+                                            <source src='imgs/recursos/$link.mp3' type='audio/mpeg'>
+                                        </audio>";
+                        }
+                        ?>
+                    </article>
+                <?php
+            }
+            mysqli_stmt_close($stmt16);
+            ?>
+
+                        <?php
+                        $link = new_db_connection();
+                        $stmt17 = mysqli_stmt_init($link);
+                        $query17 = "SELECT mensagens.texto FROM mensagens WHERE mensagens.ticket_id_ticket = ?  AND mensagens.utilizador_id_utilizador = ?
+ORDER BY mensagens.id_mensagens  DESC LIMIT 1";
+
+                        if (mysqli_stmt_prepare($stmt17, $query17)) {
+                            mysqli_stmt_bind_param($stmt17, 'ii', $id_ticket, $mod_id);
+                            mysqli_stmt_execute($stmt17);
+                            mysqli_stmt_bind_result($stmt17,$ultima_mensagem);
+                        }
+
+                        mysqli_stmt_store_result($stmt17);
+                        while (mysqli_stmt_fetch($stmt17)) {
+                            ?>
+
+                            <section class="row">
+                                <article class="col-12">
+                                    <p class="font-weight-bold textoAzul1 mt-4 ml-2">Comentário do mentor</p>
+                                    <?php echo $ultima_mensagem?>
+                                </article>
+                            </section>
+
+                        <?php
+                        }
+
+                        mysqli_stmt_close($stmt17);
+
+                        ?>
+
+
+
+
+
+                    </section>
                 </div>
             </div>
         </article>
@@ -249,6 +344,7 @@ while (mysqli_stmt_fetch($stmt)){
         <article class="col-12 col-md-11 mt-4">
             <?php
 
+            $link = new_db_connection();
             $stmt2 = mysqli_stmt_init($link);
 
             $query2 = "SELECT comentario.id_comentario,comentario.texto, utilizador.username, utilizador.foto_perfil, HOUR(TIMEDIFF(NOW(),comentario.data_envio)), MINUTE(TIMEDIFF(NOW(), comentario.data_envio)), SUM(votos.valor_voto)
