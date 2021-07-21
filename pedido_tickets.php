@@ -30,7 +30,7 @@ require_once("connections/connections.php");?>
             </select>
 
             <select class="custom-select rosinha textoClaro mt-2 borderElement px-4 dropTicket" id="cadeiraEscolha">
-                <option selected>Cadeira...</option>
+                <option value="0" selected>Cadeira...</option>
 
                 <?php
                 $link = new_db_connection();
@@ -59,14 +59,14 @@ require_once("connections/connections.php");?>
 
         <article class="col-12 col-md-10 col-lg-8 mt-4">
             <div class="cinzaClaroBg borderElement py-4 px-3 p-sm-4 p-xl-5">
-                <form>
+                <form id="formMessage" role="form" action="esta action é definida no javascript" method="post">
                     <div class="form-group">
                         <label for="FormControlInput1" class="textoAzul1 font-weight-bold">Título</label>
-                        <input type="text" class="form-control borderElement font-italic px-3 dropTicket" id="FormControlInput1" placeholder="Refere o assunto...">
+                        <input name="tituloTicket" type="text" class="form-control borderElement font-italic px-3 dropTicket" id="FormControlInput1" placeholder="Refere o assunto...">
                     </div>
                     <div class="form-group">
                         <label for="FormControlTextarea1" class="textoAzul1 font-weight-bold mt-2">Mensagem</label>
-                        <textarea class="form-control borderElement font-italic p-3" id="FormControlTextarea1" maxlength="800" rows="8" placeholder="Descreve a dúvida detalhadamente..."></textarea>
+                        <textarea name="corpoTicket" class="form-control borderElement font-italic p-3" id="FormControlTextarea1" maxlength="800" rows="8" placeholder="Descreve a dúvida detalhadamente..."></textarea>
                         <div class="d-flex justify-content-between small mt-2">
                             <a href="#" class="text-secondary cursor"><i class="fas fa-paperclip fa-sm mr-1"></i> anexar ficheiro</a>
                             <div id="count">
@@ -75,13 +75,15 @@ require_once("connections/connections.php");?>
                             </div>
                         </div>
                     </div>
+
+                    <div class="text-center mb-3 mt-5">
+                        <button class="btn bg-danger submitCirculo mr-1" id="apagarTicket"><i class="fas fa-times fa-lg textoClaro"></i></button>
+                        <button class="btn bg-success submitCirculo ml-1" id="enviarTicket" type="submit"><i class="fas fa-chevron-right fa-lg textoClaro"></i></button>
+                        <p class="small font-italic mt-2" id="acao">Ação.</p>
+                    </div>
                 </form>
 
-                <div class="text-center mb-3 mt-5">
-                    <button class="btn bg-danger submitCirculo mr-1" id="apagarTicket"><i class="fas fa-times fa-lg textoClaro"></i></button>
-                    <button class="btn bg-success submitCirculo ml-1" id="enviarTicket"><i class="fas fa-chevron-right fa-lg textoClaro"></i></button>
-                    <p class="small font-italic mt-2" id="acao">Ação.</p>
-                </div>
+
             </div>
         </article>
     </section>

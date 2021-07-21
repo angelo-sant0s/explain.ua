@@ -236,7 +236,8 @@ if (document.body.contains(document.getElementById("ticketsMain"))) {
 
 if (document.body.contains(document.getElementById("cadeiraEscolha"))) {
     document.getElementById("cadeiraEscolha").onclick = function () {
-        seila=document.getElementById("cadeiraEscolha").value
-        console.log(seila)
+        cadeira = document.getElementById("cadeiraEscolha").value
+        document.getElementById("formMessage").action = "scripts/sc_submeter_ticket.php?idCadeira="+cadeira;
+        console.log(cadeira)
     }
 }
