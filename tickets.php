@@ -156,7 +156,9 @@ require_once("connections/connections.php");?>
 
     </section>
 
-    <button class=" btn roxinhob textoClaro titulo font-weight-bold borderElement botaoNovo px-4 py-3" id="botaoNovo"><a class="cursor " href="pedido_tickets.html"><i class="fas textoClaro fa-plus fa-sm mr-2"></i><span class="textoClaro">Novo Ticket</span></a></button>
+    <button class=" btn roxinhob textoClaro titulo font-weight-bold borderElement botaoNovo px-4 py-3 <?php
+    if ($_SESSION["role"] != 2) {}
+    ?>" id="botaoNovo"><a class="cursor " href="pedido_tickets.php"><i class="fas textoClaro fa-plus fa-sm mr-2"></i><span class="textoClaro">Novo Ticket</span></a></button>
 
 </main>
 
