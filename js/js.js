@@ -125,6 +125,8 @@ function scrolltoview (id) {
     document.getElementById("msg"+id).scrollIntoView();
 }
 
+
+
 if (document.body.contains(document.getElementById("chattitle"))) {
     setInterval(adjust_stuff, 100)
 
@@ -227,4 +229,14 @@ if (document.body.contains(document.getElementById("ticketsMain"))) {
     }
 
 
+}
+
+/* ---------------------------------------------------------------------- Pedido de tickets */
+
+
+if (document.body.contains(document.getElementById("cadeiraEscolha"))) {
+    document.getElementById("cadeiraEscolha").onclick = function () {
+        seila=document.getElementById("cadeiraEscolha").value
+        console.log(seila)
+    }
 }
