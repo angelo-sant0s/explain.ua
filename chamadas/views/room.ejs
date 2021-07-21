@@ -1,14 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="fontawesome-free/css/all.css">
-  <!-- estilos próprios -->
-  <link href="css/os_meus_estilos.css" rel="stylesheet">
+
   <!--Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -20,11 +15,55 @@
   <script src="script.js" defer></script>
   <title>Document</title>
   <style>
+ .centra{
+   text-align: center;
+ }
+
+    button {
+      margin: 0 3px 10px 0;
+      padding-left: 2px;
+      padding-right: 2px;
+      width: 99px;
+    }
+
+    button:last-of-type {
+      margin: 0;
+    }
+
+    p.borderBelow {
+      margin: 0 0 20px 0;
+      padding: 0 0 20px 0;
+    }
+
+    video:last-of-type {
+      margin: 0 0 20px 0;
+    }
+
+    video#gumVideo {
+      margin: 0 20px 20px 0;
+    }
+
+    .redimensiona{
+      max-height: 180px;
+      max-width: 300px;
+    }
+
+
     #video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, 300px);
       grid-auto-rows: 300px;
     }
+
+    #Div {
+      margin-top: 60px;
+      border: 2px solid black;
+    }
+    #Div1 {
+      margin-left:50px !important;
+      border: 1px solid #b21f2d;
+    }
+
     .bcg{
       background-color: #444444;
       text-align: center;
@@ -39,6 +78,7 @@
       padding-left: 15px;
       margin-right: auto;
       margin-left: auto;
+
     }
     @media (min-width: 768px) {
       .container {
@@ -63,12 +103,65 @@
       height: 60%;
       object-fit: cover;
       margin: auto;
-      padding-left: 100px;
-      padding-right: 100px;
+      /*padding-left: 100px;*/
+      /*padding-right: 100px;*/
+      margin-left: 300px !important;
+    }
+
+    .ajusta{
+      padding-top: 50px;
+    }
+
+    #recorded.redimensiona{
+      margin-left: 0px !important;
+    }
+
+    .texto{
+      font-weight: 300;
     }
   </style>
 </head>
 <body class="bcg">
-  <div class="container bcg1" id="video-grid"></div>
+<div class="container bcg1">
+  <h1 class="texto ajusta"> Video-chamada</h1>
+  <div class=" ajusta" id="video-grid">
+  </div>
+  <div class=" " id="container">
+    <div class="centra">
+    <h1 class="ajusta texto ">Gravação</h1>
+    <video class="redimensiona" id="gum" playsinline autoplay muted></video>
+    <video class="redimensiona" id="recorded" playsinline loop></video>
+    </div>
+    <div>
+      <button  id="start">Start camera</button>
+      <button  id="record" disabled>Start Recording</button>
+      <button  id="play" disabled>Play</button>
+      <button  id="download" disabled>Download</button>
+    </div>
+
+    <div>
+      Recording format: <select id="codecPreferences" disabled></select>
+    </div>
+    <div>
+      <h4>Media Stream Constraints options</h4>
+      <p>Echo cancellation: <input type="checkbox" id="echoCancellation"></p>
+    </div>
+
+    <div>
+      <span id="errorMsg"></span>
+    </div>
+
+    <a href="http://localhost/EDesta/chat.php">De volta para chat</a>
+
+  </div>
+
+
+</div>
+
+
+
+
+
+
 </body>
 </html>
