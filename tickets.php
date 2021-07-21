@@ -113,7 +113,8 @@ $id_array = "";?>
                                 else if ($id_estado==3 || $id_estado==4) echo "fa-lock";
                                 ?> fa-sm mr-2"></i> <?php echo $estado_nome ?></span>
                             <?php
-                            if ($id_estado == 2 && $_SESSION["role"] != 2) echo "<a class='text-right text-secondary cursor' href='scripts/sc_iniciar_conversa.php?ticket=$id_ticket'>iniciar conversa</a>";
+                            if ($id_estado == 1 && $_SESSION["role"] != 2) echo "<a class='text-right text-secondary cursor' href='scripts/sc_criar_topico.php?ticket=$id_ticket'>encerrar e criar tópico</a>";
+                            else if ($id_estado == 2 && $_SESSION["role"] != 2) echo "<a class='text-right text-secondary cursor' href='scripts/sc_iniciar_conversa.php?ticket=$id_ticket'>iniciar conversa</a>";
                             else if ($id_estado == 2 && $_SESSION["role"] == 2) echo "<a class='text-right text-secondary cursor' href='scripts/sc_cancelar.php?ticket=$id_ticket'>cancelar pedido</a>";
                             else if ($id_estado==3) {
                                 $stmt3 = mysqli_stmt_init($link);

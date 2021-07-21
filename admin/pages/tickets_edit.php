@@ -118,40 +118,12 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="cadeiras">Cadeira</label>
-                                                <select class="form-control" name="cadeira" id="cadeiras">
-                                                    <?php
-
-                                                    $stmt4 = mysqli_stmt_init($link);
-
-                                                    $query4 = "SELECT cadeira.nome FROM cadeira";
-
-                                                    if (mysqli_stmt_prepare($stmt4, $query4)) {
-
-                                                        /* execute the prepared statement */
-                                                        mysqli_stmt_execute($stmt4);
-
-                                                        /* bind result variables */
-                                                        mysqli_stmt_bind_result($stmt4,$chair);
-
-                                                    }
-
-                                                    mysqli_stmt_store_result($stmt4);
-                                                    while (mysqli_stmt_fetch($stmt4)) {
-                                                        ?>
-                                                        <option value='<?=$chair?>' <?php if ($chair == $cadeira){ echo "selected";}?>><?=$chair?></option>
-                                                        <?php
-                                                    }
-
-                                                    mysqli_stmt_close($stmt4);
-
-                                                    ?>
-                                                </select>
+                                                <label for="cadeiras">Cadeira:</label>
+                                                <input class="form-control´static" name="cadeira" type="hidden"
+                                                       value="<?=$cadeira?>">
+                                                <p class="form-control-static"><?= $cadeira ?></p>
 
                                             </div>
-
-
-
 
                                             <div class="form-group">
                                                 <label for="estado">Estado</label>
