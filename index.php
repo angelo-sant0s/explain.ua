@@ -59,6 +59,10 @@
                     <input type="text" placeholder="username" name="username" class="pr-2">
                 </div>
                 <div class="modalinputs">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Primeiro e ultimo nome" name="nome" class="pr-2">
+                </div>
+                <div class="modalinputs">
                     <i class="fas fa-key"></i>
                     <input type="text" placeholder="password" name="password">
                 </div>
