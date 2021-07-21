@@ -164,6 +164,13 @@
     height: 50px;
     margin: auto;
 }
+.iconzito1{
+    max-height: 125px !important;
+    max-width: 125px !important;
+}
+.maximo{
+    max-height: 500px;
+}
 
 .w-95{
     width: 95%;

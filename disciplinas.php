@@ -98,7 +98,7 @@ while(mysqli_stmt_fetch($stmt3)) {
 <div class="container azul1b shadow borderElement p-5">
     <section class="row pt-3 ">
         <article class="col-12 text-center andabaixo">
-            <img src="imgs/cadeiras/<?=$cadeirapfp?>">
+            <img class="iconzito1" src="imgs/cadeiras/<?=$cadeirapfp?>">
             <h3 class="titulo textoClaro font-weight-bold pt-5"><?=$cadeiranome?></h3>
         </article>
     </section>
@@ -146,7 +146,9 @@ while(mysqli_stmt_fetch($stmt3)) {
         ?>
         <div class='container-lg container-fluid bkk-color borderElement  py-3 my-5 w-98' id="hometopic">
         <div class='pl-3 py-4'>
-        <img class='iconzito float-left pr-4' src='imgs/<?=$cadeirapfp?>'>
+
+        <img class='iconzito  float-left pr-4' src='imgs/<?=$cadeirapfp?>'>
+
         <div class='row'>
             <article class='col-9'>
                 <a href='topico.php?id=<?=$id?>'> <h2 class='titulo corazul'> <?= $titulo ?></h2> </a>
@@ -263,7 +265,7 @@ while(mysqli_stmt_fetch($stmt3)) {
             }
 
             if(isset($imagemnome)){
-                echo "<img class=\"w-75 h-auto py-5\" src=\"imgs/$imagemnome$imagemtipo\">";
+                echo "<img class=\"w-75 w-auto maximo py-5\" src=\"imgs/$imagemnome$imagemtipo\">";
 
 
             }
