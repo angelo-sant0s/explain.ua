@@ -98,7 +98,7 @@ while(mysqli_stmt_fetch($stmt3)) {
 <div class="container azul1b shadow borderElement p-5">
     <section class="row pt-3 ">
         <article class="col-12 text-center andabaixo">
-            <img src="imgs/<?=$cadeirapfp?>">
+            <img src="imgs/cadeiras/<?=$cadeirapfp?>">
             <h3 class="titulo textoClaro font-weight-bold pt-5"><?=$cadeiranome?></h3>
         </article>
     </section>
@@ -243,8 +243,29 @@ while(mysqli_stmt_fetch($stmt3)) {
         </a>
         <div class="text-center">
             <?php
-            if(isset($imagem1)){
-                echo "<img class=\"w-75 h-auto py-5\" src=\"imgs/$imagemnome.$imagemtipo\">";
+            if($imagemtipo==1){
+                $imagemtipo=".jpg";
+            }
+            if($imagemtipo==2){
+                $imagemtipo=".png";
+            }
+            if($imagemtipo==3){
+                $imagemtipo=".mp4";
+            }
+            if($imagemtipo==4){
+                $imagemtipo=".gif";
+            }
+            if($imagemtipo==5){
+                $imagemtipo=".mp3";
+            }
+            if($imagemtipo==6){
+                $imagemtipo=".mov";
+            }
+
+            if(isset($imagemnome)){
+                echo "<img class=\"w-75 h-auto py-5\" src=\"imgs/$imagemnome$imagemtipo\">";
+
+
             }
             else{ echo "<div class='py-4'></div>";}
 
