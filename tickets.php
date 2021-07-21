@@ -10,12 +10,41 @@
 </head>
 <body class="cinzaClaroBg">
 
-<?php include_once "components/cp_nav.php"; ?>
+<?php include_once "components/cp_nav.php";
+require_once("connections/connections.php");?>
 
 <main id="ticketsMain" class="container textoEscuro texto fundoClaro borderElement my-5 p-4 p-xl-5">
     <section class="row justify-content-center">
         <article class="col-12 mt-3">
-            <h3 class="titulo font-weight-bold text-center mb-4">Tickets</h3>
+            <h3 class="titulo font-weight-bold text-center mb-4"><?php
+                if ($_SESSION["role"]==2) echo "Meus Tickets";
+                else echo "Tickets";
+            ?></h3>
+            <?php
+
+            $link = new_db_connection();
+            $stmt = mysqli_stmt_init($link);
+            if ($_SESSION["role"]==2) {
+                $query = "SELECT cadeira.nome FROM cadeira";
+            }
+
+
+
+            if (mysqli_stmt_prepare($stmt, $query)) {
+                //mysqli_stmt_bind_param($stmt, 'i', $userid);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt,$nome);
+            }
+
+            mysqli_stmt_store_result($stmt);
+            while (mysqli_stmt_fetch($stmt)) {
+
+            }
+
+            mysqli_stmt_close($stmt);
+
+            ?>
+
             <p class="small font-italic  ml-2 mb-0">Tickets ativos: <span class="font-weight-bold textoAzul1">1</span></p>
             <p class="small font-italic  ml-2">Tickets pendentes: <span class="font-weight-bold textoAzul1">2</span></p>
         </article>
