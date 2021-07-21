@@ -31,6 +31,10 @@ if(isset($_SESSION["username"])) {
                 </a>
                 <div class="dropdown-menu text-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="perfil.php?id=<?=$userid?>">Perfil</a>
+                    <?php if($_SESSION["role"] == 3){
+                        echo "<a class='dropdown-item' href='admin/pages/index.php'>Ferramenta de Administração</a>";
+                    }
+                    ?>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="scripts/sc_logout.php">Terminar Sessão</a>
                 </div>

@@ -10,10 +10,10 @@ require_once "../scripts/sc_check_admin.php";
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+        <div class="sidebar-brand-icon">
+            <img src="../../imgs/logobranco.svg" width="80px" alt="img2">
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">explain.ua</div>
     </a>
 
     <!-- Divider -->
