@@ -4,13 +4,25 @@
     <?php
     include_once "helpers/meta_helper.php";
     include_once "helpers/css_helper.php";
+
+
+    if (isset($_GET["msg"])) {
+        $msg = $_GET["msg"];
+    }
+
+    if (isset($msg) && $msg==1){
+
+
+    }else{}
+
+
     ?>
 
     <title>explain.ua</title>
 </head>
 <body>
 
-<!-- o andre chegou2 -->
+
 
 <header class="container justify-content-end" id="header">
     <div class="row">
@@ -91,6 +103,30 @@
 
 
 <div class="index_div1 text-center text-lg-left mt-2" id="index_div1">
+<?php
+    if (isset($msg) && $msg==1){
+        echo "  <div> <div class=\"text-center\">
+        <p class=\"corazul py-5\">O seu nome de utilizador alterado com sucesso, volte a fazer login para verificação do mesmo</p>
+
+    </div>
+
+    </div>
+    ";
+
+    }
+if (isset($msg) && $msg==2){
+    echo "  <div> <div class=\"text-center\">
+        <p class=\"corazul py-5\">A sua password está incorreta, volte a fazer login</p>
+
+    </div>
+
+    </div>
+    ";
+
+}
+
+    ?>
+
     <div class="container">
         <section class="row">
             <article class="col-12 col-lg-6 pt-5">

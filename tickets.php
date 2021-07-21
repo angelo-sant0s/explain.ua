@@ -11,7 +11,8 @@
 <body class="cinzaClaroBg">
 
 <?php include_once "components/cp_nav.php";
-require_once("connections/connections.php");?>
+require_once("connections/connections.php");
+$id_array = "";?>
 
 <main id="ticketsMain" class="container textoEscuro texto fundoClaro borderElement my-5 p-4 p-xl-5">
     <section class="row justify-content-center">
@@ -87,6 +88,7 @@ require_once("connections/connections.php");?>
             mysqli_stmt_bind_result($stmt2,$idcadeira, $id_user, $id_ticket, $id_estado, $nome_cadeira, $estado_nome, $ticket_titulo, $ticket_corpo, $data);
         }
         mysqli_stmt_store_result($stmt2);
+
         while (mysqli_stmt_fetch($stmt2)) {
             ?>
             <article class="col-12 col-lg-6 mt-xl-4">
@@ -137,18 +139,25 @@ require_once("connections/connections.php");?>
                             ?>
                         </p>
                         <p class="font-weight-bold">Dúvida de <span class="textoLab3"><?php echo $nome_cadeira ?></span></p>
-                        <p class="collapse font-italic" id="ticket1"><?php echo $ticket_corpo ?></p>
+                        <p class="collapse font-italic" id="ticket<?php echo $id_ticket ?>"><?php echo $ticket_corpo ?></p>
                         <p class="small font-italic">Pedido a <?php echo $data ?></p>
                     </div>
                 </div>
                 <div class="text-center botaoMais">
-                    <button id="botaoFora1" class=" btn rounded-circle borderElement azul1b moreTicket" type="button" data-toggle="collapse" data-target="#ticket1" aria-expanded="false" aria-controls="ticket1">
-                        <i id="botaoDentro1" class=' fas fa-chevron-down textoClaro px-1 py-2'></i>
+                    <button id="botaoFora<?php echo $id_ticket ?>" class=" btn rounded-circle borderElement azul1b moreTicket" type="button" data-toggle="collapse" data-target="#ticket<?php echo $id_ticket ?>" aria-expanded="false" aria-controls="ticket1">
+                        <i id="botaoDentro<?php echo $id_ticket ?>" class=' fas fa-chevron-down textoClaro px-1 py-2'></i>
                     </button>
                 </div>
             </article>
+            <?php
+            if ($id_array == "") {$id_array = $id_ticket;}
+            else $id_array = $id_array . " ". $id_ticket;
+            ?>
         <?php
+
+
         }
+        echo "<h1 class='d-none' id='arrayids'>$id_array</h1>";
 
         ?>
 
