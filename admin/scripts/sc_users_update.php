@@ -8,7 +8,11 @@ if (isset($_POST["id_users"])){
 
     $email = $_POST["email"];
 
-    //$active = $_POST["active"];
+    if(isset($_POST["active"])){
+        $active = 1;
+    }else{
+        $active = 0;
+    }
 
     $role = $_POST["id_roles"];
 
@@ -34,11 +38,11 @@ if (isset($_POST["id_users"])){
 
 
 
-    $query = "UPDATE utilizador SET utilizador.username = ?, utilizador.email = ?, utilizador.perfil_idperfil = ? WHERE utilizador.id_utilizador = ?";
+    $query = "UPDATE utilizador SET utilizador.username = ?, utilizador.email = ?, utilizador.perfil_idperfil = ?, utilizador.ativo = ? WHERE utilizador.id_utilizador = ?";
 
     if (mysqli_stmt_prepare($stmt, $query)){
 
-        mysqli_stmt_bind_param($stmt, 'ssii', $username, $email, $id_role, $userid);
+        mysqli_stmt_bind_param($stmt, 'ssiii', $username, $email, $id_role, $active, $userid);
 
     }
 

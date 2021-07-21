@@ -65,7 +65,7 @@
 
 
 
-                    $query = "SELECT utilizador.id_utilizador, utilizador.email,utilizador.username, utilizador.nome, utilizador.data_registo, perfil.tipo_perfil  FROM `utilizador`
+                    $query = "SELECT utilizador.id_utilizador, utilizador.email,utilizador.username, utilizador.nome, utilizador.data_registo, perfil.tipo_perfil, utilizador.ativo FROM `utilizador`
                               INNER JOIN perfil ON utilizador.perfil_idperfil = perfil.id_perfil
                               WHERE utilizador.id_utilizador = ?";
 
@@ -77,7 +77,7 @@
                         mysqli_stmt_execute($stmt);
 
                         /* bind result variables */
-                        mysqli_stmt_bind_result($stmt,$id,$email,$username,$nome,$data_registo,$role);
+                        mysqli_stmt_bind_result($stmt,$id,$email,$username,$nome,$data_registo,$role,$ativo);
 
                     }
 
@@ -123,6 +123,23 @@
                                                 <div class="form-group">
                                                     <label>Email</label>
                                                     <input class="form-control" name="email" value="<?=$email?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Estado</label>
+                                                    <div class="checkbox">
+                                                        <?php
+                                                        if($ativo == 1){
+                                                            $checked = 'checked="checked"';
+                                                        }else{
+                                                            $checked = '';
+                                                        }
+                                                        echo '<label>
+                                                            <input type="checkbox" value="active" name="active" '.$checked.'>Activo
+                                                        </label>';
+
+                                                        
+                                                        ?>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Perfil</label>

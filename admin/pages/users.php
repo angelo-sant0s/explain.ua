@@ -64,8 +64,18 @@
                             <div class="panel-heading">
                                 Utilizadores registados
                             </div>
+
                             <!-- /.panel-heading -->
                             <div class="panel-body">
+                                <form action="users.php">
+                                    <div class="input-group">
+                                        <input type="text" class="bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                </form>
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
@@ -98,7 +108,7 @@ INNER JOIN perfil ON utilizador.perfil_idperfil = perfil.id_perfil";
                                                                   echo "<tbody>
                                                                         <tr>
                                                                         <td>".$id."</td>
-                                                                        <td><i class=\"fa fa-ban fa-fw\"></i>".$username."</td>
+                                                                        <td>".$username."</td>
                                                                         <td>".$email."</td>
                                                                         <td>".$date_criaton."</td>
                                                                         <td>".$role."</td>
