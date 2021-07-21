@@ -67,11 +67,11 @@
 
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form action="users.php">
+                                <form action="users.php" method="get">
                                     <div class="input-group">
-                                        <input type="text" class="bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <input type="text" class="bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" name="search_submit">
                                         <div class="input-group-append">
-                                            <button class="btn btn-secondary" type="button">
+                                            <button class="btn btn-secondary" type="submit">
                                                 <i class="fas fa-search fa-sm"></i>
                                             </button>
                                         </div>
@@ -85,6 +85,7 @@
                                             <th>Email</th>
                                             <th>Data Criação</th>
                                             <th>Perfil</th>
+                                            <th>Ativo</th>
                                             <th>Operações</th>
                                         </tr>
                                         </thead>
@@ -97,14 +98,28 @@
 
                                             $stmt = mysqli_stmt_init($link);
 
-                                            $query = "SELECT utilizador.id_utilizador, utilizador.email,utilizador.username, utilizador.nome, utilizador.data_registo, perfil.tipo_perfil  FROM `utilizador`
-INNER JOIN perfil ON utilizador.perfil_idperfil = perfil.id_perfil";
+                                            if(isset($_GET["search_submit"])){
+
+                                                $search = $_GET["search_submit"];
+                                                $query = "SELECT utilizador.id_utilizador, utilizador.email,utilizador.username, utilizador.nome, utilizador.data_registo, perfil.tipo_perfil, utilizador.ativo  FROM `utilizador`
+                                                          INNER JOIN perfil ON utilizador.perfil_idperfil = perfil.id_perfil
+                                                          WHERE utilizador.username LIKE '%".$search."%' OR utilizador.email LIKE '%".$search."%' OR perfil.tipo_perfil LIKE '%".$search."%'";
+                                            }else{
+                                            $query = "SELECT utilizador.id_utilizador, utilizador.email,utilizador.username, utilizador.nome, utilizador.data_registo, perfil.tipo_perfil,utilizador.ativo  FROM `utilizador`
+                                                      INNER JOIN perfil ON utilizador.perfil_idperfil = perfil.id_perfil";
+                                            }
+
                                             if (mysqli_stmt_prepare($stmt, $query)) {
                                                 mysqli_stmt_execute($stmt);
-                                                mysqli_stmt_bind_result($stmt, $id, $email, $username, $nome, $date_criaton, $role);
+                                                mysqli_stmt_bind_result($stmt, $id, $email, $username, $nome, $date_criaton, $role,$ativo);
                                             };
 
                                             while (mysqli_stmt_fetch($stmt)){
+                                                if($ativo == 1){
+                                                    $ativon = 'Sim';
+                                                }else{
+                                                    $ativon = 'Não';
+                                                }
                                                                   echo "<tbody>
                                                                         <tr>
                                                                         <td>".$id."</td>
@@ -112,6 +127,8 @@ INNER JOIN perfil ON utilizador.perfil_idperfil = perfil.id_perfil";
                                                                         <td>".$email."</td>
                                                                         <td>".$date_criaton."</td>
                                                                         <td>".$role."</td>
+                                                                 
+                                                                        <td>".$ativon."</td>
                                                                         <td><a href='users_edit.php?id=$id' class='btn'><i class='fas fa-edit'></i></a></td>
                                                                         </tr>
                                                                         </tbody>";
