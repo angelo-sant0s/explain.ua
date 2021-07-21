@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>explain.ua - Gestão de users</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -87,21 +87,22 @@
 
                                             $stmt = mysqli_stmt_init($link);
 
-                                            $query = "SELECT id_users, email, username, date_creation FROM users";
+                                            $query = "SELECT utilizador.id_utilizador, utilizador.email,utilizador.username, utilizador.nome, utilizador.data_registo, perfil.tipo_perfil  FROM `utilizador`
+INNER JOIN perfil ON utilizador.perfil_idperfil = perfil.id_perfil";
                                             if (mysqli_stmt_prepare($stmt, $query)) {
                                                 mysqli_stmt_execute($stmt);
-                                                mysqli_stmt_bind_result($stmt, $id, $email, $username, $date_criaton);
+                                                mysqli_stmt_bind_result($stmt, $id, $email, $username, $nome, $date_criaton, $role);
                                             };
 
                                             while (mysqli_stmt_fetch($stmt)){
                                                                   echo "<tbody>
                                                                         <tr>
-                                                                        <td>$id</td>
+                                                                        <td>".$id."</td>
                                                                         <td><i class=\"fa fa-ban fa-fw\"></i>".$username."</td>
                                                                         <td>".$email."</td>
                                                                         <td>".$date_criaton."</td>
-                                                                        <td>{roles_descricao}</td>
-                                                                        <td><a href='users_edit.php?id=$id'><i class='fa fa - edit fa - fw'></a></td>
+                                                                        <td>".$role."</td>
+                                                                        <td><a href='users_edit.php?id=$id' class='btn'><i class='fas fa-edit'></i></a></td>
                                                                         </tr>
                                                                         </tbody>";
                                             }
@@ -129,7 +130,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2019</span>
+                    <span>explain.ua &copy; 2019</span>
                 </div>
             </div>
         </footer>
