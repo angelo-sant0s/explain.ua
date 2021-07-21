@@ -139,7 +139,7 @@ if(mysqli_stmt_prepare($statement,$querry)){
                         <div class="text-center m-auto py-5 px-3 w-100 row bkk-color2 borderElement">
                             <div class=" m-auto pt-5 px-3">
                                 <div class="icooon  centercenter m-auto bolinhaa ">
-                                    <a href="disciplinas.php?id=<?=$id_cadeira1?>"><img src="imgs/<?=$icon_cadeira1?>.png" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa"></a>
+                                    <a href="disciplinas.php?id=<?=$id_cadeira1?>"><img src="imgs/<?=$icon_cadeira1?>" class="ajustaa my-auto p-0 w-100 h-auto hoverrr bolinhaa"></a>
                                 </div>
                                 <p class="pt-2"><?=$nomecad1?></p>
                             </div>
