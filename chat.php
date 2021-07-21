@@ -47,7 +47,7 @@ function msg_esquerda($mensagem, $foto, $idmsg){
                     */
 
 if (!isset($_SESSION["username"]) || (($_GET["id"] != $_SESSION["user_id"]))) {
-    header("Location: ../blockedAccess.php");
+    header("Location: index.php?msg=3");
 }
 
 $userid = $_SESSION["user_id"];

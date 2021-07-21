@@ -2,6 +2,10 @@
 
 session_start();
 
+
+
+
+
 ?>
 
 <nav class="navbar sticky-top d-flex navbar-expand-md bgClaro justify-content-between" id="navchat">
@@ -25,6 +29,8 @@ if(isset($_SESSION["username"])) {
     $session = $_SESSION["username"];
     $userid = $_SESSION["user_id"];
     ?>
+
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?= $session ?>
@@ -40,7 +46,12 @@ if(isset($_SESSION["username"])) {
                 </div>
             </li>
 
-         <?php }
+         <?php }else{
+              header("Location: index.php?msg=3");
+    echo "bola";
+
+}
+
             ?>
             <li class="nav-item">
                 <a class="nav-link" href="cadeiras.php">Cadeiras</a>

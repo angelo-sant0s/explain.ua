@@ -10,12 +10,6 @@
         $msg = $_GET["msg"];
     }
 
-    if (isset($msg) && $msg==1){
-
-
-    }else{}
-
-
     ?>
 
     <title>explain.ua</title>
@@ -110,24 +104,33 @@
 <?php
     if (isset($msg) && $msg==1){
         echo "  <div> <div class=\"text-center\">
-        <p class=\"corazul py-5\">O seu nome de utilizador alterado com sucesso, volte a fazer login para verificação do mesmo</p>
+        <p class=\"corazul py-5\">O seu nome de utilizador alterado com sucesso, volte a fazer login para verificação do mesmo.</p>
 
     </div>
 
     </div>
-    ";
+    ";}
 
-    }
+
+
 if (isset($msg) && $msg==2){
     echo "  <div> <div class=\"text-center\">
-        <p class=\"corazul py-5\">A sua password está incorreta, volte a fazer login</p>
+        <p class=\"corazul py-5\">A sua password está incorreta, volte a fazer login.</p>
 
     </div>
 
     </div>
-    ";
+    ";}
 
-}
+
+if (isset($msg) && $msg==3){
+    echo "  <div> <div class=\"text-center\">
+        <p class=\"corazul py-5\">Para navegar na explain.ua necessita de ter o login feito. Muito obrigado! </p>
+    </div>
+
+    </div>
+    ";}
+
 
     ?>
 
