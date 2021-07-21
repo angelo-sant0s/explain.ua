@@ -60,7 +60,6 @@ if (isset($_POST["id_ticket"])){
 
     $stmt1 = mysqli_stmt_init($link);
 
-
     $query = "UPDATE ticket SET ticket.utilizador_id_utilizador = ? ,ticket.cadeira_id_cadeira = ? , ticket.estado_id_estado = ? WHERE ticket.id_ticket = ?";
 
     if (mysqli_stmt_prepare($stmt1, $query)){
